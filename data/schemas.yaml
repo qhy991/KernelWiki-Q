@@ -1,0 +1,192 @@
+## Page-Type Schemas
+## Defines required and optional fields per page type.
+## Consumed by scripts/validate.py
+
+source-pr:
+  required:
+    - id
+    - repo
+    - pr
+    - title
+    - author
+    - date
+    - url
+    - source_category
+    - architectures
+    - tags
+    - techniques
+    - hardware_features
+    - kernel_types
+    - languages
+    - captured_at
+    - status
+  optional:
+    - merge_sha
+    - description
+  constraints:
+    source_category: upstream-code
+    status: [open, merged, closed]
+    merge_sha_required_when: "status == merged"
+
+source-doc:
+  required:
+    - id
+    - title
+    - url
+    - source_category
+    - architectures
+    - tags
+    - retrieved_at
+  optional:
+    - author
+    - description
+  constraints:
+    source_category: [official-doc, paper]
+
+source-blog:
+  required:
+    - id
+    - title
+    - author
+    - url
+    - source_category
+    - architectures
+    - tags
+    - retrieved_at
+  optional:
+    - description
+  constraints:
+    source_category: [benchmark-blog, community-note]
+
+source-contest:
+  required:
+    - id
+    - title
+    - source_category
+    - architectures
+    - tags
+  optional:
+    - url
+    - description
+    - problem_number
+    - track
+  constraints:
+    source_category: contest-report
+
+wiki-hardware:
+  required:
+    - id
+    - title
+    - type
+    - architectures
+    - tags
+    - confidence
+    - related
+    - sources
+    - aliases
+  optional:
+    - reproducibility
+    - prerequisites
+    - blackwell_relevance
+  constraints:
+    type: hardware
+    id_prefix: hw-
+
+wiki-technique:
+  required:
+    - id
+    - title
+    - type
+    - architectures
+    - tags
+    - confidence
+    - reproducibility
+    - prerequisites
+    - related
+    - sources
+  optional:
+    - aliases
+    - symptoms
+    - blackwell_relevance
+  constraints:
+    type: technique
+    id_prefix: technique-
+    reproducibility_minimum: snippet
+
+wiki-pattern:
+  required:
+    - id
+    - title
+    - type
+    - tags
+    - symptoms
+    - candidate_techniques
+    - related
+    - sources
+  optional:
+    - architectures
+    - confidence
+  constraints:
+    type: pattern
+    id_prefix: pattern-
+
+wiki-kernel:
+  required:
+    - id
+    - title
+    - type
+    - architectures
+    - tags
+    - confidence
+    - reproducibility
+    - kernel_types
+    - languages
+    - related
+    - sources
+    - performance_claims
+  optional:
+    - aliases
+    - prerequisites
+    - symptoms
+    - blackwell_relevance
+  constraints:
+    type: kernel
+    id_prefix: kernel-
+    reproducibility_minimum: snippet
+
+wiki-language:
+  required:
+    - id
+    - title
+    - type
+    - tags
+    - related
+    - sources
+    - reproducibility
+  optional:
+    - architectures
+    - confidence
+    - aliases
+  constraints:
+    type: language
+    id_prefix: lang-
+    reproducibility_minimum: snippet
+
+wiki-migration:
+  required:
+    - id
+    - title
+    - type
+    - from_arch
+    - to_arch
+    - tags
+    - related
+    - sources
+    - blackwell_relevance
+  optional:
+    - confidence
+    - reproducibility
+    - prerequisites
+  constraints:
+    type: migration
+    id_prefix: migration-
