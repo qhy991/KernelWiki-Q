@@ -27,6 +27,70 @@ CORE_PATH = REPO_ROOT / "data" / "core-prs.yaml"
 COMPUTE_SCRIPT = REPO_ROOT / "scripts" / "compute_core_prs.py"
 
 
+def _open_temp_dir():
+    """Return a context manager yielding the path to a writable temp dir.
+
+    Strategy (first path that works wins):
+      1. tempfile.TemporaryDirectory() — uses $TMPDIR / /tmp / etc.
+      2. Fallback to $HOME/.cache/verify-core-prs-<pid>/
+      3. Fallback to Path.cwd() / .verify-core-prs-<pid>/
+      4. Fallback to REPO_ROOT / .verify-core-prs-<pid>/
+
+    Hermetic or read-only CI runners sometimes omit /tmp and /var/tmp, in
+    which case step 1 raises FileNotFoundError. The script falls through to
+    whichever of steps 2-4 actually has a writable directory. The fallbacks
+    all clean up their own directory on __exit__.
+    """
+    import contextlib, os, shutil, tempfile
+
+    @contextlib.contextmanager
+    def _owned(path):
+        path = Path(path).resolve()
+        try:
+            yield str(path)
+        finally:
+            shutil.rmtree(path, ignore_errors=True)
+
+    try:
+        td = tempfile.TemporaryDirectory(prefix="verify_core_prs-")
+
+        @contextlib.contextmanager
+        def _wrap(td):
+            try:
+                yield td.name
+            finally:
+                td.cleanup()
+
+        return _wrap(td)
+    except (FileNotFoundError, OSError):
+        pass
+
+    pid = os.getpid()
+    for base in (
+        os.environ.get("HOME") and Path(os.environ["HOME"]) / ".cache",
+        Path.cwd(),
+        REPO_ROOT,
+    ):
+        if not base:
+            continue
+        candidate = base / f".verify-core-prs-{pid}"
+        try:
+            candidate.mkdir(parents=True, exist_ok=True)
+            # Verify writability with a probe file.
+            probe = candidate / ".probe"
+            probe.write_text("ok", encoding="utf-8")
+            probe.unlink()
+            return _owned(candidate)
+        except OSError:
+            continue
+
+    raise RuntimeError(
+        "verify_core_prs.py could not find a writable directory to regenerate "
+        "into (tried tempfile.TemporaryDirectory(), $HOME/.cache, cwd, and "
+        "REPO_ROOT). Point TMPDIR at a writable location and re-run."
+    )
+
+
 def run_gh(args):
     try:
         res = subprocess.run(["gh"] + list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
@@ -61,8 +125,8 @@ def main():
             committed_bytes[name] = None
             all_tracked = False
 
-    with tempfile.TemporaryDirectory(prefix="verify_core_prs-") as td:
-        tmp_out = Path(td)
+    with _open_temp_dir() as td_path:
+        tmp_out = Path(td_path)
         res = subprocess.run(
             [sys.executable, str(COMPUTE_SCRIPT), "--output-dir", str(tmp_out)],
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
@@ -88,9 +152,24 @@ def main():
               f"checksum {fresh.get('checksum_sha256', '')[:12]}...")
         print("(skip reproducibility comparison; commit the files first, then re-run)")
     else:
+        # Semantic comparison: parse both sides as YAML, strip timestamp-style
+        # fields that change between runs for benign reasons (generated_at,
+        # retrieved_at), then compare the structured dicts. This lets us emit
+        # a schema-required generated_at field from compute_core_prs.py
+        # without breaking reproducibility on cross-day re-runs.
+        def _normalize(doc):
+            if isinstance(doc, dict):
+                return {k: _normalize(v) for k, v in doc.items()
+                        if k not in ("generated_at", "retrieved_at")}
+            if isinstance(doc, list):
+                return [_normalize(v) for v in doc]
+            return doc
+
         drift = []
         for name in generated_names:
-            if committed_bytes[name] != fresh_bytes[name]:
+            committed_doc = yaml.safe_load(committed_bytes[name].decode("utf-8"))
+            fresh_doc = yaml.safe_load(fresh_bytes[name].decode("utf-8"))
+            if _normalize(committed_doc) != _normalize(fresh_doc):
                 drift.append(Path("data") / name)
         if drift:
             print("FAIL: fresh regeneration does not match the committed generated files:",

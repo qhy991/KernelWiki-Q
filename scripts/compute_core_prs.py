@@ -339,8 +339,10 @@ def main():
     checksum_body = yaml.dump(prs_list, allow_unicode=True, sort_keys=False, default_flow_style=False)
     checksum = compute_sha256_of_text(checksum_body)
 
+    from datetime import date
     core_payload = {
         "generated_by": "scripts/compute_core_prs.py",
+        "generated_at": date.today().isoformat(),
         "sources": ["wiki-graph-closure", "contest-reference", "cute-dsl-tutorial", "triton-in-policy", "allowlist"],
         "total_captured": len(prs_list),
         "checksum_sha256": checksum,

@@ -2,6 +2,7 @@
 ## Use data/core-prs-allowlist.yaml to add or exclude PRs; then re-run the script.
 
 generated_by: scripts/compute_core_prs.py
+generated_at: '2026-04-17'
 sources:
 - wiki-graph-closure
 - contest-reference
