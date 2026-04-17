@@ -79,9 +79,19 @@ def repro_at_least(level, minimum):
     return REPRO_ORDER.index(level) >= REPRO_ORDER.index(minimum)
 
 
+CODE_LANGS = {
+    "cuda", "c", "c++", "cpp", "python", "py", "ptx", "asm",
+    "cuda-cpp", "cu", "rust", "shell", "bash", "yaml", "json",
+}
+
+
 def has_fenced_code(body):
-    """Check if body contains at least one fenced code block."""
-    return bool(re.search(r'^```[^\n]*\n.*?\n```', body, re.MULTILINE | re.DOTALL))
+    """Check if body contains a fenced code block with a known programming language."""
+    for m in re.finditer(r'^```(\S*)\s*\n.*?\n```', body, re.MULTILINE | re.DOTALL):
+        info = m.group(1).lower()
+        if info in CODE_LANGS:
+            return True
+    return False
 
 
 def validate_file(filepath, schemas, valid_tags, all_source_ids):

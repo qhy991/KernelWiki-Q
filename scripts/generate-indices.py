@@ -266,18 +266,21 @@ def generate_by_language(pages):
             if primary_lang and primary_lang in lang_data:
                 lang_data[primary_lang]["guide"] = p
 
-    # Find consumer pages (pages that use each language via languages field or tags)
+    # Find consumer pages: merge explicit languages field AND language tags
+    # Both sources contribute — a page with languages: [python] and tags: [triton]
+    # should appear under both python and triton
     for p in pages:
         if p.get("type") != "language":
-            explicit_langs = p.get("languages", [])
-            for lang in explicit_langs:
+            indexed_langs = set()
+            for lang in p.get("languages", []):
                 if lang in lang_data:
                     lang_data[lang]["consumers"].append(p)
-            # Tag fallback ONLY when languages is absent or empty
-            if not explicit_langs:
-                for tag in p.get("tags", []):
-                    if tag in valid_langs:
-                        lang_data[tag]["consumers"].append(p)
+                    indexed_langs.add(lang)
+            # Also index supplemental language tags not already covered
+            for tag in p.get("tags", []):
+                if tag in valid_langs and tag not in indexed_langs:
+                    lang_data[tag]["consumers"].append(p)
+                    indexed_langs.add(tag)
 
     lines.append("| Language | Guide | Related Pages |")
     lines.append("|----------|-------|--------------|")
