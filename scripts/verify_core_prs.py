@@ -2,15 +2,19 @@
 """Verify the data/core-prs.yaml derivation is reproducible (AC-1).
 
 Modes:
-  default — regenerate to a temp file and diff against committed output
+  default — regenerate in memory and diff against committed bytes
   --strict — additionally resolve each captured PR's merge_sha via `gh api`
-             and flag reverted/unresolvable entries
+             and flag reverted / unresolvable / prefix-mismatched entries
 
 Exit codes:
-  0 — committed output is byte-equal to a fresh derivation (and, in --strict,
-      every merge_sha resolves to a merged PR)
+  0 — every committed manifest is byte-equal to a fresh in-memory derivation
+      (and, in --strict, every merge_sha prefix-matches upstream)
   1 — mismatch or upstream-state problem
-  2 — invocation error (missing inputs)
+  2 — invocation error (missing inputs, no gh, etc.)
+
+Runs in fully read-only sandboxes: the reproducibility check imports
+compute_core_prs.compute_manifests() directly and holds the regenerated
+bytes in memory rather than shelling out + writing to a temp directory.
 """
 
 import argparse
@@ -19,76 +23,13 @@ import subprocess
 import sys
 from pathlib import Path
 import yaml
-import shutil
-import tempfile
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CORE_PATH = REPO_ROOT / "data" / "core-prs.yaml"
-COMPUTE_SCRIPT = REPO_ROOT / "scripts" / "compute_core_prs.py"
 
-
-def _open_temp_dir():
-    """Return a context manager yielding the path to a writable temp dir.
-
-    Strategy (first path that works wins):
-      1. tempfile.TemporaryDirectory() — uses $TMPDIR / /tmp / etc.
-      2. Fallback to $HOME/.cache/verify-core-prs-<pid>/
-      3. Fallback to Path.cwd() / .verify-core-prs-<pid>/
-      4. Fallback to REPO_ROOT / .verify-core-prs-<pid>/
-
-    Hermetic or read-only CI runners sometimes omit /tmp and /var/tmp, in
-    which case step 1 raises FileNotFoundError. The script falls through to
-    whichever of steps 2-4 actually has a writable directory. The fallbacks
-    all clean up their own directory on __exit__.
-    """
-    import contextlib, os, shutil, tempfile
-
-    @contextlib.contextmanager
-    def _owned(path):
-        path = Path(path).resolve()
-        try:
-            yield str(path)
-        finally:
-            shutil.rmtree(path, ignore_errors=True)
-
-    try:
-        td = tempfile.TemporaryDirectory(prefix="verify_core_prs-")
-
-        @contextlib.contextmanager
-        def _wrap(td):
-            try:
-                yield td.name
-            finally:
-                td.cleanup()
-
-        return _wrap(td)
-    except (FileNotFoundError, OSError):
-        pass
-
-    pid = os.getpid()
-    for base in (
-        os.environ.get("HOME") and Path(os.environ["HOME"]) / ".cache",
-        Path.cwd(),
-        REPO_ROOT,
-    ):
-        if not base:
-            continue
-        candidate = base / f".verify-core-prs-{pid}"
-        try:
-            candidate.mkdir(parents=True, exist_ok=True)
-            # Verify writability with a probe file.
-            probe = candidate / ".probe"
-            probe.write_text("ok", encoding="utf-8")
-            probe.unlink()
-            return _owned(candidate)
-        except OSError:
-            continue
-
-    raise RuntimeError(
-        "verify_core_prs.py could not find a writable directory to regenerate "
-        "into (tried tempfile.TemporaryDirectory(), $HOME/.cache, cwd, and "
-        "REPO_ROOT). Point TMPDIR at a writable location and re-run."
-    )
+# Import the in-memory regenerator.
+sys.path.insert(0, str(REPO_ROOT / "scripts"))
+import compute_core_prs  # noqa: E402
 
 
 def run_gh(args):
@@ -110,10 +51,7 @@ def main():
         print(f"ERROR: {CORE_PATH.relative_to(REPO_ROOT)} does not exist; run scripts/compute_core_prs.py first", file=sys.stderr)
         sys.exit(2)
 
-    # Regenerate the three manifests into a TEMPORARY directory so this
-    # verifier is safe to run in read-only CI / sandboxed environments and
-    # never dirties the working tree. Compare the fresh bytes against the
-    # committed versions under data/.
+    # Snapshot the committed bytes of every generated manifest under data/.
     generated_names = ("core-prs.yaml", "cute-dsl-universe.yaml", "triton-universe.yaml")
     all_tracked = True
     committed_bytes = {}
@@ -125,36 +63,23 @@ def main():
             committed_bytes[name] = None
             all_tracked = False
 
-    # Acquire a writable regeneration directory. If none of the fallback
-    # candidates is writable, exit with the documented invocation-failure
-    # code (2) and a clean message instead of a Python traceback — this
-    # path is the one hermetic/read-only CI runners see and must handle
-    # gracefully.
+    # Regenerate the three manifests ENTIRELY IN MEMORY. This keeps the
+    # verifier usable in fully read-only sandboxes (no /tmp, no $HOME/.cache,
+    # no writable cwd, no writable REPO_ROOT) — the original bug Codex
+    # raised in Rounds 12 / 15 against the subprocess-plus-temp-dir design.
     try:
-        temp_cm = _open_temp_dir()
+        fresh_bytes = compute_core_prs.compute_manifests()
     except RuntimeError as e:
         print(f"ERROR: {e}", file=sys.stderr)
         sys.exit(2)
+    # Sanity-check that compute_manifests() produced exactly the expected
+    # manifest set; a mismatch would indicate a generator/verifier drift bug.
+    missing = [name for name in generated_names if name not in fresh_bytes]
+    if missing:
+        print(f"ERROR: compute_manifests() did not produce {missing}", file=sys.stderr)
+        sys.exit(1)
 
-    with temp_cm as td_path:
-        tmp_out = Path(td_path)
-        res = subprocess.run(
-            [sys.executable, str(COMPUTE_SCRIPT), "--output-dir", str(tmp_out)],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-        )
-        if res.returncode != 0:
-            print(f"compute_core_prs.py failed:\n{res.stderr.decode(errors='replace')}", file=sys.stderr)
-            sys.exit(1)
-
-        fresh_bytes = {}
-        for name in generated_names:
-            fresh_path = tmp_out / name
-            if not fresh_path.is_file():
-                print(f"ERROR: compute_core_prs.py did not produce {name} in --output-dir", file=sys.stderr)
-                sys.exit(1)
-            fresh_bytes[name] = fresh_path.read_bytes()
-
-        fresh = yaml.safe_load(fresh_bytes["core-prs.yaml"].decode("utf-8"))
+    fresh = yaml.safe_load(fresh_bytes["core-prs.yaml"].decode("utf-8"))
 
     if not all_tracked:
         # First run: no committed version for at least one generated file yet.

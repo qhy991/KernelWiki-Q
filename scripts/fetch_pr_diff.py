@@ -49,7 +49,16 @@ BUNDLE_SIZE_CAP = 5 * 1024 * 1024  # 5 MiB
 KERNEL_EXTS_C = {".cu", ".cuh", ".cpp", ".cxx", ".cc", ".h", ".hpp", ".hxx", ".inl"}
 KERNEL_EXTS_PTX = {".ptx"}
 KERNEL_EXTS_PY_STRICT = {".py", ".pyx"}  # only when path matches keyword
-KERNEL_PY_KEYWORDS = ("kernel", "triton", "cute", "ops", "csrc")
+# Path-substring allowlist for Python files. "attention" and "backends" were
+# added after Round 14 left core PR bundles (pr-vllm-37303, pr-vllm-39752,
+# etc.) with only diff.patch — their changed .py files lived under
+# vllm/v1/attention/ and vllm/model_executor/layers/attention/, which the
+# original keyword set missed. See BL-20260417-skip-globs-fnmatch-depth for
+# the related principle of testing the allowlist against real captured paths.
+KERNEL_PY_KEYWORDS = (
+    "kernel", "triton", "cute", "ops", "csrc",
+    "attention", "backends",
+)
 
 # Skip all of these entirely. Uses `fnmatch` against the POSIX upstream path,
 # so `**/` glob prefixes match at any directory depth (not only the repo top

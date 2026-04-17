@@ -12,3 +12,8 @@ files:
   role: pr-diff
   mode: upstream-patch
   sha256: c0ff718d973727862a102df39834cbd59b199f24605dc1298691a522d88646c0
+- local_path: key-files/python/sglang/srt/layers/attention/linear/kda_backend.py
+  role: upstream-file
+  mode: verbatim
+  upstream_path: python/sglang/srt/layers/attention/linear/kda_backend.py
+  sha256: a7ce7a5eb218c0e23c3766336ad6c1bc597505bca9b2f133de1aa0323c12151f
