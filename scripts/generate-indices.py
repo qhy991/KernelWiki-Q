@@ -232,12 +232,24 @@ def generate_by_language(pages):
         lang_data[lang] = {"guide": None, "consumers": []}
 
     # Find dedicated language guide pages
+    # Match by: first tag that's a valid language, OR id-derived tag as fallback
     for p in pages:
         if p.get("type") == "language":
-            lang_id = p.get("id", "")
-            lang_tag = lang_id.replace("lang-", "") if lang_id.startswith("lang-") else ""
-            if lang_tag in lang_data:
-                lang_data[lang_tag]["guide"] = p
+            # Primary language: first tag that's in the valid languages set
+            primary_lang = None
+            for tag in p.get("tags", []):
+                if tag in valid_langs:
+                    primary_lang = tag
+                    break
+            # Fallback: derive from id (lang-cuda-cpp -> cuda-cpp)
+            if not primary_lang:
+                lang_id = p.get("id", "")
+                if lang_id.startswith("lang-"):
+                    candidate = lang_id[5:]  # strip "lang-"
+                    if candidate in valid_langs:
+                        primary_lang = candidate
+            if primary_lang and primary_lang in lang_data:
+                lang_data[primary_lang]["guide"] = p
 
     # Find consumer pages (pages that use each language via languages field or tags)
     for p in pages:

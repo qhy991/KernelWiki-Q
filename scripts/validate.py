@@ -212,15 +212,16 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids):
                 f"expected '{constraints['type']}' for {page_type}"
             )
 
-    # Check blackwell_relevance required for any wiki page with sm90 but not sm100
-    # (Blackwell-first scope: Hopper content must justify its inclusion)
+    # Check blackwell_relevance required for Hopper-only wiki pages
+    # Pages targeting both Hopper AND Blackwell are inherently Blackwell-relevant
     if page_type.startswith("wiki-"):
         archs = set(fm.get("architectures", []) if isinstance(fm.get("architectures"), list) else [])
         hopper_archs = archs & {"sm90", "sm90a"}
-        if hopper_archs and "blackwell_relevance" not in fm:
+        blackwell_archs = archs & {"sm100", "sm100a", "sm120"}
+        if hopper_archs and not blackwell_archs and "blackwell_relevance" not in fm:
             errors.append(
-                f"{rel}: page includes Hopper architecture {hopper_archs} but missing "
-                f"'blackwell_relevance' (required by Blackwell-first scope)"
+                f"{rel}: page targets only Hopper {hopper_archs} without Blackwell arch; "
+                f"add 'blackwell_relevance' to justify inclusion in Blackwell-first scope"
             )
 
     # Check performance_claims structure (including shape and numeric value)
