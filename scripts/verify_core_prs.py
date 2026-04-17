@@ -254,10 +254,24 @@ def main():
                 if not data.get("merged"):
                     print(f"  FAIL: {pid}: upstream state is not merged (state={data.get('state')})")
                     issues += 1
-                elif data.get("merge_commit_sha") != sha:
-                    print(f"  FAIL: {pid}: upstream merge_sha={data.get('merge_commit_sha')[:12]}... "
-                          f"differs from recorded {sha[:12]}...")
-                    issues += 1
+                else:
+                    # sources/prs/**/*.md stores abbreviated 8-char merge_sha
+                    # values; gh returns the full 40-char merge_commit_sha.
+                    # Accept the stored value as a valid prefix of either the
+                    # full merge_commit_sha or head.sha — same convention
+                    # scripts/verify_verbatim.py uses.
+                    upstream_merge = str(data.get("merge_commit_sha") or "")
+                    upstream_head = str((data.get("head") or {}).get("sha") or "")
+                    ok = any(
+                        upstream and upstream.startswith(sha)
+                        for upstream in (upstream_merge, upstream_head)
+                    )
+                    if not ok:
+                        print(
+                            f"  FAIL: {pid}: recorded merge_sha={sha[:12]}... does not prefix-match "
+                            f"upstream merge_commit_sha={upstream_merge[:12]}... or head.sha={upstream_head[:12]}..."
+                        )
+                        issues += 1
             except RuntimeError as ex:
                 print(f"  WARN: {pid}: gh fetch failed: {ex}")
                 issues += 1

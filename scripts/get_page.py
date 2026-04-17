@@ -118,7 +118,20 @@ def main():
             print("---")
             print(f"## Artifact Bundle: `{ad}`")
             print()
-            exts = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".patch", ".md", ".yaml", ".txt"}
+            # Phase 3 source + metadata extensions. Must cover every ext the
+            # fetch/extract/collect scripts actually produce — notably .inl
+            # (CUTLASS header snippets), .cxx / .cc (alt C++ extensions), and
+            # .pyx (Triton / Cython-style Python kernels). Also includes
+            # .patch for the whole-PR diff, .md / .yaml / .txt for bundle
+            # metadata (MANIFEST.yaml, PROVENANCE.yaml, approach.md, etc.).
+            exts = {
+                ".cu", ".cuh", ".ptx",
+                ".cpp", ".cxx", ".cc", ".c",
+                ".h", ".hpp", ".hxx", ".inl",
+                ".py", ".pyx",
+                ".patch",
+                ".md", ".yaml", ".yml", ".txt", ".json",
+            }
             for f in sorted(ad_path.rglob("*")):
                 if not f.is_file() or f.suffix.lower() not in exts:
                     continue
