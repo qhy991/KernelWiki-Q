@@ -20,14 +20,48 @@ import yaml
 from collections import defaultdict
 from pathlib import Path
 
-# Locate wiki root (parent of skills/ directory)
-WIKI_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-if not (WIKI_ROOT / "data" / "tags.yaml").exists():
-    # Allow env override if script is used from elsewhere
-    import os
-    env_root = os.environ.get("BLACKWELL_WIKI_ROOT")
-    if env_root:
-        WIKI_ROOT = Path(env_root)
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _wiki_root import WIKI_ROOT  # noqa: E402
+
+
+_ALIAS_CACHE = None
+
+
+def load_alias_expansions():
+    """Return a dict mapping lowercased alias → canonical term, loaded from data/aliases.yaml.
+
+    Each canonical is also mapped to itself, so lookups always return something
+    sensible when the user already types the canonical form.
+    """
+    global _ALIAS_CACHE
+    if _ALIAS_CACHE is not None:
+        return _ALIAS_CACHE
+    out = {}
+    aliases_path = WIKI_ROOT / "data" / "aliases.yaml"
+    try:
+        raw = yaml.safe_load(aliases_path.read_text(encoding="utf-8")) or {}
+    except Exception:
+        _ALIAS_CACHE = {}
+        return _ALIAS_CACHE
+    for canonical, variants in raw.items():
+        if not isinstance(canonical, str):
+            continue
+        out.setdefault(canonical.lower(), canonical)
+        for v in (variants or []):
+            if isinstance(v, str):
+                out.setdefault(v.lower(), canonical)
+    _ALIAS_CACHE = out
+    return out
+
+
+def expand_keyword(kw):
+    """Return a list of search variants for a keyword: the original plus any
+    canonical term the alias map points to."""
+    aliases = load_alias_expansions()
+    canonical = aliases.get(kw.lower())
+    if canonical and canonical.lower() != kw.lower():
+        return [kw, canonical]
+    return [kw]
 
 
 def load_frontmatter(path):
@@ -78,7 +112,11 @@ def detect_page_type(fm, path):
 
 
 def score_keyword_match(fm, body, keywords):
-    """Score a page by keyword matches in title, tags, and body (title > tags > body)."""
+    """Score a page by keyword matches in title, tags, and body (title > tags > body).
+
+    Each user keyword is expanded through the alias map so that typing 'UMMA'
+    also scores 'tcgen05', 'B200' also scores 'sm100', etc.
+    """
     score = 0
     title_text = str(fm.get("title", "")).lower()
     tag_text = " ".join(
@@ -88,14 +126,19 @@ def score_keyword_match(fm, body, keywords):
     ).lower()
     body_lower = body.lower()
     for kw in keywords:
-        kw_l = kw.lower()
-        if kw_l in title_text:
-            score += 10
-        if kw_l in tag_text:
-            score += 5
-        # Count occurrences in body, capped
-        body_hits = body_lower.count(kw_l)
-        score += min(body_hits, 3)
+        best_variant_score = 0
+        for variant in expand_keyword(kw):
+            v_l = variant.lower()
+            variant_score = 0
+            if v_l in title_text:
+                variant_score += 10
+            if v_l in tag_text:
+                variant_score += 5
+            body_hits = body_lower.count(v_l)
+            variant_score += min(body_hits, 3)
+            if variant_score > best_variant_score:
+                best_variant_score = variant_score
+        score += best_variant_score
     return score
 
 
@@ -117,7 +160,8 @@ def filter_pages(pages, args):
             all_tags = set()
             for k in ("tags", "techniques", "hardware_features", "kernel_types", "languages"):
                 all_tags.update(fm.get(k) or [])
-            if args.tag not in all_tags:
+            tag_variants = {v.lower() for v in expand_keyword(args.tag)}
+            if not any(t.lower() in tag_variants for t in all_tags):
                 continue
 
         if args.repo:
@@ -132,8 +176,9 @@ def filter_pages(pages, args):
                 continue
 
         if args.architecture:
-            archs = set(fm.get("architectures") or [])
-            if args.architecture not in archs:
+            archs = {a.lower() for a in (fm.get("architectures") or [])}
+            arch_variants = {v.lower() for v in expand_keyword(args.architecture)}
+            if not (archs & arch_variants):
                 continue
 
         if args.symptom:
@@ -200,8 +245,13 @@ def main():
     pages = load_all_pages()
     pages = filter_pages(pages, args)
 
-    # Score by keywords if any
-    keywords = list(args.query)
+    # Score by keywords if any. Flatten multi-word quoted args into tokens so
+    # `query.py "how to fuse dual GEMM"` behaves like `query.py how to fuse dual GEMM`.
+    keywords = []
+    for q in args.query:
+        for tok in re.split(r"\s+", q.strip()):
+            if tok:
+                keywords.append(tok)
     if keywords:
         for p in pages:
             p["_score"] = score_keyword_match(p["fm"], p["body"], keywords)

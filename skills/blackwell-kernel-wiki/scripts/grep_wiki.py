@@ -15,10 +15,8 @@ import re
 import sys
 from pathlib import Path
 
-WIKI_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-if not (WIKI_ROOT / "data" / "tags.yaml").exists():
-    import os
-    WIKI_ROOT = Path(os.environ.get("BLACKWELL_WIKI_ROOT", WIKI_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _wiki_root import WIKI_ROOT  # noqa: E402
 
 
 def iter_files(scope):
@@ -36,7 +34,7 @@ def iter_files(scope):
             yield md
 
 
-def grep_file(path, patterns, context, any_match):
+def grep_file(path, compiled_patterns, context, any_match):
     """Search a single file for the pattern(s). Returns list of (line_no, context_text) tuples."""
     try:
         lines = path.read_text(encoding="utf-8").splitlines()
@@ -46,9 +44,9 @@ def grep_file(path, patterns, context, any_match):
     results = []
     for i, line in enumerate(lines):
         if any_match:
-            matched = any(re.search(p, line, re.IGNORECASE) for p in patterns)
+            matched = any(p.search(line) for p in compiled_patterns)
         else:
-            matched = all(re.search(p, line, re.IGNORECASE) for p in patterns)
+            matched = all(p.search(line) for p in compiled_patterns)
         if matched:
             start = max(0, i - context)
             end = min(len(lines), i + context + 1)
@@ -71,12 +69,18 @@ def main():
     parser.add_argument("--files-only", action="store_true", help="Print only matching file paths")
     args = parser.parse_args()
 
-    # Compile patterns (literal substrings OK; special chars escaped by re search since we use re.search with raw)
-    patterns = args.patterns
+    compiled = []
+    for p in args.patterns:
+        try:
+            compiled.append(re.compile(p, re.IGNORECASE))
+        except re.error as e:
+            print(f"ERROR: invalid regex {p!r}: {e}", file=sys.stderr)
+            print("       Hint: escape special chars ([](){}.*+?^$|\\) or quote the pattern.", file=sys.stderr)
+            sys.exit(2)
 
     matched_files = []
     for path in iter_files(args.only):
-        hits = grep_file(path, patterns, args.context, args.any)
+        hits = grep_file(path, compiled, args.context, args.any)
         if hits:
             matched_files.append((path, hits))
 

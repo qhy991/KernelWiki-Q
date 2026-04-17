@@ -2,6 +2,8 @@
 
 Concrete patterns showing how to translate a user question into a navigation path and synthesize an answer.
 
+All commands assume `$SKILL_DIR` is set to this skill's directory (see SKILL.md → Runtime Setup). Paths like `wiki/...` and `sources/...` are always relative to the wiki root (the directory containing `data/`, `wiki/`, `sources/`, `queries/`).
+
 ---
 
 ## Example 1: "How do I write a fast GEMM kernel on B200?"
@@ -15,7 +17,7 @@ Concrete patterns showing how to translate a user question into a navigation pat
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/query.py --type kernel --tag gemm --architecture sm100
+python3 "$SKILL_DIR/scripts/query.py" --type kernel --tag gemm --architecture sm100
 ```
 
 ---
@@ -31,8 +33,8 @@ python3 skills/blackwell-kernel-wiki/scripts/query.py --type kernel --tag gemm -
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/query.py --symptom low-sm-utilization
-python3 skills/blackwell-kernel-wiki/scripts/get_page.py pattern-low-sm-utilization
+python3 "$SKILL_DIR/scripts/query.py" --symptom low-sm-utilization
+python3 "$SKILL_DIR/scripts/get_page.py" pattern-low-sm-utilization
 ```
 
 ---
@@ -46,9 +48,11 @@ python3 skills/blackwell-kernel-wiki/scripts/get_page.py pattern-low-sm-utilizat
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/query.py --tag tcgen05 --repo cutlass --limit 30
-python3 skills/blackwell-kernel-wiki/scripts/grep_wiki.py "tcgen05.mma" --only sources
+python3 "$SKILL_DIR/scripts/query.py" --tag tcgen05 --repo cutlass --limit 30
+python3 "$SKILL_DIR/scripts/grep_wiki.py" "tcgen05\\.mma" --only sources
 ```
+
+Tip: the `--tag` filter also accepts aliases, so `--tag UMMA` resolves to `tcgen05`.
 
 ---
 
@@ -62,7 +66,7 @@ python3 skills/blackwell-kernel-wiki/scripts/grep_wiki.py "tcgen05.mma" --only s
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/get_page.py kernel-flash-attention-4 --follow-sources
+python3 "$SKILL_DIR/scripts/get_page.py" kernel-flash-attention-4 --follow-sources
 ```
 
 ---
@@ -70,14 +74,14 @@ python3 skills/blackwell-kernel-wiki/scripts/get_page.py kernel-flash-attention-
 ## Example 5: "What's the difference between Hopper wgmma and Blackwell tcgen05?"
 
 **Navigation path**:
-1. `wiki/migration/wgmma-to-tcgen05.md` — dedicated migration guide
-2. `wiki/hardware/sm100-vs-sm90.md` if it exists; else index.md
-3. Also `wiki/hardware/tcgen05-mma.md` for the new instruction
-4. Blackwell-first rule: migration page has `blackwell_relevance:` field explaining impact
+1. `wiki/migration/wgmma-to-tcgen05.md` — dedicated migration guide with `blackwell_relevance` field
+2. `wiki/hardware/tcgen05-mma.md` — canonical reference for the new instruction
+3. Contrast with Hopper behavior implicit in the migration page
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/get_page.py migration-wgmma-to-tcgen05
+python3 "$SKILL_DIR/scripts/get_page.py" migration-wgmma-to-tcgen05
+python3 "$SKILL_DIR/scripts/get_page.py" hw-tcgen05-mma
 ```
 
 ---
@@ -92,8 +96,8 @@ python3 skills/blackwell-kernel-wiki/scripts/get_page.py migration-wgmma-to-tcge
 
 **Command**:
 ```bash
-ls sources/contests/gpu-mode-nvfp4/
-python3 skills/blackwell-kernel-wiki/scripts/get_page.py contest-gpumode-p1
+python3 "$SKILL_DIR/scripts/query.py" --type contest --tag nvfp4
+python3 "$SKILL_DIR/scripts/get_page.py" contest-gpumode-p1
 ```
 
 ---
@@ -103,12 +107,11 @@ python3 skills/blackwell-kernel-wiki/scripts/get_page.py contest-gpumode-p1
 **Navigation path**:
 1. `wiki/kernels/gated-delta-net.md` — conceptual + code
 2. `wiki/languages/triton-blackwell.md` — Triton limitations on SM100 (no tcgen05/TMEM direct access)
-3. `wiki/techniques/chunk-parallelism.md` — linear attention pattern
-4. Source PRs: `pr-vllm-*` for gated_delta, FlashInfer GDN kernels
+3. Source PRs: `pr-vllm-*` for gated_delta, FlashInfer GDN kernels
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/query.py "gated delta net decode" --language triton
+python3 "$SKILL_DIR/scripts/query.py" "gated delta net decode" --language triton
 ```
 
 ---
@@ -117,14 +120,12 @@ python3 skills/blackwell-kernel-wiki/scripts/query.py "gated delta net decode" -
 
 **Navigation path**:
 1. `wiki/patterns/memory-bound.md` — candidate techniques list
-2. `wiki/techniques/vectorized-loads.md` — wide loads + cache policies
-3. `wiki/techniques/cache-policy.md` — L1::no_allocate vs evict_last
-4. `wiki/techniques/register-budgeting.md` — occupancy for latency hiding
-5. Best case study: `wiki/kernels/nvfp4-gemv.md` (2000μs → 22.4μs progression)
+2. `wiki/techniques/vectorized-loads.md` — wide loads + cache policies (covers `evict_first` / `no_allocate`)
+3. Best case study: `wiki/kernels/nvfp4-gemv.md` (2000μs → 22.4μs progression)
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/query.py --symptom memory-bound
+python3 "$SKILL_DIR/scripts/query.py" --symptom memory-bound
 ```
 
 ---
@@ -133,9 +134,9 @@ python3 skills/blackwell-kernel-wiki/scripts/query.py --symptom memory-bound
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/query.py --repo flashinfer --tag moe --limit 30
-python3 skills/blackwell-kernel-wiki/scripts/query.py --repo flashinfer --tag fp8 --limit 30
-python3 skills/blackwell-kernel-wiki/scripts/grep_wiki.py "fp8" "moe" --only sources --files-only
+python3 "$SKILL_DIR/scripts/query.py" --repo flashinfer --tag moe --limit 30
+python3 "$SKILL_DIR/scripts/query.py" --repo flashinfer --tag fp8 --limit 30
+python3 "$SKILL_DIR/scripts/grep_wiki.py" "fp8" "moe" --only sources --files-only
 ```
 
 ---
@@ -144,13 +145,12 @@ python3 skills/blackwell-kernel-wiki/scripts/grep_wiki.py "fp8" "moe" --only sou
 
 **Navigation path**:
 1. `wiki/languages/ptx-sm100.md` — direct reference
-2. `sources/docs/nvidia-ptx-isa-sm100.md` — official ISA excerpt
-3. Cross-reference: tcgen05.alloc/mma/ld/st/dealloc/fence, clusterlaunchcontrol.try_cancel, cp.async.bulk.tensor multicast
+2. Cross-reference: tcgen05.alloc/mma/ld/st/dealloc/fence, clusterlaunchcontrol.try_cancel, cp.async.bulk.tensor multicast
 
 **Command**:
 ```bash
-python3 skills/blackwell-kernel-wiki/scripts/get_page.py lang-ptx --body-only
-python3 skills/blackwell-kernel-wiki/scripts/grep_wiki.py "tcgen05" --only wiki --context 0
+python3 "$SKILL_DIR/scripts/get_page.py" lang-ptx --body-only
+python3 "$SKILL_DIR/scripts/grep_wiki.py" "tcgen05" --only wiki --context 0
 ```
 
 ---
@@ -174,14 +174,14 @@ For most questions, a high-quality answer follows this shape:
    → Always report gpu, dtype, shape, metric, value, source_id
 
 5. References (cite source IDs)
-   → PR: pr-cutlass-2139 (wiki/sources/prs/cutlass/PR-2139.md)
+   → PR: pr-cutlass-2139 → sources/prs/cutlass/PR-2139.md
    → Blog/doc: blog-* / doc-*
 ```
 
 ## Anti-Patterns (Don't Do These)
 
-- ❌ Don't recommend techniques without citing `sources:` — the wiki exists precisely for this
-- ❌ Don't quote performance without the full 6-field `performance_claims` record
-- ❌ Don't conflate `sm90` and `sm100` patterns — always check `architectures:` field
-- ❌ Don't cite `verified` claims without checking the page actually has `evidence_basis`
-- ❌ Don't recommend DeepEP/DualPipe/EPLB — they're explicitly out of scope (kernel-only KB)
+- Don't recommend techniques without citing `sources:` — the wiki exists precisely for this.
+- Don't quote performance without the full 6-field `performance_claims` record.
+- Don't conflate `sm90` and `sm100` patterns — always check the `architectures:` field.
+- Don't cite `verified` claims without checking the page actually has `evidence_basis` entries that name both an official doc and an upstream code source.
+- Don't recommend DeepEP/DualPipe/EPLB — they're explicitly out of scope (kernel-only KB).

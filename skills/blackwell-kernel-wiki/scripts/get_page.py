@@ -16,10 +16,8 @@ import sys
 import yaml
 from pathlib import Path
 
-WIKI_ROOT = Path(__file__).resolve().parent.parent.parent.parent
-if not (WIKI_ROOT / "data" / "tags.yaml").exists():
-    import os
-    WIKI_ROOT = Path(os.environ.get("BLACKWELL_WIKI_ROOT", WIKI_ROOT))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _wiki_root import WIKI_ROOT  # noqa: E402
 
 
 def find_page(lookup):
@@ -80,9 +78,6 @@ def main():
     content = page_path.read_text(encoding="utf-8")
     fm, body = split_frontmatter(content)
 
-    print(f"# {page_path.relative_to(WIKI_ROOT)}")
-    print()
-
     if args.frontmatter_only:
         if fm:
             print(yaml.dump(fm, allow_unicode=True, sort_keys=False))
@@ -92,7 +87,9 @@ def main():
         print(body)
         return
 
-    # Default: full page
+    # Default: full page, prefixed with a path header for context
+    print(f"# {page_path.relative_to(WIKI_ROOT)}")
+    print()
     print(content)
 
     if args.follow_sources and fm and "sources" in fm:
