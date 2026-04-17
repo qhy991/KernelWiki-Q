@@ -145,5 +145,5 @@ CUTLASS SM100 kernels achieve near-cuBLAS performance:
 
 - [CUTLASS Changelog](https://docs.nvidia.com/cutlass/latest/CHANGELOG.html)
 - [CUTLASS GitHub](https://github.com/NVIDIA/cutlass)
-- [Colfax CUTLASS Blackwell GEMM Tutorial](https://research.colfax-intl.com/cutlass-tutorial-writing-gemm-kernels-using-tensor-memory-for-nvidia-blackwell-gpus/)
+- [Colfax CUTLASS Blackwell GEMM Tutorial](https://research.colfax-intl.com/cutlass-tutorial-writing-gemm-kernels-using-tmem-for-nvidia-blackwell-gpus/)
 - [Colfax Sub-Byte GEMM Tutorial](https://research.colfax-intl.com/cutlass-tutorial-sub-byte-gemm-on-nvidia-blackwell-gpus/)

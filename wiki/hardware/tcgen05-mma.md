@@ -3,7 +3,7 @@ id: hw-tcgen05-mma
 title: "tcgen05.mma — Blackwell MMA Instruction"
 type: hardware
 architectures: [sm100, sm100a]
-tags: [tcgen05, tensor-memory, mbarrier]
+tags: [tcgen05, tmem, mbarrier]
 confidence: verified
 evidence_basis:
   - source_id: doc-nvidia-tuning-guide

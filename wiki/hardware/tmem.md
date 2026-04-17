@@ -3,7 +3,7 @@ id: hw-tmem
 title: "Tensor Memory (TMEM)"
 type: hardware
 architectures: [sm100, sm100a]
-tags: [tmem, tensor-memory, tcgen05]
+tags: [tmem, tcgen05]
 confidence: verified
 evidence_basis:
   - source_id: doc-nvidia-tuning-guide

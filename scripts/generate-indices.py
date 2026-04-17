@@ -119,11 +119,12 @@ def generate_by_hardware_feature(pages):
             if tag in hw_tag_set:
                 feature_pages[tag].append(p)
 
+    # Add dedicated hardware pages under their canonical tags (from tags field)
     hw_pages = [p for p in pages if p.get("type") == "hardware"]
     for hp in hw_pages:
-        fid = hp.get("id", "").replace("hw-", "")
-        if fid and hp not in feature_pages.get(fid, []):
-            feature_pages[fid].append(hp)
+        for tag in hp.get("tags", []):
+            if tag in hw_tag_set and hp not in feature_pages.get(tag, []):
+                feature_pages[tag].append(hp)
 
     lines.append("| Feature | Related Pages |")
     lines.append("|---------|--------------|")
@@ -137,7 +138,7 @@ def generate_by_hardware_feature(pages):
                 title = p.get("title", pid)
                 path = qlink(p["_path"])
                 page_links.append(f"[{title}]({path})")
-        lines.append(f"| `{feat}` | {', '.join(page_links[:5])} |")
+        lines.append(f"| `{feat}` | {', '.join(page_links)} |")
     return "\n".join(lines) + "\n"
 
 
@@ -199,7 +200,7 @@ def generate_by_kernel_type(pages):
                 title = p.get("title", pid)
                 path = qlink(p["_path"])
                 page_links.append(f"[{title}]({path})")
-        lines.append(f"| `{kt}` | {', '.join(page_links[:8])} |")
+        lines.append(f"| `{kt}` | {', '.join(page_links)} |")
     return "\n".join(lines) + "\n"
 
 
@@ -250,7 +251,7 @@ def generate_by_language(pages):
             if pid not in seen:
                 seen.add(pid)
                 related.append(f"[{p.get('title', pid)}]({qlink(p['_path'])})")
-        lines.append(f"| `{lang}` | {guide_link} | {', '.join(related[:6])} |")
+        lines.append(f"| `{lang}` | {guide_link} | {', '.join(related)} |")
 
     return "\n".join(lines) + "\n"
 

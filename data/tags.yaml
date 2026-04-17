@@ -24,7 +24,6 @@ hardware_features:
   - block-scale
   - wgmma
   - cluster
-  - tensor-memory
   - mbarrier
   - ldmatrix
   - stmatrix
