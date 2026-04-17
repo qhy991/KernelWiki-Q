@@ -12,3 +12,9 @@ files:
   role: pr-diff
   mode: upstream-patch
   sha256: 6de6b54529056ba83bbaf9d79b281b84485976a4c87d5ef7b2abc6d89a60aca7
+- local_path: key-files/vllm/platforms/cuda.py
+  role: upstream-file
+  mode: verbatim
+  upstream_path: vllm/platforms/cuda.py
+  sha256: 3e17b68ff491dcab2bc36e47a3716f284005a13a1f15664d69a79359586707f8
+captured_via_relaxed_allowlist: true

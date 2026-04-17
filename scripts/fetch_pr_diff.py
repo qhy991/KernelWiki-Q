@@ -131,14 +131,28 @@ def read_pr_page(pid):
     return None, None, None
 
 
-def path_allowed(path):
-    """Return True iff path should be captured as a kernel file."""
-    posix = path.replace("\\", "/")
-    # Explicit skips first
+def _path_skipped(posix):
+    """Shared SKIP_GLOBS check used by both allowlist passes."""
     for g in SKIP_GLOBS:
         if fnmatch.fnmatch(posix, g):
-            return False
-    suffix = "." + posix.rsplit(".", 1)[-1].lower() if "." in posix.rsplit("/", 1)[-1] else ""
+            return True
+    return False
+
+
+def _suffix(posix):
+    return (
+        "." + posix.rsplit(".", 1)[-1].lower()
+        if "." in posix.rsplit("/", 1)[-1]
+        else ""
+    )
+
+
+def path_allowed(path):
+    """Return True iff path should be captured as a kernel file (strict pass)."""
+    posix = path.replace("\\", "/")
+    if _path_skipped(posix):
+        return False
+    suffix = _suffix(posix)
     if suffix in KERNEL_EXTS_C or suffix in KERNEL_EXTS_PTX:
         return True
     if suffix in KERNEL_EXTS_PY_STRICT:
@@ -146,6 +160,45 @@ def path_allowed(path):
     if suffix in {".json"} and "cutlass_configs" in posix:
         return True
     return False
+
+
+def path_allowed_relaxed(path):
+    """Like path_allowed but accepts any non-skipped .py/.pyx as support /
+    control-plane code.
+
+    Used as a fallback when the strict pass filters out every file in a PR
+    (only meaningful for PRs whose changed_paths are all curated-relevant
+    already, because they live in sources/prs/). Without this fallback a
+    wiki-cited PR like pr-vllm-22738 — whose sole file is
+    `vllm/platforms/cuda.py` — ships a bundle containing only diff.patch
+    and `--has-code` hides the page from discovery.
+    """
+    posix = path.replace("\\", "/")
+    if _path_skipped(posix):
+        return False
+    suffix = _suffix(posix)
+    if suffix in KERNEL_EXTS_C or suffix in KERNEL_EXTS_PTX:
+        return True
+    if suffix in KERNEL_EXTS_PY_STRICT:
+        return True  # relaxed: no KERNEL_PY_KEYWORDS requirement
+    if suffix in {".json"} and "cutlass_configs" in posix:
+        return True
+    return False
+
+
+def select_captured_files(file_list):
+    """Two-pass selection. Returns (captured, used_relaxed_fallback).
+
+    Strict pass first: it prunes noise from wide PRs that also touch docs /
+    ci / unrelated subsystems. If the strict pass yields zero files but
+    the PR has at least one non-skipped .py/.pyx file, fall back to the
+    relaxed allowlist so curated-relevant PRs do not ship empty bundles.
+    """
+    strict = [f for f in file_list if path_allowed(f.get("filename", ""))]
+    if strict:
+        return strict, False
+    relaxed = [f for f in file_list if path_allowed_relaxed(f.get("filename", ""))]
+    return relaxed, bool(relaxed)
 
 
 def fetch_content_at_sha(repo, path, sha):
@@ -231,12 +284,21 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
     bundle_rel = bundle.relative_to(REPO_ROOT)
 
     if dry_run:
-        kept = [f for f in file_list if path_allowed(f.get("filename", ""))]
-        print(f"  DRY-RUN {pr_id}: {len(kept)}/{len(file_list)} files would be captured")
+        kept, used_relaxed = select_captured_files(file_list)
+        label = " (relaxed-fallback)" if used_relaxed else ""
+        print(
+            f"  DRY-RUN {pr_id}: {len(kept)}/{len(file_list)} files would be captured"
+            f"{label}"
+        )
+        if kept:
+            for f in kept[:20]:
+                print(f"    + {f.get('filename', '')}")
+            if len(kept) > 20:
+                print(f"    + ... ({len(kept) - 20} more)")
         return bundle_rel, 0, len(kept), False
 
     # Prepare payload
-    captured_files = [f for f in file_list if path_allowed(f.get("filename", ""))]
+    captured_files, used_relaxed = select_captured_files(file_list)
     files_entries = []
 
     if bundle.exists():
@@ -354,6 +416,12 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
         "source_pr_id": pr_id,
         "files": files_entries,
     }
+    if used_relaxed:
+        # Document that the strict kernel-file allowlist yielded zero
+        # matches and the relaxed fallback (any non-skipped .py/.pyx) was
+        # used. Readers treating this as a kernel-code-only corpus can
+        # filter on this flag.
+        prov["captured_via_relaxed_allowlist"] = True
     (bundle / "PROVENANCE.yaml").write_text(
         yaml.dump(prov, sort_keys=False, allow_unicode=True, default_flow_style=False),
         encoding="utf-8",
@@ -464,6 +532,19 @@ def main():
 
         print(f"[{i}/{len(targets)}] {pid}  ({repo}#{pr_num} @ {merge_sha[:10]})")
         if args.dry_run:
+            # Run the preview logic without hitting GitHub: use the
+            # `changed_paths` stored in the source page frontmatter as the
+            # file list and call emit_bundle in dry-run mode so it reports
+            # what would be captured under the current allowlist (including
+            # the strict -> relaxed fallback). Previously --dry-run skipped
+            # emit_bundle entirely and printed nothing beyond this header.
+            stored_paths = fm.get("changed_paths") or []
+            synth_file_list = [{"filename": p} for p in stored_paths]
+            if not stored_paths:
+                print(f"    DRY-RUN {pid}: source page has no changed_paths; "
+                      f"nothing to preview without a GitHub call")
+                continue
+            emit_bundle(repo, pr_num, pid, merge_sha, synth_file_list, None, dry_run=True)
             continue
         try:
             file_list = fetch_pr_file_list(repo, pr_num)
