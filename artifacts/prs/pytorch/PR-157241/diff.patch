@@ -1,5 +1,5 @@
 diff --git a/test/inductor/test_aot_inductor.py b/test/inductor/test_aot_inductor.py
-index 8f8b55dd2724..9f93a3959d83 100644
+index 8f8b55dd27240..9f93a3959d831 100644
 --- a/test/inductor/test_aot_inductor.py
 +++ b/test/inductor/test_aot_inductor.py
 @@ -446,9 +446,14 @@ def forward(self, a, b):
@@ -46,7 +46,7 @@ index 8f8b55dd2724..9f93a3959d83 100644
  
          self.check_model(
 diff --git a/test/inductor/test_triton_kernels.py b/test/inductor/test_triton_kernels.py
-index 80506b4eff80..a00cd25c3efe 100644
+index 80506b4eff807..a00cd25c3efe9 100644
 --- a/test/inductor/test_triton_kernels.py
 +++ b/test/inductor/test_triton_kernels.py
 @@ -1667,7 +1667,10 @@ def f(a, b):
@@ -62,7 +62,7 @@ index 80506b4eff80..a00cd25c3efe 100644
              grid = lambda meta: (
                  triton.cdiv(m, meta["BLOCK_SIZE"]),
 diff --git a/torch/_inductor/codegen/common.py b/torch/_inductor/codegen/common.py
-index 882be85d2e12..828050d6da14 100644
+index 882be85d2e125..828050d6da140 100644
 --- a/torch/_inductor/codegen/common.py
 +++ b/torch/_inductor/codegen/common.py
 @@ -256,6 +256,15 @@ def get_inputs_that_alias_output(self) -> list[str]:
@@ -93,7 +93,7 @@ index 882be85d2e12..828050d6da14 100644
          raise NotImplementedError
  
 diff --git a/torch/_inductor/codegen/cpp_wrapper_gpu.py b/torch/_inductor/codegen/cpp_wrapper_gpu.py
-index 29fbe5eeabf8..430511ce4ebf 100644
+index 29fbe5eeabf81..430511ce4ebf0 100644
 --- a/torch/_inductor/codegen/cpp_wrapper_gpu.py
 +++ b/torch/_inductor/codegen/cpp_wrapper_gpu.py
 @@ -25,7 +25,7 @@
@@ -187,7 +187,7 @@ index 29fbe5eeabf8..430511ce4ebf 100644
              if V.graph.aot_mode:
                  call_args.append("kernels")
 diff --git a/torch/_inductor/codegen/cuda/device_op_overrides.py b/torch/_inductor/codegen/cuda/device_op_overrides.py
-index d7bbc1726858..0ba067742294 100644
+index d7bbc1726858d..0ba0677422944 100644
 --- a/torch/_inductor/codegen/cuda/device_op_overrides.py
 +++ b/torch/_inductor/codegen/cuda/device_op_overrides.py
 @@ -5,7 +5,11 @@
@@ -240,7 +240,7 @@ index d7bbc1726858..0ba067742294 100644
  
  
 diff --git a/torch/_inductor/codegen/xpu/device_op_overrides.py b/torch/_inductor/codegen/xpu/device_op_overrides.py
-index 8678e30d26b0..632cfd29f174 100644
+index 8678e30d26b08..632cfd29f174f 100644
 --- a/torch/_inductor/codegen/xpu/device_op_overrides.py
 +++ b/torch/_inductor/codegen/xpu/device_op_overrides.py
 @@ -2,7 +2,11 @@
@@ -268,7 +268,7 @@ index 8678e30d26b0..632cfd29f174 100644
  
  
 diff --git a/torch/_inductor/runtime/triton_heuristics.py b/torch/_inductor/runtime/triton_heuristics.py
-index 10147a1b8fcb..4c50768b7188 100644
+index 10147a1b8fcbf..4c50768b7188c 100644
 --- a/torch/_inductor/runtime/triton_heuristics.py
 +++ b/torch/_inductor/runtime/triton_heuristics.py
 @@ -1009,6 +1009,7 @@ def save_gpu_kernel(self, stream, launcher):

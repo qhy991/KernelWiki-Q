@@ -1,12 +1,12 @@
 diff --git a/.ci/docker/ci_commit_pins/triton.txt b/.ci/docker/ci_commit_pins/triton.txt
-index 568756a804f0..6dc1c44507eb 100644
+index 568756a804f07..6dc1c44507ebd 100644
 --- a/.ci/docker/ci_commit_pins/triton.txt
 +++ b/.ci/docker/ci_commit_pins/triton.txt
 @@ -1 +1 @@
 -ae848267bebc65c6181e8cc5e64a6357d2679260
 +11ec6354315768a85da41032535e3b7b99c5f706
 diff --git a/.ci/docker/common/install_conda.sh b/.ci/docker/common/install_conda.sh
-index 11c51cac0bf8..b14810aa30eb 100755
+index 11c51cac0bf83..b14810aa30eb5 100755
 --- a/.ci/docker/common/install_conda.sh
 +++ b/.ci/docker/common/install_conda.sh
 @@ -54,6 +54,8 @@ if [ -n "$ANACONDA_PYTHON_VERSION" ]; then
@@ -19,7 +19,7 @@ index 11c51cac0bf8..b14810aa30eb 100755
    # Also ensure sysroot is using a modern GLIBC to match system compilers
    as_jenkins conda create -n py_$ANACONDA_PYTHON_VERSION -y\
 diff --git a/test/inductor/test_static_cuda_launcher.py b/test/inductor/test_static_cuda_launcher.py
-index 477d5ac2e6c2..2ce294ed0ff5 100644
+index 477d5ac2e6c20..2ce294ed0ff55 100644
 --- a/test/inductor/test_static_cuda_launcher.py
 +++ b/test/inductor/test_static_cuda_launcher.py
 @@ -14,7 +14,6 @@
@@ -68,7 +68,7 @@ index 477d5ac2e6c2..2ce294ed0ff5 100644
      def test_basic_1arg(self):
          @triton.jit
 diff --git a/torch/_inductor/runtime/triton_compat.py b/torch/_inductor/runtime/triton_compat.py
-index b753c492a289..d5aeb90d7d68 100644
+index b753c492a2899..d5aeb90d7d684 100644
 --- a/torch/_inductor/runtime/triton_compat.py
 +++ b/torch/_inductor/runtime/triton_compat.py
 @@ -69,7 +69,18 @@ def GPUTarget(

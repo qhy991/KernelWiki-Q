@@ -11,7 +11,7 @@ files:
 - local_path: diff.patch
   role: pr-diff
   mode: upstream-patch
-  sha256: 7ed12b116ef8a0c1bb5d51f29e01866bf265d5557463802d834c14e23d384d71
+  sha256: 3a17eb82cace4dea24a491c95d13068bb3a5d6423786c13650731ae9333b7668
 - local_path: key-files/torch/_inductor/codegen/triton.py
   role: upstream-file
   mode: verbatim

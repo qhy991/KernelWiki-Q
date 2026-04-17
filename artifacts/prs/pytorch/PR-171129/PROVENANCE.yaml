@@ -11,7 +11,7 @@ files:
 - local_path: diff.patch
   role: pr-diff
   mode: upstream-patch
-  sha256: 4c952132e7e46795aa8ffb4b03233244c41fbe27cf98cfa9449a8b46fdab8fbe
+  sha256: b70fa95a982bbf7427a2a868b5235c05a3b37d53bbda8b9538699c78f18a5612
 - local_path: key-files/torch/_higher_order_ops/triton_kernel_wrap.py
   role: upstream-file
   mode: verbatim

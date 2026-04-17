@@ -1,6 +1,6 @@
 # Phase 3 SHA-pinned strict verify audit log
 
-Captured: 2026-04-17T23:14:33Z (R24 refresh: refetched 7 pytorch PRs whose diff.patch had drifted due to stale gh abbreviation cache; 9 source pages backfilled with real changed_paths from GitHub so compute_core_prs regeneration is self-contained)
+Captured: 2026-04-17T23:37:21Z (R25 refresh: same 7 pytorch PRs refetched again after the R25 atomic-swap changes; the gh abbreviation cache flipped between sessions, so local diff.patch bytes needed re-alignment with the upstream 12-char abbreviation.)
 Command : `python3 scripts/verify_verbatim.py --strict`
 Exit    : 0 (documented contract: 0 = full-corpus upstream byte-match; 1 = --strict content mismatch; 2 = env failure)
 

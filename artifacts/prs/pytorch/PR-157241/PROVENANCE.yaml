@@ -11,7 +11,7 @@ files:
 - local_path: diff.patch
   role: pr-diff
   mode: upstream-patch
-  sha256: 04efe4b8481ba4a08a3639d4694e520449b35e021c4c65e219fafa44ee8911f6
+  sha256: bc032ea0babac78f4ba45ff920b20b6f79214c17860b7b37235196e56cdf9088
 - local_path: key-files/torch/_inductor/runtime/triton_heuristics.py
   role: upstream-file
   mode: verbatim

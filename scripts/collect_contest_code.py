@@ -141,18 +141,28 @@ def collect_one(contest_page, sub_idx, sub, manifest):
         new_sub.pop("code_path", None)
         return new_sub, False, None
 
-    bundle_dir.mkdir(parents=True, exist_ok=True)
+    # R25: atomic-swap bundle replacement. All writes go into a sibling
+    # `.new` staging dir; the prior bundle stays intact until the new
+    # one is complete. On any error (bad canonical_file, missing blog
+    # bundle, gh failure, mid-copy OS error) the staging dir is removed
+    # and the prior bundle is preserved, so `code_path` in the contest
+    # page never points at a half-written or missing submission.
+    import os as _os
+    bundle_dir.parent.mkdir(parents=True, exist_ok=True)
+    bundle_work = bundle_dir.parent / f".{bundle_dir.name}.new"
+    if bundle_work.exists():
+        shutil.rmtree(bundle_work)
+    bundle_work.mkdir(parents=True)
+    # All writes target `bundle_work`; only the final atomic swap
+    # touches `bundle_dir`. Keep the local name `bundle_dir` pointed at
+    # the staging dir so the unchanged write-site code still works.
+    bundle_dir_final = bundle_dir
+    bundle_dir = bundle_work
 
-    # Clear any stale bundle contents before rewriting. Without this, a
-    # manifest edit that renames or drops a submission file leaves the old
-    # file in place, which (a) pollutes the bundle with orphan code and
-    # (b) trips validate.py's drift detection on subsequent runs.
-    for stale in bundle_dir.iterdir():
-        if stale.is_file():
-            stale.unlink()
-        else:
-            shutil.rmtree(stale)
-
+    # Flag flipped to True immediately before a success return; the
+    # finally clause below uses it to decide whether to atomically swap
+    # the staging dir into place or just clean it up.
+    _swap_on_exit = [False]
     try:
         if kind == "github-file":
             repo = entry["upstream_repo"]
@@ -212,6 +222,7 @@ def collect_one(contest_page, sub_idx, sub, manifest):
                 )
             new_sub["code_path"] = f"artifacts/contests/{contest_slug}/{problem_slug}/submissions/{ra_slug}/{canonical}"
             new_sub.pop("code_unavailable_reason", None)
+            _swap_on_exit[0] = True
             return new_sub, True, None
 
         elif kind == "inline-from-blog":
@@ -279,6 +290,7 @@ def collect_one(contest_page, sub_idx, sub, manifest):
                 )
             new_sub["code_path"] = f"artifacts/contests/{contest_slug}/{problem_slug}/submissions/{ra_slug}/{canonical}"
             new_sub.pop("code_unavailable_reason", None)
+            _swap_on_exit[0] = True
             return new_sub, True, None
 
         else:
@@ -287,6 +299,36 @@ def collect_one(contest_page, sub_idx, sub, manifest):
         return new_sub, False, f"gh failed: {e.stderr.decode(errors='replace').strip()[:120]}"
     except Exception as e:
         return new_sub, False, f"{type(e).__name__}: {e}"
+    finally:
+        # Atomic swap on success; cleanup on any failure path. Running
+        # in `finally` guarantees this fires even for the `return` paths
+        # above — without it, a partial capture could replace the old
+        # bundle before the caller sees the error.
+        if _swap_on_exit[0]:
+            bundle_prev = None
+            if bundle_dir_final.exists():
+                bundle_prev = bundle_dir_final.parent / f".{bundle_dir_final.name}.prev"
+                if bundle_prev.exists():
+                    shutil.rmtree(bundle_prev, ignore_errors=True)
+                try:
+                    _os.rename(bundle_dir_final, bundle_prev)
+                except OSError:
+                    bundle_prev = None
+            try:
+                _os.rename(bundle_work, bundle_dir_final)
+            except OSError:
+                if bundle_prev is not None and bundle_prev.exists():
+                    try:
+                        _os.rename(bundle_prev, bundle_dir_final)
+                    except OSError:
+                        pass
+            if bundle_prev is not None and bundle_prev.exists():
+                shutil.rmtree(bundle_prev, ignore_errors=True)
+        else:
+            # Failure: remove the staging dir so the prior bundle (if
+            # any) remains the committed truth.
+            if bundle_work.exists():
+                shutil.rmtree(bundle_work, ignore_errors=True)
 
 
 def main():

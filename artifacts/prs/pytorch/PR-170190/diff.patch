@@ -1,5 +1,5 @@
 diff --git a/test/inductor/test_triton_heuristics.py b/test/inductor/test_triton_heuristics.py
-index c5a5b96e896a..d607b33df590 100644
+index c5a5b96e896a0..d607b33df5901 100644
 --- a/test/inductor/test_triton_heuristics.py
 +++ b/test/inductor/test_triton_heuristics.py
 @@ -15,7 +15,6 @@
@@ -38,7 +38,7 @@ index c5a5b96e896a..d607b33df590 100644
              config_heuristic.mm_configs = mm_configs
              configs = list(
 diff --git a/torch/_C/__init__.pyi.in b/torch/_C/__init__.pyi.in
-index 231b827e548f..3cfe372b8ea1 100644
+index 231b827e548f6..3cfe372b8ea1c 100644
 --- a/torch/_C/__init__.pyi.in
 +++ b/torch/_C/__init__.pyi.in
 @@ -2248,6 +2248,7 @@ class _CudaDeviceProperties:
@@ -50,7 +50,7 @@ index 231b827e548f..3cfe372b8ea1 100644
  # Functions related to SDPA
  class _SDPAParams:
 diff --git a/torch/_inductor/template_heuristics/triton.py b/torch/_inductor/template_heuristics/triton.py
-index 1e9aa1cdba97..21deda557346 100644
+index 1e9aa1cdba97f..21deda557346b 100644
 --- a/torch/_inductor/template_heuristics/triton.py
 +++ b/torch/_inductor/template_heuristics/triton.py
 @@ -651,9 +651,13 @@ def _get_exceeding_shared_memory_checker(
@@ -70,7 +70,7 @@ index 1e9aa1cdba97..21deda557346 100644
              # If CUDA is not available or properties cannot be queried, return None
              return None
 diff --git a/torch/csrc/cuda/Module.cpp b/torch/csrc/cuda/Module.cpp
-index ec7e5be7eefe..6a8bbe9904e5 100644
+index ec7e5be7eefe7..6a8bbe9904e5f 100644
 --- a/torch/csrc/cuda/Module.cpp
 +++ b/torch/csrc/cuda/Module.cpp
 @@ -1093,6 +1093,11 @@ static void registerCudaDeviceProperties(PyObject* module) {

@@ -1,5 +1,5 @@
 diff --git a/torch/_inductor/codegen/triton_combo_kernel.py b/torch/_inductor/codegen/triton_combo_kernel.py
-index dc2392119cc5..77ac27cf1b09 100644
+index dc2392119cc51..77ac27cf1b09b 100644
 --- a/torch/_inductor/codegen/triton_combo_kernel.py
 +++ b/torch/_inductor/codegen/triton_combo_kernel.py
 @@ -94,7 +94,7 @@ def _default_custom_combo_kernel_horizontal_partition(

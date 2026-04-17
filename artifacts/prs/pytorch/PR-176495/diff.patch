@@ -1,5 +1,5 @@
 diff --git a/test/inductor/test_mix_order_reduction.py b/test/inductor/test_mix_order_reduction.py
-index 5dc30015976b..11c446c63de4 100644
+index 5dc30015976b6..11c446c63de40 100644
 --- a/test/inductor/test_mix_order_reduction.py
 +++ b/test/inductor/test_mix_order_reduction.py
 @@ -6,11 +6,13 @@
@@ -145,7 +145,7 @@ index 5dc30015976b..11c446c63de4 100644
  @inductor_config.patch(
      "triton.mix_order_reduction", not inductor_config.triton.mix_order_reduction
 diff --git a/torch/_inductor/codegen/triton.py b/torch/_inductor/codegen/triton.py
-index bca5da15e3e2..039b53ee1f2f 100644
+index bca5da15e3e22..039b53ee1f2fc 100644
 --- a/torch/_inductor/codegen/triton.py
 +++ b/torch/_inductor/codegen/triton.py
 @@ -5297,6 +5297,7 @@ def inductor_meta_common(cls):
@@ -157,7 +157,7 @@ index bca5da15e3e2..039b53ee1f2f 100644
  
          if config.write_are_deterministic_algorithms_enabled:
 diff --git a/torch/_inductor/config.py b/torch/_inductor/config.py
-index 9bf1f70fa4c4..e2fee26f45cc 100644
+index 9bf1f70fa4c4c..e2fee26f45cc1 100644
 --- a/torch/_inductor/config.py
 +++ b/torch/_inductor/config.py
 @@ -1793,6 +1793,11 @@ class triton:
@@ -173,7 +173,7 @@ index 9bf1f70fa4c4..e2fee26f45cc 100644
          os.environ.get("TORCHINDUCTOR_ENABLE_TLX_TEMPLATES", "0") == "1"
      )
 diff --git a/torch/_inductor/runtime/triton_heuristics.py b/torch/_inductor/runtime/triton_heuristics.py
-index 61bb640f5a07..2a1447fbf0bd 100644
+index 61bb640f5a072..2a1447fbf0bda 100644
 --- a/torch/_inductor/runtime/triton_heuristics.py
 +++ b/torch/_inductor/runtime/triton_heuristics.py
 @@ -3776,7 +3776,10 @@ def persistent_reduction(

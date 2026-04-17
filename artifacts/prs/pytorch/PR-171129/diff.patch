@@ -1,5 +1,5 @@
 diff --git a/test/inductor/test_triton_kernels.py b/test/inductor/test_triton_kernels.py
-index d348a7c12db5..51a787609ef7 100644
+index d348a7c12db58..51a787609ef75 100644
 --- a/test/inductor/test_triton_kernels.py
 +++ b/test/inductor/test_triton_kernels.py
 @@ -2627,6 +2627,43 @@ def fn(a, b):
@@ -74,7 +74,7 @@ index d348a7c12db5..51a787609ef7 100644
          ):
              pid = tl.program_id(axis=0)
 diff --git a/torch/_higher_order_ops/triton_kernel_wrap.py b/torch/_higher_order_ops/triton_kernel_wrap.py
-index 628c889f6cbc..09a27a88c87f 100644
+index 628c889f6cbc7..09a27a88c87f9 100644
 --- a/torch/_higher_order_ops/triton_kernel_wrap.py
 +++ b/torch/_higher_order_ops/triton_kernel_wrap.py
 @@ -322,11 +322,6 @@ def is_stable_tensor_descriptor_arg(arg: Any) -> bool:

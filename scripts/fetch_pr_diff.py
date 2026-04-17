@@ -277,11 +277,24 @@ def sha256_bytes(b):
 
 
 def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=False):
-    """Write a bundle and return (bundle_dir_rel, total_bytes, num_files, truncated)."""
+    """Write a bundle and return (bundle_dir_rel, total_bytes, num_files, truncated).
+
+    Atomic-swap semantics (R25): all writes go into a sibling `.new`
+    staging directory. If any per-file fetch or write fails the staging
+    dir is removed and the exception propagates so the caller does NOT
+    update artifact_dir on the source page. Only after every file lands
+    successfully does the staging dir swap into place over any prior
+    bundle, via two atomic renames (old -> `.prev`, new -> final,
+    remove `.prev`). This guarantees the repo is always in a valid
+    state — either the prior good bundle or the complete new bundle,
+    never a half-captured bundle.
+    """
+    import os
+    import shutil
     # Repo short name: "NVIDIA/cutlass" -> "cutlass"; keep lowercase
     repo_short = repo.split("/")[-1].lower()
-    bundle = ARTIFACTS / repo_short / f"PR-{pr_num}"
-    bundle_rel = bundle.relative_to(REPO_ROOT)
+    bundle_final = ARTIFACTS / repo_short / f"PR-{pr_num}"
+    bundle_rel = bundle_final.relative_to(REPO_ROOT)
 
     if dry_run:
         kept, used_relaxed = select_captured_files(file_list)
@@ -301,11 +314,21 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
     captured_files, used_relaxed = select_captured_files(file_list)
     files_entries = []
 
-    if bundle.exists():
-        # Remove old content (except hook scripts, none expected)
-        import shutil
-        shutil.rmtree(bundle)
-    bundle.mkdir(parents=True, exist_ok=True)
+    # Staging directory alongside the final bundle. Using a sibling
+    # (not a child) keeps the final path fully owned by whichever swap
+    # completes last, and it keeps the old bundle untouched until we
+    # know the new one is complete.
+    bundle_work = bundle_final.parent / f".{bundle_final.name}.new"
+    bundle_final.parent.mkdir(parents=True, exist_ok=True)
+    if bundle_work.exists():
+        shutil.rmtree(bundle_work)
+    bundle_work.mkdir(parents=True)
+    # All subsequent writes target `bundle_work`. The final target is
+    # only touched during the atomic swap at the end. A single outer
+    # try/except around the whole write phase guarantees the staging
+    # dir is cleaned up on any failure (per-file fetch error, PROVENANCE
+    # write error, etc.) before the exception reaches the caller.
+    bundle = bundle_work
     keyfiles_dir = bundle / "key-files"
 
     bundle_total = 0
@@ -314,7 +337,11 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
     diff_bytes = whole_diff
     if diff_bytes is not None:
         diff_path = bundle / "diff.patch"
-        diff_path.write_bytes(diff_bytes)
+        try:
+            diff_path.write_bytes(diff_bytes)
+        except OSError:
+            shutil.rmtree(bundle_work, ignore_errors=True)
+            raise
         bundle_total += len(diff_bytes)
         files_entries.append({
             "local_path": "diff.patch",
@@ -328,7 +355,16 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
     # once in case any file in this PR has status == "removed".
     base_sha = None
 
-    # Per-file content at merge SHA (or base SHA for removed files)
+    # Per-file content at merge SHA (or base SHA for removed files).
+    # R25: both base-SHA resolution and per-file fetch failures raise so
+    # the whole PR capture aborts rather than committing a partial
+    # bundle. The caller's try/except skips artifact_dir update on
+    # failure, and the staging dir gets cleaned up below.
+    def _abort_partial(reason):
+        if bundle_work.exists():
+            shutil.rmtree(bundle_work, ignore_errors=True)
+        raise RuntimeError(reason)
+
     for f in captured_files:
         filename = f.get("filename", "")
         status = f.get("status", "")
@@ -339,19 +375,27 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
                 try:
                     pr_json = run_gh(["api", f"/repos/{repo}/pulls/{pr_num}"])
                     pr_meta = json.loads(pr_json)
-                    base_sha = (pr_meta.get("base") or {}).get("sha")
+                    base_sha = (pr_meta.get("base") or {}).get("sha") or ""
                 except RuntimeError as e:
-                    print(f"    WARN: could not resolve base SHA for removed files in #{pr_num}: {e}",
-                          file=sys.stderr)
-                    base_sha = ""
+                    _abort_partial(
+                        f"could not resolve base SHA for removed files in "
+                        f"{repo}#{pr_num}: {e}. Aborting PR {pr_id} capture "
+                        f"(partial bundles are not committed)."
+                    )
             if not base_sha:
-                continue
+                _abort_partial(
+                    f"{repo}#{pr_num} has a removed file ({filename}) but no "
+                    f"base SHA resolved; cannot capture pre-deletion content. "
+                    f"Aborting PR {pr_id} capture."
+                )
             fetch_sha = base_sha
         try:
             content = fetch_content_at_sha(repo, filename, fetch_sha)
         except RuntimeError as e:
-            print(f"    WARN: skipping {filename}: {e}", file=sys.stderr)
-            continue
+            _abort_partial(
+                f"key-file fetch failed for {repo}:{filename}@{fetch_sha[:10]}: {e}. "
+                f"Aborting PR {pr_id} capture (partial bundles are not committed)."
+            )
         local_rel = f"key-files/{filename}"
         out_path = bundle / local_rel
         # Per-file cap: truncate
@@ -422,10 +466,42 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
         # used. Readers treating this as a kernel-code-only corpus can
         # filter on this flag.
         prov["captured_via_relaxed_allowlist"] = True
-    (bundle / "PROVENANCE.yaml").write_text(
-        yaml.dump(prov, sort_keys=False, allow_unicode=True, default_flow_style=False),
-        encoding="utf-8",
-    )
+    try:
+        (bundle / "PROVENANCE.yaml").write_text(
+            yaml.dump(prov, sort_keys=False, allow_unicode=True, default_flow_style=False),
+            encoding="utf-8",
+        )
+    except OSError:
+        shutil.rmtree(bundle_work, ignore_errors=True)
+        raise
+
+    # Atomic swap: the staging bundle is now complete. Move any prior
+    # bundle aside, swap the new one into place, then remove the side.
+    # Both renames are atomic on same-filesystem POSIX operations; if
+    # anything fails mid-swap, best-effort restore the previous bundle.
+    bundle_prev = None
+    if bundle_final.exists():
+        bundle_prev = bundle_final.parent / f".{bundle_final.name}.prev"
+        if bundle_prev.exists():
+            shutil.rmtree(bundle_prev)
+        os.rename(bundle_final, bundle_prev)
+    try:
+        os.rename(bundle_work, bundle_final)
+    except OSError as e:
+        # Swap failed. Best-effort restore the prior bundle so the repo
+        # keeps the last good capture; leave the staging dir for
+        # inspection and re-raise.
+        if bundle_prev is not None and bundle_prev.exists():
+            try:
+                os.rename(bundle_prev, bundle_final)
+            except OSError:
+                pass
+        raise RuntimeError(
+            f"atomic bundle swap failed for {bundle_rel}: {e}; "
+            f"prior bundle restored if possible, staging dir retained at {bundle_work}"
+        )
+    if bundle_prev is not None and bundle_prev.exists():
+        shutil.rmtree(bundle_prev, ignore_errors=True)
 
     return bundle_rel, bundle_total, len(files_entries), bundle_truncated
 

@@ -1,5 +1,5 @@
 diff --git a/torch/_inductor/codegen/cpp_wrapper_gpu.py b/torch/_inductor/codegen/cpp_wrapper_gpu.py
-index 6bbbab859900..24b87fa8fa49 100644
+index 6bbbab8599008..24b87fa8fa490 100644
 --- a/torch/_inductor/codegen/cpp_wrapper_gpu.py
 +++ b/torch/_inductor/codegen/cpp_wrapper_gpu.py
 @@ -234,6 +234,8 @@ def generate_launch_kernel(self, prefix, wrapper, kernel_var_name, params):
@@ -12,7 +12,7 @@ index 6bbbab859900..24b87fa8fa49 100644
  
  
 diff --git a/torch/_inductor/runtime/triton_heuristics.py b/torch/_inductor/runtime/triton_heuristics.py
-index 38a9bd1ad9c0..547fad522246 100644
+index 38a9bd1ad9c05..547fad5222465 100644
 --- a/torch/_inductor/runtime/triton_heuristics.py
 +++ b/torch/_inductor/runtime/triton_heuristics.py
 @@ -1100,6 +1100,15 @@ def save_gpu_kernel(self, stream, launcher):
@@ -32,7 +32,7 @@ index 38a9bd1ad9c0..547fad522246 100644
  
          bin_type = {"hip": "hsaco", "xpu": "spv"}.get(self.device_props.type, "cubin")
 diff --git a/torch/csrc/inductor/aoti_runtime/sycl_runtime_wrappers.h b/torch/csrc/inductor/aoti_runtime/sycl_runtime_wrappers.h
-index 9745f69ccf4f..3a2e91c37c91 100644
+index 9745f69ccf4f1..3a2e91c37c916 100644
 --- a/torch/csrc/inductor/aoti_runtime/sycl_runtime_wrappers.h
 +++ b/torch/csrc/inductor/aoti_runtime/sycl_runtime_wrappers.h
 @@ -128,12 +128,10 @@ static std::unique_ptr<sycl::kernel> _createKernel(
