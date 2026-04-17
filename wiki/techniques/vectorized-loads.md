@@ -77,16 +77,22 @@ __device__ void load_and_unpack_nvfp4_256bit(
         asm volatile("mov.b32 {%0,%1,%2,%3}, %4;"
             : "=r"(b0), "=r"(b1), "=r"(b2), "=r"(b3) : "r"(lo));
 
-        // Each byte contains 2 FP4 values
-        // Decode using hardware cvt instruction
+        // Each byte contains 2 FP4 values — decode low word (8 values)
         for (int b = 0; b < 4; b++) {
             uint32_t byte_val = (b == 0) ? b0 : (b == 1) ? b1 : (b == 2) ? b2 : b3;
-            // Extract low and high nibble FP4 values
             unpacked[i * 16 + b * 2]     = decode_fp4(byte_val & 0xF);
             unpacked[i * 16 + b * 2 + 1] = decode_fp4((byte_val >> 4) & 0xF);
         }
-        // Repeat for hi word
-        // ... (analogous)
+
+        // Unpack high word (next 8 values from same 64-bit element)
+        uint32_t hb0, hb1, hb2, hb3;
+        asm volatile("mov.b32 {%0,%1,%2,%3}, %4;"
+            : "=r"(hb0), "=r"(hb1), "=r"(hb2), "=r"(hb3) : "r"(hi));
+        for (int b = 0; b < 4; b++) {
+            uint32_t byte_val = (b == 0) ? hb0 : (b == 1) ? hb1 : (b == 2) ? hb2 : hb3;
+            unpacked[i * 16 + 8 + b * 2]     = decode_fp4(byte_val & 0xF);
+            unpacked[i * 16 + 8 + b * 2 + 1] = decode_fp4((byte_val >> 4) & 0xF);
+        }
     }
 }
 ```

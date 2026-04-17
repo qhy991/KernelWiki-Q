@@ -111,11 +111,22 @@ _CODE_INDICATORS = re.compile(
 
 
 def has_compilable_code(body, code_langs):
-    """Check if body contains a fenced code block with a known language AND real code."""
+    """Check if body contains a fenced code block with a known language, real code,
+    and at least 3 non-blank non-comment lines (rejects stubs and placeholders)."""
     for m in re.finditer(r'^```(\S*)\s*\n(.*?)\n```', body, re.MULTILINE | re.DOTALL):
         info = m.group(1).lower()
         block = m.group(2)
-        if info in code_langs and _CODE_INDICATORS.search(block):
+        if info not in code_langs:
+            continue
+        if not _CODE_INDICATORS.search(block):
+            continue
+        # Count substantive code lines (not blank, not comment-only)
+        code_lines = 0
+        for line in block.split('\n'):
+            stripped = line.strip()
+            if stripped and not stripped.startswith('//') and not stripped.startswith('#'):
+                code_lines += 1
+        if code_lines >= 3:
             return True
     return False
 

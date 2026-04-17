@@ -217,21 +217,20 @@ def generate_by_kernel_type(pages):
         with open(tags_path, encoding='utf-8') as f:
             kt_tag_set = set(yaml.safe_load(f).get("kernel_types", []))
 
-    # Merge explicit kernel_types AND supplemental kt tags (deduplicated)
-    # Only source pages and wiki/kernels contribute via tags (not technique/language)
+    # Explicit kernel_types is authoritative; tags only when field is absent/empty
     kernel_bearing_types = {"kernel", None}
     type_pages = defaultdict(list)
     for p in pages:
-        indexed = set()
-        for kt in p.get("kernel_types", []):
-            type_pages[kt].append(p)
-            indexed.add(kt)
-        page_type = p.get("type")
-        if page_type in kernel_bearing_types:
-            for tag in p.get("tags", []):
-                if tag in kt_tag_set and tag not in indexed:
-                    type_pages[tag].append(p)
-                    indexed.add(tag)
+        explicit = p.get("kernel_types", [])
+        if explicit:
+            for kt in explicit:
+                type_pages[kt].append(p)
+        else:
+            page_type = p.get("type")
+            if page_type in kernel_bearing_types:
+                for tag in p.get("tags", []):
+                    if tag in kt_tag_set:
+                        type_pages[tag].append(p)
 
     for kt in sorted(type_pages.keys()):
         page_links = []
@@ -281,18 +280,18 @@ def generate_by_language(pages):
             if primary_lang and primary_lang in lang_data:
                 lang_data[primary_lang]["guide"] = p
 
-    # Merge explicit languages AND supplemental language tags (deduplicated)
+    # Explicit languages is authoritative; tags only when field is absent/empty
     for p in pages:
         if p.get("type") != "language":
-            indexed = set()
-            for lang in p.get("languages", []):
-                if lang in lang_data:
-                    lang_data[lang]["consumers"].append(p)
-                    indexed.add(lang)
-            for tag in p.get("tags", []):
-                if tag in valid_langs and tag not in indexed:
-                    lang_data[tag]["consumers"].append(p)
-                    indexed.add(tag)
+            explicit = p.get("languages", [])
+            if explicit:
+                for lang in explicit:
+                    if lang in lang_data:
+                        lang_data[lang]["consumers"].append(p)
+            else:
+                for tag in p.get("tags", []):
+                    if tag in valid_langs:
+                        lang_data[tag]["consumers"].append(p)
 
     lines.append("| Language | Guide | Related Pages |")
     lines.append("|----------|-------|--------------|")
