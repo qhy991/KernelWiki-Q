@@ -1,0 +1,22 @@
+---
+id: blog-colfax-cutlass
+title: "Colfax CUTLASS Tutorial: GEMM Kernels Using Tensor Memory for Blackwell"
+author: Colfax Research
+url: https://research.colfax-intl.com/cutlass-tutorial-writing-gemm-kernels-using-tensor-memory-for-nvidia-blackwell-gpus/
+source_category: community-note
+architectures: [sm100]
+tags: [tcgen05, tmem, cute-dsl, warp-specialization, 2sm-cooperative]
+retrieved_at: 2026-04-16
+---
+
+## Summary
+
+Detailed tutorial on CUTLASS abstraction for Blackwell UMMA (tcgen05.mma) with sub-byte GEMM support.
+
+## Key Content
+- UMMA replaces WGMMA: register-free operation, single-thread launch, built-in block scaling
+- TMEM: 512 columns × 128 rows of 32-bit cells (256KB/SM)
+- 32-bit addressing: bits 31-16 = lane ID, bits 15-0 = column
+- CUTLASS two-level abstraction: MMA_Atom (PTX wrapper) + MMA_Traits (CuTe layouts)
+- Architectural progression: Volta → Hopper TMA → Blackwell TMEM+UMMA
+- Sub-byte GEMM tutorial covering NVFP4, MXFP4, block scaling

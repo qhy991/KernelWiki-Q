@@ -1,0 +1,206 @@
+---
+id: technique-warp-specialization
+title: "Warp Specialization on Blackwell"
+type: technique
+architectures: [sm100, sm90]
+tags: [warp-specialization, tcgen05, tmem]
+confidence: verified
+reproducibility: snippet
+prerequisites: [hw-tmem, hw-tcgen05-mma]
+related: [technique-persistent-kernels, technique-pipeline-stages, hw-tcgen05-mma]
+sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, blog-colfax-cutlass]
+---
+
+## Overview
+
+Warp specialization assigns distinct functional roles to warps within a CTA, allowing each warp to focus on a single pipeline stage (data loading, MMA computation, or epilogue writeback). On Blackwell (SM100), the 16-warp CTA structure replaces Hopper's 4-warp warpgroup model. Because tcgen05.mma is a single-thread instruction that operates on TMEM rather than registers, only one warp needs to issue MMA operations, freeing the remaining warps for producer and consumer roles.
+
+## Blackwell 16-Warp Kernel Structure
+
+The canonical Blackwell GEMM kernel uses 16 warps (512 threads) per CTA with the following role assignment:
+
+| Warp ID | Role | Responsibility |
+|---------|------|----------------|
+| 0 | TMA Producer | Issues TMA bulk-copy from global to shared memory, signals mbarrier |
+| 1 | MMA Consumer | Issues tcgen05.mma on SMEM operands, writes results to TMEM |
+| 2-15 | Epilogue | Reads TMEM accumulator, applies scale/bias/activation, writes to global memory |
+
+This contrasts with Hopper where a warpgroup (4 warps, 128 threads) collectively issues wgmma.mma_async, and all threads in the warpgroup participate in the MMA. On Blackwell, the MMA warp dispatches the instruction from a single thread while the hardware handles the data movement internally.
+
+## Comparison with Hopper Warpgroup Model
+
+| Aspect | Hopper (SM90) | Blackwell (SM100) |
+|--------|---------------|-------------------|
+| MMA granularity | 4-warp warpgroup (128 threads) | Single thread in 1 warp |
+| MMA output destination | Registers (shared across warpgroup) | TMEM (256KB, CTA-visible) |
+| Producer warps | Separate warp(s) for TMA loads | Warp 0 dedicated to TMA |
+| Epilogue execution | Same warpgroup or separate warps | 14 dedicated warps (2-15) |
+| Synchronization | warpgroup barriers, arrive/wait | mbarrier pairs (producer/consumer) |
+| Register pressure | High (accumulators in registers) | Low (accumulators in TMEM) |
+
+## Warp Role Assignment
+
+The kernel entry point assigns each warp its role based on `threadIdx.x`:
+
+```cuda
+// Blackwell 16-warp specialized GEMM kernel skeleton
+// 16 warps = 512 threads per CTA
+__global__ void __launch_bounds__(512)
+blackwell_gemm_warp_specialized(
+    const __grid_constant__ GemmParams params)
+{
+    const int warp_id = threadIdx.x / 32;
+    const int lane_id = threadIdx.x % 32;
+
+    // Shared memory for A/B tiles and mbarrier objects
+    extern __shared__ char smem[];
+    half* smem_A = reinterpret_cast<half*>(smem);
+    half* smem_B = reinterpret_cast<half*>(smem + SMEM_A_SIZE);
+
+    // mbarrier pairs: producer signals "data ready", consumer signals "buffer free"
+    __shared__ uint64_t mbar_data_ready[NUM_STAGES];
+    __shared__ uint64_t mbar_buffer_free[NUM_STAGES];
+
+    if (warp_id == 0) {
+        // === TMA PRODUCER WARP ===
+        // Initialize mbarriers (only one thread needed)
+        if (lane_id == 0) {
+            for (int s = 0; s < NUM_STAGES; s++) {
+                mbarrier_init(&mbar_data_ready[s], 1);    // TMA arrival count
+                mbarrier_init(&mbar_buffer_free[s], 1);    // MMA arrival count
+            }
+        }
+        __syncwarp();
+
+        for (int k_tile = 0; k_tile < num_k_tiles; k_tile++) {
+            int stage = k_tile % NUM_STAGES;
+
+            // Wait for consumer to release this buffer
+            if (k_tile >= NUM_STAGES) {
+                mbarrier_wait(&mbar_buffer_free[stage]);
+            }
+
+            // Issue TMA bulk copy: global -> shared memory
+            if (lane_id == 0) {
+                tma_copy_async(smem_A + stage * TILE_A_SIZE,
+                               &params.A[k_tile * TILE_K], TILE_A_SIZE);
+                tma_copy_async(smem_B + stage * TILE_B_SIZE,
+                               &params.B[k_tile * TILE_K], TILE_B_SIZE);
+                mbarrier_arrive(&mbar_data_ready[stage]);
+            }
+        }
+
+    } else if (warp_id == 1) {
+        // === MMA CONSUMER WARP ===
+        for (int k_tile = 0; k_tile < num_k_tiles; k_tile++) {
+            int stage = k_tile % NUM_STAGES;
+
+            // Wait for producer to fill this buffer
+            mbarrier_wait(&mbar_data_ready[stage]);
+
+            // Issue tcgen05.mma -- single thread launches the instruction
+            if (lane_id == 0) {
+                tcgen05_mma(smem_A + stage * TILE_A_SIZE,
+                            smem_B + stage * TILE_B_SIZE);
+            }
+            __syncwarp();
+
+            // Signal buffer is free for reuse
+            if (lane_id == 0) {
+                mbarrier_arrive(&mbar_buffer_free[stage]);
+            }
+        }
+
+        // Signal epilogue warps that accumulation is complete
+        __threadfence_block();
+
+    } else {
+        // === EPILOGUE WARPS (2-15) ===
+        // Wait for MMA completion (simplified; real code uses barrier)
+        __syncthreads();
+
+        // Each epilogue warp handles a partition of the TMEM output
+        int rows_per_warp = TILE_M / 14;
+        int my_row_start = (warp_id - 2) * rows_per_warp;
+
+        for (int r = my_row_start; r < my_row_start + rows_per_warp; r++) {
+            for (int c = lane_id; c < TILE_N; c += 32) {
+                // Read accumulator from TMEM
+                float acc = tmem_load(r, c);
+                // Apply epilogue: scale + bias + activation
+                float result = epilogue_op(acc, params.scale, params.bias[c]);
+                // Write to global memory
+                params.C[r * params.N + c] = __float2half(result);
+            }
+        }
+    }
+}
+```
+
+## mbarrier Synchronization Pattern
+
+The producer-consumer synchronization uses mbarrier pairs. Each pipeline stage has two barriers:
+
+1. **data_ready**: Producer (Warp 0) arrives after TMA completes. Consumer (Warp 1) waits before issuing MMA.
+2. **buffer_free**: Consumer (Warp 1) arrives after MMA consumes the data. Producer (Warp 0) waits before overwriting the buffer.
+
+At the PTX level, the mbarrier operations map to:
+
+```ptx
+// Producer: signal data is ready in stage %stage
+mbarrier.arrive.shared.b64  %dummy, [%mbar_data_ready + %stage_offset];
+
+// Consumer: wait for data to be ready
+mbarrier.try_wait.parity.shared.b64  %pred, [%mbar_data_ready + %stage_offset], %phase;
+
+// Consumer: signal buffer is consumed
+mbarrier.arrive.shared.b64  %dummy, [%mbar_buffer_free + %stage_offset];
+
+// Producer: wait for buffer to be free
+mbarrier.try_wait.parity.shared.b64  %pred, [%mbar_buffer_free + %stage_offset], %phase;
+```
+
+## CUTLASS SM100 Warp Specialization
+
+In CUTLASS 4.x, the SM100 GEMM collective (`CollectiveMma_1SM`) implements this pattern with CuTe abstractions:
+
+```cuda
+// CUTLASS SM100 warp role dispatch (simplified from CollectiveMma)
+// Template parameter WarpCount = cute::Shape<1, 1, 14>
+// Warp 0 = producer, Warp 1 = math, Warps 2-15 = epilogue
+
+template <class TiledMma, class SmemLayout>
+struct CollectiveMma_1SM {
+    static constexpr int NumProducerWarps = 1;
+    static constexpr int NumMathWarps = 1;
+    static constexpr int NumEpilogueWarps = 14;
+
+    CUTLASS_DEVICE void operator()(
+        Params const& params,
+        char* smem_buf,
+        TiledMma& tiled_mma)
+    {
+        int warp_idx = cutlass::canonical_warp_idx_sync();
+
+        if (warp_idx == 0) {
+            producer_warp(params, smem_buf);
+        } else if (warp_idx == 1) {
+            math_warp(params, smem_buf, tiled_mma);
+        } else {
+            epilogue_warp(params, smem_buf);
+        }
+    }
+};
+```
+
+## When to Use
+
+- **Always on Blackwell GEMMs**: Warp specialization is the standard pattern for SM100 tensor core kernels. The tcgen05 instruction model assumes single-thread dispatch with TMEM output.
+- **Attention kernels**: FlashAttention-4 extends this to ping-pong scheduling with 2 query tile groups and dedicated softmax warps.
+- **Any kernel with producer-consumer pipeline**: When TMA loads and MMA compute can overlap, warp specialization provides the cleanest decomposition.
+
+## Caveats
+
+- The 14 epilogue warps may be underutilized for simple epilogues (e.g., pure store). Complex epilogues (scale, bias, activation, quantization) benefit more.
+- The single MMA warp means the kernel cannot overlap multiple independent MMA streams within a CTA. Use 2-SM cooperative mode for larger tiles instead.
+- mbarrier initialization must happen before any warp tries to wait; use `__syncthreads()` after init if needed.
