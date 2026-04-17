@@ -53,6 +53,9 @@ def collect_all_pages():
 
 
 def generate_by_problem(pages):
+    # Build id→page map for resolving technique IDs to links
+    id_map = {p["id"]: p for p in pages if "id" in p}
+
     lines = [
         "# Query: By Problem / Symptom",
         "",
@@ -68,7 +71,15 @@ def generate_by_problem(pages):
         symptoms = ", ".join(p.get("symptoms", []))
         title = p.get("title", "Untitled")
         path = qlink(p["_path"])
-        techniques = ", ".join(p.get("candidate_techniques", []))
+        # Resolve technique IDs to clickable links
+        tech_links = []
+        for tid in p.get("candidate_techniques", []):
+            if tid in id_map:
+                t = id_map[tid]
+                tech_links.append(f"[{t.get('title', tid)}]({qlink(t['_path'])})")
+            else:
+                tech_links.append(tid)
+        techniques = ", ".join(tech_links)
         src_count = len(p.get("sources", []))
         lines.append(f"| {symptoms} | [{title}]({path}) | {techniques} | {src_count} sources |")
     return "\n".join(lines) + "\n"
