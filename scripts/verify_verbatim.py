@@ -40,26 +40,57 @@ class EnvError(RuntimeError):
 
 
 # Heuristic substrings that flag a network / environment problem rather than
-# a real content mismatch. Matched case-insensitively on gh's stderr.
+# a real content mismatch. Matched case-insensitively on gh's stderr. The
+# list is intentionally broad because a false positive (treating a real
+# upstream problem as env) surfaces as exit 2 and invites investigation,
+# while a false negative (treating a real env failure as a content mismatch)
+# produces a deceptive exit code — the Round-5 blocker.
 _ENV_ERROR_HINTS = (
+    # Resolver / DNS
     "could not resolve host",
     "no such host",
+    "temporary failure in name resolution",
+    "unable to resolve",
+    # TCP / transport
     "connection refused",
     "connection reset",
     "connection timed out",
     "network is unreachable",
+    "no route to host",
     "dial tcp",
-    "temporary failure in name resolution",
-    "unable to resolve",
-    "certificate",
+    "i/o timeout",
+    "context deadline exceeded",
+    "request timed out",
+    # Generic transport strings used by gh's http client (covers the exact
+    # "error connecting to api.github.com" message Codex reported)
+    "error connecting",
+    "failed to connect",
+    "unable to connect",
+    "couldn't connect",
+    "cannot reach",
+    "can't reach",
+    # TLS / cert
+    "x509:",
     "tls handshake",
-    "proxy",
+    "certificate signed by unknown authority",
+    "certificate has expired",
+    "self signed certificate",
+    # Proxy
+    "proxy error",
+    "proxyconnect",
+    # Auth / account state (missing auth => env, not content)
     "authentication required",
     "you must authenticate",
+    "you are not logged in",
     "not logged into",
     "bad credentials",
+    "token expired",
+    "sso enforcement",
+    # Quota
     "rate limit",
     "api rate limit exceeded",
+    "abuse detection",
+    "secondary rate limit",
 )
 
 
@@ -172,6 +203,17 @@ def iter_bundles(scope):
         yield prov.parent
 
 
+def _rel_to_repo(p):
+    """Format a path relative to REPO_ROOT when possible, otherwise return the
+    absolute path. Lets --bundle point at a directory outside the repo
+    (pipeline / symlink scenarios) without the error path crashing on
+    Path.relative_to."""
+    try:
+        return str(Path(p).resolve().relative_to(REPO_ROOT))
+    except ValueError:
+        return str(p)
+
+
 def verify_bundle(bundle_root):
     """Return (content_errors, env_errors) — two separate lists so the main
     loop can distinguish true upstream byte mismatches from environment or
@@ -179,11 +221,11 @@ def verify_bundle(bundle_root):
     """
     prov_path = bundle_root / "PROVENANCE.yaml"
     if not prov_path.is_file():
-        return [f"{bundle_root.relative_to(REPO_ROOT)}: missing PROVENANCE.yaml"], []
+        return [f"{_rel_to_repo(bundle_root)}: missing PROVENANCE.yaml"], []
     try:
         prov = yaml.safe_load(prov_path.read_text(encoding="utf-8")) or {}
     except yaml.YAMLError as e:
-        return [f"{prov_path.relative_to(REPO_ROOT)}: YAML parse error: {e}"], []
+        return [f"{_rel_to_repo(prov_path)}: YAML parse error: {e}"], []
 
     upstream_repo = prov.get("upstream_repo")
     upstream_sha = prov.get("upstream_sha")
@@ -203,7 +245,7 @@ def verify_bundle(bundle_root):
             continue
         local_path = bundle_root / lp
         if not local_path.is_file():
-            errors.append(f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: local file missing")
+            errors.append(f"{_rel_to_repo(bundle_root)}/{lp}: local file missing")
             continue
         local_bytes = local_path.read_bytes()
 
@@ -218,7 +260,7 @@ def verify_bundle(bundle_root):
                 upstream_path = entry.get("upstream_path")
                 if not (file_upstream_repo and file_upstream_sha and upstream_path):
                     errors.append(
-                        f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: verbatim mode requires "
+                        f"{_rel_to_repo(bundle_root)}/{lp}: verbatim mode requires "
                         f"upstream_repo + upstream_sha + upstream_path"
                     )
                     continue
@@ -227,31 +269,31 @@ def verify_bundle(bundle_root):
                 pr_num = _resolve_pr_number(bundle_root, prov, lp)
                 if not pr_num:
                     errors.append(
-                        f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: upstream-patch mode "
+                        f"{_rel_to_repo(bundle_root)}/{lp}: upstream-patch mode "
                         f"could not resolve a PR number from source_pr_id, origin_url, "
                         f"patch filename, or bundle directory name"
                     )
                     continue
                 if not file_upstream_sha:
                     errors.append(
-                        f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: upstream-patch mode "
+                        f"{_rel_to_repo(bundle_root)}/{lp}: upstream-patch mode "
                         f"requires upstream_sha (bundle-level or per-file) to pin the "
                         f"verification to the exact upstream state"
                     )
                     continue
                 upstream_bytes = fetch_upstream_patch(file_upstream_repo, pr_num, file_upstream_sha)
         except EnvError as e:
-            env_errors.append(f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: environment failure: {e}")
+            env_errors.append(f"{_rel_to_repo(bundle_root)}/{lp}: environment failure: {e}")
             continue
         except RuntimeError as e:
-            errors.append(f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: upstream fetch failed: {e}")
+            errors.append(f"{_rel_to_repo(bundle_root)}/{lp}: upstream fetch failed: {e}")
             continue
 
         if upstream_bytes != local_bytes:
             local_sha = hashlib.sha256(local_bytes).hexdigest()[:12]
             upstream_sha12 = hashlib.sha256(upstream_bytes).hexdigest()[:12]
             errors.append(
-                f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: {mode} byte mismatch "
+                f"{_rel_to_repo(bundle_root)}/{lp}: {mode} byte mismatch "
                 f"(local {local_sha}..., upstream {upstream_sha12}...)"
             )
     return errors, env_errors

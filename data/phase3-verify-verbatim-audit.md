@@ -1,8 +1,8 @@
 # Phase 3 SHA-pinned strict verify audit log
 
-Captured: 2026-04-17T18:38:43Z
+Captured: 2026-04-17T18:49:59Z
 Command : `python3 scripts/verify_verbatim.py --strict`
-Exit    : 0 (0 = full-corpus upstream byte-match; 1 = content mismatch under --strict; 2 = env failure)
+Exit    : 0 (documented contract: 0 = full-corpus upstream byte-match; 1 = --strict content mismatch; 2 = env failure)
 
 ## Environment
 
@@ -14,7 +14,7 @@ gh version 2.90.0 (2026-04-16)
 ## Scope
 
 - 76 asset bundles under `artifacts/`
-- 294 files with `mode: verbatim` or `mode: upstream-patch` and no `size_cap_truncated` marker (every one is fetched from upstream and byte-compared)
+- 294 files with `mode: verbatim` or `mode: upstream-patch` and no `size_cap_truncated` marker
 
 ## stdout
 
@@ -23,16 +23,26 @@ Verified 76 bundle(s).
 All verbatim/upstream-patch assets match upstream.
 ```
 
-## Interpretation
+## Exit-code contract (Round 6)
 
-`exit=0` = every verbatim / upstream-patch file in the corpus byte-matches its upstream at the pinned SHA. AC-2's strongest check passes.
+`scripts/verify_verbatim.py` classifies `gh` stderr via a substring allow-list
+(`_ENV_ERROR_HINTS`) that covers the DNS / TCP / TLS / proxy / auth / rate-limit
+failure modes as well as generic transport strings like `error connecting`,
+`failed to connect`, `couldn't connect`, `cannot reach`, and equivalents. A hit
+raises `EnvError` and contributes to the `ENV:` stream (exit 2); any other
+failure contributes to the `WARN:` stream (exit 1 under `--strict`).
+
+Reproducing an environment failure here (by prepending a fake `gh` shim that
+emits `error connecting to api.github.com`) makes the verifier emit
+`ENV:` lines and return `exit 2`, confirming the contract end-to-end on the
+path Codex's review environment takes.
 
 ## Reproducibility
 
-This log is the committed evidence for AC-2's upstream byte-match requirement. A reviewer who wants to re-run the audit should:
-
 1. Install gh CLI and run `gh auth login`.
 2. From the repo root: `python3 scripts/verify_verbatim.py --strict`.
-3. Compare the exit code + stdout line count to what is recorded above.
-
-The verifier is deterministic given the same upstream state. The only legitimate reasons for drift since this log was captured would be: an upstream amend (caught by the merge_commit_sha prefix check and reported as byte mismatch), or upstream repo/content deletion (caught as env error at exit 2).
+3. Compare the exit code + stdout against this log. In a network-capable
+   environment the expected exit is 0 and the stdout is
+   "Verified 76 bundle(s). / All verbatim/upstream-patch assets match upstream."
+4. In an offline environment the verifier correctly exits 2 (`ENV:` stream),
+   NOT 1 — proving the contract separates env failure from content mismatch.
