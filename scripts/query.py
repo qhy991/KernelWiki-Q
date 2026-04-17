@@ -196,8 +196,17 @@ def filter_pages(pages, args):
             # diff.patch (no captured key-files/) should NOT surface here —
             # a raw diff is not browsable source. See: get_page.py --include-code
             # still prints diff.patch for bundles that have one.
+            #
+            # `.txt` IS counted: scripts/extract_blog_code.py writes unlabeled
+            # fenced blocks under artifacts/blogs/<slug>/code/NN-<name>.txt via
+            # the EXT_MAP.get(lang, "txt") fallback. These are real code
+            # snippets whose fence just lacked a language tag (R20 widening).
+            # Excluding .txt would hide blogs like blog-amandeep-nvfp4,
+            # blog-modular-blackwell, blog-nvfp4-format-details, and
+            # blog-vllm-deepseek-v3-sparse whose extracted bundles are
+            # .txt-only (R22 Codex finding).
             exts = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".inl",
-                    ".pyx", ".cxx", ".cc"}
+                    ".pyx", ".cxx", ".cc", ".txt"}
             candidate_dirs = []
 
             # Primary: explicit page-level artifact_dir.

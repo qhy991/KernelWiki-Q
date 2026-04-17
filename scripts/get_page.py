@@ -62,6 +62,49 @@ def split_frontmatter(content):
     return fm, m.group(2)
 
 
+def _resolve_artifact_dir(page_path, fm):
+    """Return (artifact_dir_rel_str, artifact_dir_abs_path, is_fallback) or
+    (None, None, False) if no bundle location can be determined.
+
+    Honors the page frontmatter's `artifact_dir` when present; otherwise
+    infers the conventional bundle location from the page's location
+    under sources/. This mirrors scripts/query.py's --has-code fallback
+    (R8) so both discovery paths surface the same set of bundles.
+
+    Page-type conventions:
+      - sources/blogs/<slug>.md          -> artifacts/blogs/<slug>/
+      - sources/contests/<c>/<p>.md      -> artifacts/contests/<c>/<p>/
+      - sources/prs/<repo>/PR-<N>.md     -> artifacts/prs/<repo>/PR-<N>/
+    """
+    fm = fm or {}
+    if "artifact_dir" in fm and fm.get("artifact_dir"):
+        rel = str(fm["artifact_dir"])
+        return rel, WIKI_ROOT / rel, False
+
+    try:
+        rel_page = page_path.relative_to(WIKI_ROOT)
+    except ValueError:
+        return None, None, False
+    parts = rel_page.parts
+    if len(parts) < 2 or parts[0] != "sources":
+        return None, None, False
+
+    candidate = None
+    if parts[1] == "blogs" and len(parts) == 3:
+        candidate = Path("artifacts") / "blogs" / page_path.stem
+    elif parts[1] == "contests" and len(parts) == 4:
+        candidate = Path("artifacts") / "contests" / parts[2] / page_path.stem
+    elif parts[1] == "prs" and len(parts) == 4:
+        candidate = Path("artifacts") / "prs" / parts[2] / page_path.stem
+
+    if candidate is None:
+        return None, None, False
+    abs_path = WIKI_ROOT / candidate
+    if not abs_path.is_dir():
+        return None, None, False
+    return str(candidate), abs_path, True
+
+
 def main():
     parser = argparse.ArgumentParser(description="Get a wiki page by id or path")
     parser.add_argument("lookup", help="Page id (e.g. kernel-flash-attention-4) or relative path")
@@ -110,13 +153,13 @@ def main():
                 print(excerpt)
                 print()
 
-    if args.include_code and fm and "artifact_dir" in fm:
-        ad = fm.get("artifact_dir")
-        ad_path = WIKI_ROOT / ad
-        if ad_path.is_dir():
+    if args.include_code:
+        ad, ad_path, is_fallback = _resolve_artifact_dir(page_path, fm)
+        if ad_path and ad_path.is_dir():
             print()
             print("---")
-            print(f"## Artifact Bundle: `{ad}`")
+            suffix = " (conventional path — artifact_dir not backfilled)" if is_fallback else ""
+            print(f"## Artifact Bundle: `{ad}`{suffix}")
             print()
             # Phase 3 source + metadata extensions. Must cover every ext the
             # fetch/extract/collect scripts actually produce — notably .inl
@@ -150,6 +193,12 @@ def main():
                 except Exception as e:
                     print(f"*(could not read: {e})*")
                     print()
+        elif ad is None:
+            # No explicit artifact_dir and no conventional location
+            # resolves to an existing directory — the page simply has no
+            # bundle. Stay silent rather than printing a misleading
+            # "not found on disk" message.
+            pass
         else:
             print()
             print(f"*(artifact_dir '{ad}' not found on disk)*")
