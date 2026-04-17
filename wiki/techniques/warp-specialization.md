@@ -129,11 +129,15 @@ blackwell_gemm_warp_specialized(
         // which would deadlock since producer/MMA warps don't reach it)
         mbarrier_wait(&mbar_acc_complete);
 
-        // Each epilogue warp handles a partition of the TMEM output
-        int rows_per_warp = TILE_M / 14;
-        int my_row_start = (warp_id - 2) * rows_per_warp;
+        // Each epilogue warp handles a partition of the TMEM output.
+        // Use ceiling division to cover tail rows when TILE_M % 14 != 0.
+        constexpr int NUM_EPI_WARPS = 14;  // warps 2-15
+        int epi_warp = warp_id - 2;  // 0..13
+        int rows_per_warp = (TILE_M + NUM_EPI_WARPS - 1) / NUM_EPI_WARPS;
+        int my_row_start = epi_warp * rows_per_warp;
+        int my_row_end = min(my_row_start + rows_per_warp, TILE_M);
 
-        for (int r = my_row_start; r < my_row_start + rows_per_warp; r++) {
+        for (int r = my_row_start; r < my_row_end; r++) {
             for (int c = lane_id; c < TILE_N; c += 32) {
                 // Read accumulator from TMEM
                 float acc = tmem_load(r, c);

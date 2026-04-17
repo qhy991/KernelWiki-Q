@@ -198,11 +198,14 @@ Combining all three techniques for the GPU Mode Hackathon Problem 1:
 // A: [M, K] NVFP4, B: [1, K] NVFP4, C: [M, 1] FP16
 // Memory-bound: maximize bandwidth utilization
 
-#define BLOCK_M 4      // Rows per thread block
-#define BLOCK_K 1024   // K elements per iteration
-#define WARPS 8
+// NVFP4 Batched GEMV: each row processed by THREADS_PER_ROW threads
+// Memory-bound: maximize bandwidth with wide loads and cache policies
 
-__global__ void __launch_bounds__(WARPS * 32, 8)
+#define BLOCK_M 4       // Rows per thread block
+#define THREADS 256
+#define THREADS_PER_ROW (THREADS / BLOCK_M)  // 64 threads per row
+
+__global__ void __launch_bounds__(THREADS, 4)
 nvfp4_gemv_optimized(
     const uint8_t* __restrict__ A,      // [M, K/2] packed FP4
     const uint8_t* __restrict__ B,      // [1, K/2] packed FP4
@@ -212,30 +215,32 @@ nvfp4_gemv_optimized(
     float global_scale_a, float global_scale_b,
     int M, int K)
 {
-    int row = blockIdx.x * BLOCK_M + threadIdx.x / (WARPS * 32 / BLOCK_M);
+    // Map threads to rows: 64 threads per row, 4 rows per block
+    int local_row = threadIdx.x / THREADS_PER_ROW;      // 0..3
+    int thread_in_row = threadIdx.x % THREADS_PER_ROW;  // 0..63
+    int row = blockIdx.x * BLOCK_M + local_row;
     if (row >= M) return;
 
     float acc = 0.0f;
-    int lane = threadIdx.x % 32;
 
-    for (int k = lane * 64; k < K; k += 32 * 64) {
-        // Load B (reused): L1::evict_last, 256-bit
+    // Each of the 64 threads handles a distinct K-chunk (no duplication)
+    // 64 elements per load × 64 threads = 4096 K elements per iteration
+    for (int k = thread_in_row * 64; k < K; k += THREADS_PER_ROW * 64) {
+        // Load B (reused across rows): L1::evict_last, 256-bit
         uint64_t b_raw[4];
-        const uint64_t* b_ptr = (const uint64_t*)(B + k / 2);
         asm volatile(
             "ld.global.L1::evict_last.v4.u64 {%0,%1,%2,%3}, [%4];"
             : "=l"(b_raw[0]), "=l"(b_raw[1]), "=l"(b_raw[2]), "=l"(b_raw[3])
-            : "l"(b_ptr));
+            : "l"((const uint64_t*)(B + k / 2)));
 
-        // Load A (streamed): L1::no_allocate, 256-bit
+        // Load A (streamed once): L1::no_allocate, 256-bit
         uint64_t a_raw[4];
-        const uint64_t* a_ptr = (const uint64_t*)(A + row * (K / 2) + k / 2);
         asm volatile(
             "ld.global.L1::no_allocate.v4.u64 {%0,%1,%2,%3}, [%4];"
             : "=l"(a_raw[0]), "=l"(a_raw[1]), "=l"(a_raw[2]), "=l"(a_raw[3])
-            : "l"(a_ptr));
+            : "l"((const uint64_t*)(A + row * (K / 2) + k / 2)));
 
-        // Unpack, scale, and dot-product (simplified)
+        // Unpack FP4, apply block scale, dot-product
         for (int i = 0; i < 64; i++) {
             float a_val = unpack_fp4(a_raw, i) * get_block_scale(sfa, row, k + i);
             float b_val = unpack_fp4(b_raw, i) * get_block_scale(sfb, 0, k + i);
@@ -243,14 +248,25 @@ nvfp4_gemv_optimized(
         }
     }
 
-    // Warp reduction
+    // Two-phase reduction: first within each warp, then across the 2 warps per row
+    // Phase 1: warp-level reduction (32 threads → 1 partial sum per warp)
     for (int offset = 16; offset > 0; offset >>= 1) {
         acc += __shfl_xor_sync(0xFFFFFFFF, acc, offset);
     }
 
-    // Global scale and store
+    // Phase 2: shared memory reduction across the 2 warps assigned to this row
+    __shared__ float smem_reduce[BLOCK_M * 2];  // 2 warp partials per row
+    int warp_in_row = thread_in_row / 32;  // 0 or 1
+    int lane = thread_in_row % 32;
     if (lane == 0) {
-        C[row] = __float2half(acc * global_scale_a * global_scale_b);
+        smem_reduce[local_row * 2 + warp_in_row] = acc;
+    }
+    __syncthreads();
+
+    // Final sum and store (one thread per row)
+    if (thread_in_row == 0) {
+        float result = smem_reduce[local_row * 2] + smem_reduce[local_row * 2 + 1];
+        C[row] = __float2half(result * global_scale_a * global_scale_b);
     }
 }
 ```
