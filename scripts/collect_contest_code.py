@@ -119,6 +119,16 @@ def collect_one(contest_page, sub_idx, sub, manifest):
 
     bundle_dir.mkdir(parents=True, exist_ok=True)
 
+    # Clear any stale bundle contents before rewriting. Without this, a
+    # manifest edit that renames or drops a submission file leaves the old
+    # file in place, which (a) pollutes the bundle with orphan code and
+    # (b) trips validate.py's drift detection on subsequent runs.
+    for stale in bundle_dir.iterdir():
+        if stale.is_file():
+            stale.unlink()
+        else:
+            shutil.rmtree(stale)
+
     try:
         if kind == "github-file":
             repo = entry["upstream_repo"]

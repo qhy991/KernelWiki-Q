@@ -46,47 +46,91 @@ def main():
         print(f"ERROR: {CORE_PATH.relative_to(REPO_ROOT)} does not exist; run scripts/compute_core_prs.py first", file=sys.stderr)
         sys.exit(2)
 
-    # Regenerate into a temp directory to compare byte-for-byte
-    with tempfile.TemporaryDirectory() as td:
-        # Copy data + sources + wiki into temp (or just rerun from current repo, which is cheaper)
-        # We rerun compute_core_prs.py into a copy of the data/ directory, then compare.
-        tmp_data = Path(td) / "data"
-        shutil.copytree(REPO_ROOT / "data", tmp_data)
-        env_script = COMPUTE_SCRIPT.read_text(encoding="utf-8")
-        # Monkey-patch DATA path by invoking the compute script in-place; easiest is:
-        # run in current repo and compare.
-        res = subprocess.run(
-            [sys.executable, str(COMPUTE_SCRIPT)],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+    # Snapshot the committed bytes of every generated file BEFORE regeneration
+    # so we can diff all three after compute_core_prs.py writes the fresh ones.
+    generated_files = [
+        REPO_ROOT / "data" / "core-prs.yaml",
+        REPO_ROOT / "data" / "cute-dsl-universe.yaml",
+        REPO_ROOT / "data" / "triton-universe.yaml",
+    ]
+    committed_bytes = {}
+    all_tracked = True
+    for path in generated_files:
+        git_res = subprocess.run(
+            ["git", "show", f"HEAD:{path.relative_to(REPO_ROOT)}"],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=REPO_ROOT,
         )
-        if res.returncode != 0:
-            print(f"compute_core_prs.py failed:\n{res.stderr.decode(errors='replace')}", file=sys.stderr)
-            sys.exit(1)
+        if git_res.returncode == 0:
+            committed_bytes[path] = git_res.stdout
+        else:
+            committed_bytes[path] = None
+            all_tracked = False
 
-    # Now CORE_PATH has the freshly-regenerated content. Load + compare the checksum.
-    fresh = yaml.safe_load(CORE_PATH.read_text(encoding="utf-8"))
-    # Re-read from git to see what was committed
+    # Regenerate all three files in-place (compute_core_prs.py writes directly
+    # to data/). Compare bytes against the committed snapshot.
     res = subprocess.run(
-        ["git", "show", f"HEAD:data/core-prs.yaml"],
-        stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=REPO_ROOT,
+        [sys.executable, str(COMPUTE_SCRIPT)],
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE,
     )
     if res.returncode != 0:
-        # First run: no committed version yet, just report the derivation
-        print(f"No committed core-prs.yaml in HEAD; fresh derivation has "
-              f"{fresh.get('total_captured', 0)} PRs, checksum {fresh.get('checksum_sha256', '')[:12]}...")
-        print("(skip reproducibility comparison; commit the file first, then re-run)")
+        print(f"compute_core_prs.py failed:\n{res.stderr.decode(errors='replace')}", file=sys.stderr)
+        sys.exit(1)
+
+    fresh = yaml.safe_load(CORE_PATH.read_text(encoding="utf-8"))
+
+    if not all_tracked:
+        # First run: no committed version for at least one file yet.
+        print(f"No committed version found for at least one generated file in HEAD.")
+        print(f"Fresh derivation: {fresh.get('total_captured', 0)} PRs, "
+              f"checksum {fresh.get('checksum_sha256', '')[:12]}...")
+        print("(skip reproducibility comparison; commit the files first, then re-run)")
     else:
-        committed = yaml.safe_load(res.stdout)
-        if (committed or {}).get("checksum_sha256") != (fresh or {}).get("checksum_sha256"):
+        drift = []
+        for path in generated_files:
+            committed = committed_bytes[path]
+            current = path.read_bytes()
+            if committed != current:
+                drift.append(path.relative_to(REPO_ROOT))
+        if drift:
+            print("FAIL: fresh regeneration does not match the committed generated files:",
+                  file=sys.stderr)
+            for p in drift:
+                print(f"  drifted: {p}", file=sys.stderr)
             print(
-                "FAIL: fresh regeneration does not match the committed data/core-prs.yaml\n"
-                f"  committed checksum: {(committed or {}).get('checksum_sha256', '')[:20]}...\n"
-                f"  fresh     checksum: {(fresh     or {}).get('checksum_sha256', '')[:20]}...",
+                "\n(If you believe the drift is legitimate, re-run "
+                "scripts/compute_core_prs.py and commit the updated files; "
+                "re-run this verifier to confirm.)",
                 file=sys.stderr,
             )
             sys.exit(1)
-        print(f"OK: fresh derivation matches committed core-prs.yaml "
-              f"(checksum {fresh.get('checksum_sha256','')[:12]}..., {fresh.get('total_captured',0)} PRs)")
+        # Cross-check internal consistency: total_captured must match len(prs),
+        # and the embedded checksum_sha256 must re-compute correctly.
+        import hashlib as _hl
+        prs_list = fresh.get("prs") or []
+        if fresh.get("total_captured") != len(prs_list):
+            print(
+                f"FAIL: data/core-prs.yaml total_captured={fresh.get('total_captured')} "
+                f"does not match len(prs)={len(prs_list)}",
+                file=sys.stderr,
+            )
+            sys.exit(1)
+        # The checksum algorithm in compute_core_prs.py hashes the yaml.dump of
+        # prs_list. Re-dump with the same options and compare.
+        checksum_body = yaml.dump(prs_list, allow_unicode=True, sort_keys=False,
+                                  default_flow_style=False)
+        expected = _hl.sha256(checksum_body.encode("utf-8")).hexdigest()
+        if fresh.get("checksum_sha256") != expected:
+            print(
+                f"FAIL: embedded checksum_sha256 does not match re-computed hash\n"
+                f"  embedded   : {fresh.get('checksum_sha256', '')[:20]}...\n"
+                f"  re-computed: {expected[:20]}...",
+                file=sys.stderr,
+            )
+            sys.exit(1)
+        print(f"OK: all 3 generated manifests (core-prs, cute-dsl-universe, "
+              f"triton-universe) match committed bytes; internal checksum + "
+              f"total_captured are consistent (checksum {fresh.get('checksum_sha256','')[:12]}..., "
+              f"{fresh.get('total_captured',0)} PRs)")
 
     # --strict: resolve merge_sha via gh api
     if args.strict:

@@ -105,6 +105,50 @@ def sha256_bytes(b):
     return hashlib.sha256(b).hexdigest()
 
 
+def _derive_filename(idx, heading_path, lang, seen_names):
+    """Compute the NN-<slug>.<ext> filename for a code block. Matches the
+    naming rule used during extraction; shared with --check so fresh
+    regeneration is byte-identical."""
+    leaf = heading_path.split(" > ")[-1] if heading_path != "(root)" else "root"
+    leaf = re.sub(r"^#+\s*", "", leaf)
+    stub = slugify(leaf)
+    ext = EXT_MAP.get(lang, "txt")
+    fn = f"{idx:02d}-{stub}.{ext}"
+    orig = fn
+    k = 2
+    while fn in seen_names:
+        fn = orig.replace(f".{ext}", f"-{k}.{ext}")
+        k += 1
+    seen_names.add(fn)
+    return fn, ext
+
+
+def _file_header(slug, heading_path, lang, ext):
+    """Build the per-file provenance header injected by the extractor.
+    C-family extensions get `//` comments; everything else gets `#`."""
+    if ext in ("cu", "cuh", "cpp", "ptx", "h", "hpp"):
+        return (
+            f"// Extracted from sources/blogs/{slug}.md by scripts/extract_blog_code.py\n"
+            f"// Heading: {heading_path}\n"
+            f"// Original fence language: {lang}\n"
+            f"// See artifacts/blogs/{slug}/PROVENANCE.yaml for origin + license metadata.\n\n"
+        )
+    return (
+        f"# Extracted from sources/blogs/{slug}.md by scripts/extract_blog_code.py\n"
+        f"# Heading: {heading_path}\n"
+        f"# Original fence language: {lang}\n"
+        f"# See artifacts/blogs/{slug}/PROVENANCE.yaml for origin + license metadata.\n\n"
+    )
+
+
+def _expected_block_content(slug, heading_path, lang, body, ext):
+    """Return the exact bytes the emitter would write for a given block.
+    --check uses this to byte-compare against the on-disk extracted file,
+    so a same-count same-filename body edit in the source markdown is
+    detected."""
+    return _file_header(slug, heading_path, lang, ext) + body
+
+
 def extract_one_blog(blog_md, force=False):
     """Extract code from a single blog. Returns (num_files_written, code_present_bool)."""
     slug = blog_md.stem
@@ -156,36 +200,10 @@ def extract_one_blog(blog_md, force=False):
     files_entries = []  # for PROVENANCE.yaml files[*]
     seen_names = set()
     for idx, (heading_path, lang, body) in enumerate(code_blocks, start=1):
-        # Build a filename: NN-<slug-of-heading>.<ext>
-        leaf = heading_path.split(" > ")[-1] if heading_path != "(root)" else "root"
-        leaf = re.sub(r"^#+\s*", "", leaf)
-        stub = slugify(leaf)
-        ext = EXT_MAP.get(lang, "txt")
-        fn = f"{idx:02d}-{stub}.{ext}"
-        # Deduplicate
-        orig = fn
-        k = 2
-        while fn in seen_names:
-            fn = orig.replace(f".{ext}", f"-{k}.{ext}")
-            k += 1
-        seen_names.add(fn)
-
-        header = (
-            f"// Extracted from sources/blogs/{slug}.md by scripts/extract_blog_code.py\n"
-            f"// Heading: {heading_path}\n"
-            f"// Original fence language: {lang}\n"
-            f"// See artifacts/blogs/{slug}/PROVENANCE.yaml for origin + license metadata.\n\n"
-            if ext in ("cu", "cuh", "cpp", "ptx", "h", "hpp")
-            else f"# Extracted from sources/blogs/{slug}.md by scripts/extract_blog_code.py\n"
-                 f"# Heading: {heading_path}\n"
-                 f"# Original fence language: {lang}\n"
-                 f"# See artifacts/blogs/{slug}/PROVENANCE.yaml for origin + license metadata.\n\n"
-        )
-        content = header + body
+        fn, ext = _derive_filename(idx, heading_path, lang, seen_names)
+        content = _expected_block_content(slug, heading_path, lang, body, ext)
         (code_dir / fn).write_text(content, encoding="utf-8")
-
-        content_bytes = content.encode("utf-8")
-        sha = sha256_bytes(content_bytes)
+        sha = sha256_bytes(content.encode("utf-8"))
         # MANIFEST.yaml sits at the parent (bundle/) level, so its paths are
         # bundle-relative ("code/<fn>"). PROVENANCE.yaml lives at code/ (which
         # IS the asset-bundle root), so its local_path entries are just "<fn>".
@@ -263,18 +281,80 @@ def check_one_blog(slug):
             f"(markdown has {len(fresh_blocks)} code blocks, manifest has {manifest_count})"
         )
 
+    # Regenerate expected bytes for each fresh block and byte-compare against
+    # the on-disk extracted file. This detects the "same fence count, different
+    # body" case that a pure count + manifest-SHA check misses.
+    seen_names = set()
+    expected_by_fn = {}           # filename -> expected bytes
+    expected_sha_by_fn = {}       # filename -> expected sha256
+    for idx, (hp, lang, body) in enumerate(fresh_blocks, start=1):
+        fn, ext = _derive_filename(idx, hp, lang, seen_names)
+        content = _expected_block_content(slug, hp, lang, body, ext)
+        expected_by_fn[fn] = content
+        expected_sha_by_fn[fn] = sha256_bytes(content.encode("utf-8"))
+
+    # Flag manifest entries whose filename is not present in the freshly
+    # derived set, or whose sha256 field disagrees with the fresh extraction.
+    for entry in manifest.get("files") or []:
+        lp = entry.get("local_path")
+        if not lp:
+            continue
+        # MANIFEST uses bundle-relative paths like "code/<fn>"; strip that prefix
+        fn = lp.split("/", 1)[1] if lp.startswith("code/") else lp
+        if fn not in expected_by_fn:
+            errors.append(
+                f"{slug}/{lp}: manifest entry refers to a file no longer produced "
+                f"from the source markdown (renamed or dropped block)"
+            )
+            continue
+        declared_sha = entry.get("sha256")
+        if declared_sha and declared_sha != expected_sha_by_fn[fn]:
+            errors.append(
+                f"{slug}/{lp}: manifest sha256 disagrees with fresh extraction "
+                f"(markdown body changed; re-run scripts/extract_blog_code.py)"
+            )
+
+    # Also flag any fresh filenames that the manifest does not list.
+    for fn in expected_by_fn:
+        if not any(
+            (e.get("local_path", "").split("/", 1)[1] if e.get("local_path", "").startswith("code/") else e.get("local_path")) == fn
+            for e in (manifest.get("files") or [])
+        ):
+            errors.append(
+                f"{slug}/code/{fn}: fresh extraction produces this file but the "
+                f"manifest does not list it (new block in markdown)"
+            )
+
+    # Finally, byte-compare every manifest-listed on-disk file against the
+    # freshly-regenerated expected bytes. Old behaviour only checked
+    # on-disk-vs-manifest-SHA, which silently passed when the body changed.
     for entry in manifest.get("files") or []:
         lp = entry.get("local_path")
         declared_sha = entry.get("sha256")
         if not lp or not declared_sha:
             continue
+        fn = lp.split("/", 1)[1] if lp.startswith("code/") else lp
         fp = bundle / lp
         if not fp.is_file():
             errors.append(f"{slug}/{lp}: file missing")
             continue
-        actual = sha256_bytes(fp.read_bytes())
+        on_disk = fp.read_bytes()
+        actual = sha256_bytes(on_disk)
+        # On-disk vs manifest (hand-edit detection)
         if actual != declared_sha:
             errors.append(f"{slug}/{lp}: SHA-256 mismatch (hand-edit detected)")
+        # Byte-compare on-disk content against freshly-regenerated expected
+        # bytes (source-markdown drift detection). A same-count-different-body
+        # body change would sail past the manifest-SHA check above; this step
+        # catches it.
+        if fn in expected_by_fn:
+            expected_bytes = expected_by_fn[fn].encode("utf-8")
+            if on_disk != expected_bytes:
+                errors.append(
+                    f"{slug}/{lp}: on-disk bytes differ from fresh extraction "
+                    f"of the current markdown (source body changed; "
+                    f"re-run scripts/extract_blog_code.py)"
+                )
 
     return errors
 
