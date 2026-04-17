@@ -8,7 +8,7 @@ confidence: source-reported
 reproducibility: snippet
 prerequisites: [hw-tmem, technique-warp-specialization]
 related: [kernel-flash-attention-4, technique-double-buffering]
-sources: [blog-flash-attention-4, doc-flash-attention-4]
+sources: [blog-flash-attention-4, doc-flash-attention-4, blog-tcgen05-tutorial]
 ---
 
 # Ping-Pong Scheduling
