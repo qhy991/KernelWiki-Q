@@ -1,12 +1,23 @@
 ---
 id: blog-flashmla
-title: "FlashMLA — Multi-head Latent Attention"
+title: FlashMLA — Multi-head Latent Attention
 author: DeepSeek AI
 url: https://github.com/deepseek-ai/FlashMLA
 source_category: benchmark-blog
-architectures: [sm100, sm90]
-tags: [mla, attention, decode, prefill, fp8, sparse-attention, tcgen05, tmem]
+architectures:
+- sm100
+- sm90
+tags:
+- mla
+- attention
+- decode
+- prefill
+- fp8
+- sparse-attention
+- tcgen05
+- tmem
 retrieved_at: 2026-04-16
+artifact_dir: artifacts/blogs/flashmla/code
 ---
 
 ## Summary

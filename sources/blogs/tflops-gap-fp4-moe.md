@@ -1,12 +1,27 @@
 ---
 id: blog-tflops-gap-fp4-moe
-title: "TFLOPS Gap: Why FP4 MoE Kernel Engineering Matters on Blackwell"
+title: 'TFLOPS Gap: Why FP4 MoE Kernel Engineering Matters on Blackwell'
 author: apsys (HuggingFace)
 url: https://huggingface.co/blog/apsys/blackwell-nvfp4-comparison
 source_category: benchmark-blog
-architectures: [sm100, sm100a]
-tags: [nvfp4, fp4, moe, warp-specialization, tma, kernel-fusion, tile-scheduling, persistent-kernel, block-scale, gemm, grouped-gemm, fine-grained-quantization]
+architectures:
+- sm100
+- sm100a
+tags:
+- nvfp4
+- fp4
+- moe
+- warp-specialization
+- tma
+- kernel-fusion
+- tile-scheduling
+- persistent-kernel
+- block-scale
+- gemm
+- grouped-gemm
+- fine-grained-quantization
 retrieved_at: 2026-04-17
+artifact_dir: artifacts/blogs/tflops-gap-fp4-moe/code
 ---
 
 # TFLOPS Gap: Why FP4 MoE Kernel Engineering Matters on Blackwell

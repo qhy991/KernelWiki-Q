@@ -1,16 +1,36 @@
 ---
 id: blog-yue-nvfp4
-title: "Blackwell NVFP4 Kernel Hackathon Journey"
+title: Blackwell NVFP4 Kernel Hackathon Journey
 author: Yue Zhang
 url: https://yue-zhang-2025.github.io/2025/12/02/blackwell-nvfp4-kernel-hackathon-journey.html
 source_category: community-note
-architectures: [sm100, sm100a]
-tags: [nvfp4, gemv, fp4, block-scale, batched-gemv]
-techniques: [vectorized-loads, cache-policy, register-reuse, loop-unrolling]
-hardware_features: [nvfp4, fp4, block-scale]
-kernel_types: [batched-gemv, gemv]
-languages: [cuda-cpp, ptx, cute-dsl]
+architectures:
+- sm100
+- sm100a
+tags:
+- nvfp4
+- gemv
+- fp4
+- block-scale
+- batched-gemv
+techniques:
+- vectorized-loads
+- cache-policy
+- register-reuse
+- loop-unrolling
+hardware_features:
+- nvfp4
+- fp4
+- block-scale
+kernel_types:
+- batched-gemv
+- gemv
+languages:
+- cuda-cpp
+- ptx
+- cute-dsl
 retrieved_at: 2026-04-16
+artifact_dir: artifacts/blogs/yue-nvfp4-hackathon/code
 ---
 
 # Blackwell NVFP4 Kernel Hackathon Journey (Yue Zhang)

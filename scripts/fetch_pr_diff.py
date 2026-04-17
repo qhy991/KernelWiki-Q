@@ -193,15 +193,32 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
             "sha256": sha256_bytes(diff_bytes),
         })
 
-    # Per-file content at merge SHA
+    # For removed files we still want to capture the pre-deletion content
+    # (so users can inspect what the PR deleted). Resolve the PR's base SHA
+    # once in case any file in this PR has status == "removed".
+    base_sha = None
+
+    # Per-file content at merge SHA (or base SHA for removed files)
     for f in captured_files:
         filename = f.get("filename", "")
         status = f.get("status", "")
-        if status == "removed":
-            # Skip deleted files
-            continue
+        is_removed = (status == "removed")
+        fetch_sha = merge_sha
+        if is_removed:
+            if base_sha is None:
+                try:
+                    pr_json = run_gh(["api", f"/repos/{repo}/pulls/{pr_num}"])
+                    pr_meta = json.loads(pr_json)
+                    base_sha = (pr_meta.get("base") or {}).get("sha")
+                except RuntimeError as e:
+                    print(f"    WARN: could not resolve base SHA for removed files in #{pr_num}: {e}",
+                          file=sys.stderr)
+                    base_sha = ""
+            if not base_sha:
+                continue
+            fetch_sha = base_sha
         try:
-            content = fetch_content_at_sha(repo, filename, merge_sha)
+            content = fetch_content_at_sha(repo, filename, fetch_sha)
         except RuntimeError as e:
             print(f"    WARN: skipping {filename}: {e}", file=sys.stderr)
             continue
@@ -212,7 +229,7 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
         if len(content) > FILE_SIZE_CAP:
             stub = (
                 f"/* size_cap_truncated: upstream file is {len(content)} bytes "
-                f"(> {FILE_SIZE_CAP}). Re-fetch upstream at {repo}:{filename}@{merge_sha} "
+                f"(> {FILE_SIZE_CAP}). Re-fetch upstream at {repo}:{filename}@{fetch_sha} "
                 f"to read the full content. */\n"
             ).encode("utf-8")
             out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -231,6 +248,15 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
             "upstream_path": filename,
             "sha256": sha256_bytes(content_for_sha),
         }
+        if is_removed:
+            # Per-file upstream_sha override documents that this file's
+            # verbatim content is the PR's BASE state, not the merge state
+            # (the PR deleted this file).
+            entry["upstream_sha"] = fetch_sha
+            entry["captured_at_base_sha_note"] = (
+                f"PR #{pr_num} deletes this file. Captured verbatim at the PR's "
+                f"base SHA (pre-merge) so users can inspect the pre-deletion state."
+            )
         if truncated:
             entry["size_cap_truncated"] = True
         files_entries.append(entry)

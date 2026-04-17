@@ -1,12 +1,22 @@
 ---
 id: blog-deepgemm
-title: "DeepGEMM — FP8 GEMM Library"
+title: DeepGEMM — FP8 GEMM Library
 author: DeepSeek AI
 url: https://github.com/deepseek-ai/DeepGEMM
 source_category: benchmark-blog
-architectures: [sm100, sm90]
-tags: [gemm, fp8, fine-grained-quantization, block-scale, jit-compilation, tcgen05, wgmma]
+architectures:
+- sm100
+- sm90
+tags:
+- gemm
+- fp8
+- fine-grained-quantization
+- block-scale
+- jit-compilation
+- tcgen05
+- wgmma
 retrieved_at: 2026-04-16
+artifact_dir: artifacts/blogs/deepgemm/code
 ---
 
 ## Summary

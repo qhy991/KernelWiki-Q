@@ -1,12 +1,23 @@
 ---
 id: blog-flash-attention-4
-title: "FlashAttention-4 Blog"
+title: FlashAttention-4 Blog
 author: Tri Dao
 url: https://tridao.me/blog/2026/flash4/
 source_category: benchmark-blog
-architectures: [sm100]
-tags: [attention, flash-attention, tcgen05, tmem, 2sm-cooperative, software-exp, ping-pong-scheduling, conditional-rescaling, cute-dsl]
+architectures:
+- sm100
+tags:
+- attention
+- flash-attention
+- tcgen05
+- tmem
+- 2sm-cooperative
+- software-exp
+- ping-pong-scheduling
+- conditional-rescaling
+- cute-dsl
 retrieved_at: 2026-04-16
+artifact_dir: artifacts/blogs/flash-attention-4/code
 ---
 
 ## Summary

@@ -191,18 +191,46 @@ def filter_pages(pages, args):
                 continue
 
         if args.has_code:
-            ad = fm.get("artifact_dir")
-            if not ad:
-                continue
-            ad_path = WIKI_ROOT / ad
-            if not ad_path.is_dir():
-                continue
-            # Require at least one Phase 3 source file
             exts = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".patch"}
-            has_any = any(
-                f.is_file() and f.suffix.lower() in exts
-                for f in ad_path.rglob("*")
-            )
+            candidate_dirs = []
+
+            # Primary: explicit page-level artifact_dir.
+            ad = fm.get("artifact_dir")
+            if ad:
+                candidate_dirs.append(WIKI_ROOT / ad)
+
+            # Fallback 1: conventional bundle locations per page type.
+            # A source-blog's extracted code lives at artifacts/blogs/<slug>/code/;
+            # a source-contest's reconstructed bundles live under
+            # artifacts/contests/<contest>/<problem>/submissions/**.
+            # This lets --has-code still work for pages whose artifact_dir
+            # hasn't been backfilled yet (Codex R8 finding #1).
+            slug = str(fm.get("id", "")).replace("blog-", "")
+            if p["_ptype"] == "source-blog":
+                candidate_dirs.append(WIKI_ROOT / "artifacts" / "blogs" / Path(path).stem / "code")
+            elif p["_ptype"] == "source-contest":
+                contest_dir_name = Path(path).parent.name
+                problem_stem = Path(path).stem
+                candidate_dirs.append(WIKI_ROOT / "artifacts" / "contests" / contest_dir_name / problem_stem)
+
+            # Fallback 2: for source-pr pages, infer the conventional
+            # artifacts/prs/<repo-short>/PR-<N>/ location from frontmatter
+            # repo+pr fields.
+            if p["_ptype"] == "source-pr" and fm.get("repo") and fm.get("pr"):
+                repo_short = str(fm["repo"]).split("/")[-1].lower()
+                candidate_dirs.append(WIKI_ROOT / "artifacts" / "prs" / repo_short / f"PR-{fm['pr']}")
+
+            has_any = False
+            for cand in candidate_dirs:
+                if not cand.is_dir():
+                    continue
+                for f in cand.rglob("*"):
+                    if f.is_file() and f.suffix.lower() in exts:
+                        has_any = True
+                        break
+                if has_any:
+                    break
+
             if not has_any:
                 continue
 

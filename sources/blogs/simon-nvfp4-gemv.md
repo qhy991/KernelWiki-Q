@@ -1,12 +1,22 @@
 ---
 id: blog-simon-nvfp4-gemv
-title: "NVFP4 GEMV and Improved NVFP4 GEMV"
+title: NVFP4 GEMV and Improved NVFP4 GEMV
 author: Simon Veitner
 url: https://veitner.bearblog.dev/nvfp4-gemv/
 source_category: community-note
-architectures: [sm100]
-tags: [nvfp4, gemv, fp4, block-scale, cute-dsl, vectorized-loads, register-reuse, batched-gemv]
+architectures:
+- sm100
+tags:
+- nvfp4
+- gemv
+- fp4
+- block-scale
+- cute-dsl
+- vectorized-loads
+- register-reuse
+- batched-gemv
 retrieved_at: 2026-04-17
+artifact_dir: artifacts/blogs/simon-nvfp4-gemv/code
 ---
 
 # NVFP4 GEMV and Improved NVFP4 GEMV (Simon Veitner)

@@ -122,3 +122,11 @@ files:
   mode: verbatim
   upstream_path: include/flashinfer/attention/blackwell/kernel/sm100_mla_tile_scheduler.hpp
   sha256: e1db9b47e7326ba0cc9579a1f51c80596ca220030211e28647138ddfbf97365e
+- local_path: key-files/flashinfer/triton/format_conversion.py
+  role: upstream-file
+  mode: verbatim
+  upstream_path: flashinfer/triton/format_conversion.py
+  upstream_sha: 71002782fe1b63fd091c6178929258be8d885dd1
+  sha256: 5e41c1a495a4b523654264c5a74ab17544118f4ba1cc25cc3c0f9e294b6f5fff
+  captured_at_base_sha_note: PR-1039 deletes this file. Captured verbatim at the PR's
+    base SHA (pre-merge) so users can inspect the pre-deletion state locally.

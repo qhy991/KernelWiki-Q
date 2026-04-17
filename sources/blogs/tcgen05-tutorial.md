@@ -1,12 +1,23 @@
 ---
 id: blog-tcgen05-tutorial
-title: "tcgen05 for dummies"
+title: tcgen05 for dummies
 author: Gau Nernst
 url: https://gau-nernst.github.io/tcgen05/
 source_category: community-note
-architectures: [sm100]
-tags: [tcgen05, tmem, swizzling, pipeline-stages, persistent-kernel, warp-specialization, mbarrier, cuda-cpp, ptx]
+architectures:
+- sm100
+tags:
+- tcgen05
+- tmem
+- swizzling
+- pipeline-stages
+- persistent-kernel
+- warp-specialization
+- mbarrier
+- cuda-cpp
+- ptx
 retrieved_at: 2026-04-16
+artifact_dir: artifacts/blogs/tcgen05-tutorial/code
 ---
 
 ## Summary

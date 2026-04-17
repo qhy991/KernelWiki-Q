@@ -54,6 +54,7 @@ submissions:
   code_unavailable_reason: Amandeep's PTX-level per-K specialization kernel was shared
     in the GPU Mode Discord problem-1 thread; author has not republished to a public
     platform at collection time
+artifact_dir: artifacts/contests/gpu-mode-nvfp4/problem-1-gemv
 ---
 
 # Problem 1: NVFP4 Batched GEMV

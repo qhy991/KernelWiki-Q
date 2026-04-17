@@ -1,12 +1,20 @@
 ---
 id: blog-gated-delta-net
-title: "Gated Delta Networks"
+title: Gated Delta Networks
 author: NVlabs
 url: https://github.com/NVlabs/GatedDeltaNet
 source_category: benchmark-blog
-architectures: [sm90, sm100]
-tags: [gated-delta-net, linear-attention, attention, triton, chunk-parallelism]
+architectures:
+- sm90
+- sm100
+tags:
+- gated-delta-net
+- linear-attention
+- attention
+- triton
+- chunk-parallelism
 retrieved_at: 2026-04-16
+artifact_dir: artifacts/blogs/gated-delta-net/code
 ---
 
 ## Summary

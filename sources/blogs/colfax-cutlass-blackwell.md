@@ -1,12 +1,19 @@
 ---
 id: blog-colfax-cutlass
-title: "Colfax CUTLASS Tutorial: GEMM Kernels Using Tensor Memory for Blackwell"
+title: 'Colfax CUTLASS Tutorial: GEMM Kernels Using Tensor Memory for Blackwell'
 author: Colfax Research
 url: https://research.colfax-intl.com/cutlass-tutorial-writing-gemm-kernels-using-tmem-for-nvidia-blackwell-gpus/
 source_category: community-note
-architectures: [sm100]
-tags: [tcgen05, tmem, cute-dsl, warp-specialization, 2sm-cooperative]
+architectures:
+- sm100
+tags:
+- tcgen05
+- tmem
+- cute-dsl
+- warp-specialization
+- 2sm-cooperative
 retrieved_at: 2026-04-16
+artifact_dir: artifacts/blogs/colfax-cutlass-blackwell/code
 ---
 
 ## Summary
