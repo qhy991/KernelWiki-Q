@@ -5,7 +5,7 @@ author: Gau Nernst
 url: https://gau-nernst.github.io/tcgen05/
 source_category: community-note
 architectures: [sm100]
-tags: [tcgen05, tmem, swizzling, pipeline-stages, persistent-kernel, warp-specialization, mbarrier]
+tags: [tcgen05, tmem, swizzling, pipeline-stages, persistent-kernel, warp-specialization, mbarrier, cuda-cpp, ptx]
 retrieved_at: 2026-04-16
 ---
 

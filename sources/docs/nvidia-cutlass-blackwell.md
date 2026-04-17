@@ -4,7 +4,7 @@ title: "NVIDIA CUTLASS 4.x Blackwell Support"
 url: https://docs.nvidia.com/cutlass/latest/CHANGELOG.html
 source_category: official-doc
 architectures: [sm100, sm100a]
-tags: [tcgen05, tmem, tma, clc, 2sm-cooperative, nvfp4, fp8, fp4, fp6, block-scale]
+tags: [tcgen05, tmem, tma, clc, 2sm-cooperative, nvfp4, fp8, fp4, fp6, block-scale, cute-dsl]
 retrieved_at: 2026-04-16
 ---
 
