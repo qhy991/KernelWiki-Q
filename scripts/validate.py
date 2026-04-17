@@ -20,8 +20,15 @@ REPRO_ORDER = ["concept", "pseudocode", "snippet", "runnable", "benchmarked"]
 FILE_SIZE_CAP_BYTES = 1 * 1024 * 1024
 BUNDLE_SIZE_CAP_BYTES = 5 * 1024 * 1024
 
-# Phase 3 source-file extensions that must live in an asset bundle (AC-2)
-ASSET_SOURCE_EXTS = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".patch", ".pyx", ".inl"}
+# Phase 3 source-file extensions that must live in an asset bundle (AC-2).
+# `.txt` was added in R23 to cover extract_blog_code.py's unlabeled-fence
+# extraction fallback (R20). Bundles like artifacts/blogs/
+# amandeep-nvfp4-attempts/code/*.txt are real source assets that must be
+# subject to the same orphan-detection + manifest-drift checks as .cu /
+# .py / etc. Without .txt here, find_orphan_source_files() and
+# validate_bundle()'s drift scan would silently pass stale or
+# undeclared text snippets in the four R20 blog bundles.
+ASSET_SOURCE_EXTS = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".patch", ".pyx", ".inl", ".txt"}
 
 
 def load_yaml_file(path):
