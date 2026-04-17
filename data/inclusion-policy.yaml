@@ -1,0 +1,79 @@
+## Inclusion Policy for Phase 3 Code Capture
+## Consumed by scripts/compute_core_prs.py
+##
+## Two separate lanes (CuTe DSL and Triton) are classified with different
+## criteria because Triton on SM100 has no direct tcgen05/TMEM access
+## (see wiki/languages/triton-blackwell.md), so Triton's useful scope is
+## narrower than CuTe DSL's.
+
+cute-dsl:
+  description: |
+    CuTe DSL is a first-class Blackwell code lane. Every PR tagged cute-dsl
+    (in tags or languages) that touches kernel or example directories is
+    captured. CuTe DSL tutorial PRs are captured even when the PR is
+    primarily documentation, because the tutorial code itself is the
+    teaching material.
+
+  capture_criteria:
+    # PR must satisfy at least one of these
+    - languages_contains: cute-dsl
+    - tags_contains: cute-dsl
+    - changed_paths_match:
+        - "**/cute/**"
+        - "**/cutlass.cute.**"
+        - "**/examples/cute_dsl/**"
+        - "**/examples/python/CuTeDSL/**"
+        - "**/tools/cute/**"
+
+  skip_criteria:
+    # Even when capture_criteria matches, skip if
+    - changed_paths_match_only:
+        - "docs/**"
+        - "**/CHANGELOG*"
+        - "**/release_notes*"
+
+  examples:
+    captured:
+      - "pr-cutlass-3106"  # CuTe DSL tutorial / tutorial-fix PRs
+    skipped:
+      - "PRs that only touch CUTLASS docs and happen to mention CuTe"
+
+triton:
+  description: |
+    Triton is a scoped Blackwell lane. On SM100, Triton lacks direct
+    tcgen05/TMEM access, so pure-Triton kernels rarely reach peak. We
+    capture Triton PRs only in three sub-scopes that remain genuinely
+    useful on Blackwell.
+
+  capture_criteria:
+    # PR must satisfy at least one of these sub-scopes
+    - sub_scope: memory-bound-kernel
+      match:
+        languages_contains: triton
+        symptoms_intersects: [memory-bound, low-sm-utilization]
+    - sub_scope: sm100-integration
+      match:
+        languages_contains: triton
+        architectures_contains: sm100
+        changed_paths_match:
+          - "**/triton_kernels/**"
+          - "**/triton/**"
+    - sub_scope: backend-fallback
+      match:
+        languages_contains: triton
+        description_contains_any:
+          - "fallback"
+          - "SM100 path"
+          - "when cuBLAS/CUTLASS is unavailable"
+
+  skip_criteria:
+    - pure_hopper_only: "languages_contains triton AND architectures_contains_only sm90"
+    - runtime_config_only: "changed_paths_match_only ['**/config/**', '**/__init__.py']"
+
+  examples:
+    captured:
+      - "Triton PRs delivering FP8 memory-bound attention on B200"
+      - "Triton PRs wiring new SM100 backend dispatch"
+    skipped:
+      - "Pure SM90/Hopper Triton tuning PRs with no Blackwell relevance"
+      - "Triton runtime config-file-only PRs"
