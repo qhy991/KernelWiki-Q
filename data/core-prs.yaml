@@ -8,8 +8,8 @@ sources:
 - cute-dsl-tutorial
 - triton-in-policy
 - allowlist
-total_captured: 41
-checksum_sha256: a1a1e21608f8bf48360955a352b41b548def7efa9cb0f16f352661623a8ff50e
+total_captured: 58
+checksum_sha256: 6f2b75822132dc1d913c752978ad012cbf14d87d067c485562a93b0964597ed3
 prs:
 - id: pr-cutlass-2139
   source_of_inclusion: wiki-graph-closure
@@ -57,6 +57,22 @@ prs:
   source_of_inclusion: triton-in-policy
 - id: pr-flashinfer-983
   source_of_inclusion: triton-in-policy
+- id: pr-pytorch-157241
+  source_of_inclusion: triton-in-policy
+- id: pr-pytorch-158646
+  source_of_inclusion: triton-in-policy
+- id: pr-pytorch-163388
+  source_of_inclusion: triton-in-policy
+- id: pr-pytorch-167020
+  source_of_inclusion: triton-in-policy
+- id: pr-pytorch-170190
+  source_of_inclusion: triton-in-policy
+- id: pr-pytorch-171129
+  source_of_inclusion: triton-in-policy
+- id: pr-pytorch-176495
+  source_of_inclusion: triton-in-policy
+- id: pr-sglang-20305
+  source_of_inclusion: triton-in-policy
 - id: pr-sglang-20910
   source_of_inclusion: triton-in-policy
 - id: pr-sglang-21019
@@ -71,6 +87,12 @@ prs:
   source_of_inclusion: contest-reference
 - id: pr-sglang-21428
   source_of_inclusion: cute-dsl-tutorial
+- id: pr-sglang-21780
+  source_of_inclusion: triton-in-policy
+- id: pr-sglang-22079
+  source_of_inclusion: triton-in-policy
+- id: pr-sglang-22323
+  source_of_inclusion: triton-in-policy
 - id: pr-vllm-16032
   source_of_inclusion: wiki-graph-closure
 - id: pr-vllm-22738
@@ -79,16 +101,28 @@ prs:
   source_of_inclusion: wiki-graph-closure
 - id: pr-vllm-36728
   source_of_inclusion: cute-dsl-tutorial
+- id: pr-vllm-37054
+  source_of_inclusion: triton-in-policy
+- id: pr-vllm-37128
+  source_of_inclusion: triton-in-policy
 - id: pr-vllm-37217
   source_of_inclusion: cute-dsl-tutorial
 - id: pr-vllm-37303
   source_of_inclusion: wiki-graph-closure
 - id: pr-vllm-37759
   source_of_inclusion: cute-dsl-tutorial
+- id: pr-vllm-37940
+  source_of_inclusion: triton-in-policy
 - id: pr-vllm-38050
   source_of_inclusion: cute-dsl-tutorial
 - id: pr-vllm-38251
   source_of_inclusion: cute-dsl-tutorial
+- id: pr-vllm-38794
+  source_of_inclusion: triton-in-policy
+- id: pr-vllm-39007
+  source_of_inclusion: triton-in-policy
+- id: pr-vllm-39088
+  source_of_inclusion: triton-in-policy
 - id: pr-vllm-39644
   source_of_inclusion: cute-dsl-tutorial
 - id: pr-vllm-39752

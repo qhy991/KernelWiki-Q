@@ -1,0 +1,24 @@
+origin_url: https://github.com/pytorch/pytorch/pull/163388
+upstream_repo: pytorch/pytorch
+upstream_sha: 7cadf8ac
+license: inherits-from-upstream
+retrieved_at: '2026-04-17'
+asset_mode: verbatim
+size_cap_truncated: false
+generated_by: scripts/fetch_pr_diff.py
+source_pr_id: pr-pytorch-163388
+files:
+- local_path: diff.patch
+  role: pr-diff
+  mode: upstream-patch
+  sha256: cc049cc43381b2b0e84bf3bd29a8ad1152498ef48a76851fe5081fb95ee92ac9
+- local_path: key-files/torch/_inductor/runtime/triton_heuristics.py
+  role: upstream-file
+  mode: verbatim
+  upstream_path: torch/_inductor/runtime/triton_heuristics.py
+  sha256: 0dd634ba30beddd0a4ea6f4ed0bdaf24ecc4d92071e0bc11ad4b070715157662
+- local_path: key-files/torch/csrc/inductor/aoti_runtime/sycl_runtime_wrappers.h
+  role: upstream-file
+  mode: verbatim
+  upstream_path: torch/csrc/inductor/aoti_runtime/sycl_runtime_wrappers.h
+  sha256: 5a033a9734bf82f88beff9f87ed9b19ea30decd74febf12dffa991a472d483fb

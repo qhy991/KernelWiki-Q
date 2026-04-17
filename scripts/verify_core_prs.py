@@ -9,8 +9,12 @@ Modes:
 Exit codes:
   0 — every committed manifest is byte-equal to a fresh in-memory derivation
       (and, in --strict, every merge_sha prefix-matches upstream)
-  1 — mismatch or upstream-state problem
-  2 — invocation error (missing inputs, no gh, etc.)
+  1 — content-level problem: manifest drift, missing generated file, or
+      (in --strict) a recorded merge_sha that does not prefix-match upstream
+  2 — environment / invocation failure: missing inputs, no gh CLI, network
+      unreachable, gh unauthenticated, rate-limited, etc. Reserved for
+      situations where the verifier could not actually complete the check,
+      so callers know the content verdict is inconclusive, not a fail.
 
 Runs in fully read-only sandboxes: the reproducibility check imports
 compute_core_prs.compute_manifests() directly and holds the regenerated
@@ -27,19 +31,35 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CORE_PATH = REPO_ROOT / "data" / "core-prs.yaml"
 
-# Import the in-memory regenerator.
+# Import the in-memory regenerator and the shared env-vs-content error
+# machinery from verify_verbatim. Reusing the existing EnvError class and
+# _ENV_ERROR_HINTS vocabulary keeps the two verifiers consistent about
+# which gh failures are environmental (exit 2) versus content-level (exit 1).
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 import compute_core_prs  # noqa: E402
+from verify_verbatim import EnvError, _looks_like_env_error  # noqa: E402
 
 
 def run_gh(args):
+    """Run gh CLI. Raises EnvError for env/network/auth failures; raises
+    RuntimeError for anything else gh rejects (e.g. PR genuinely not found).
+    Mirrors the contract in scripts/verify_verbatim.py.
+    """
     try:
-        res = subprocess.run(["gh"] + list(args), stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        res = subprocess.run(
+            ["gh"] + list(args),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            check=True,
+        )
         return res.stdout
     except FileNotFoundError:
-        raise RuntimeError("gh CLI not found")
+        raise EnvError("gh CLI not found; install from https://cli.github.com/")
     except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"gh {' '.join(args)} failed: {e.stderr.decode(errors='replace')}")
+        stderr_text = e.stderr.decode(errors="replace")
+        if _looks_like_env_error(stderr_text):
+            raise EnvError(f"gh {' '.join(args)} environment failure: {stderr_text.strip()[:200]}")
+        raise RuntimeError(f"gh {' '.join(args)} failed: {stderr_text.strip()[:200]}")
 
 
 def main():
@@ -150,7 +170,8 @@ def main():
 
     # --strict: resolve merge_sha via gh api
     if args.strict:
-        issues = 0
+        issues = 0          # content-level findings (exit 1)
+        env_failures = 0    # environment / connectivity (exit 2)
         pr_entries = (fresh or {}).get("prs") or []
         # Load sources/prs/**/*.md to find each PR's merge_sha + repo
         sources_prs = {}
@@ -209,10 +230,30 @@ def main():
                             f"upstream merge_commit_sha={upstream_merge[:12]}... or head.sha={upstream_head[:12]}..."
                         )
                         issues += 1
+            except EnvError as ex:
+                # Offline / unauthenticated / rate-limited / DNS unreachable.
+                # These are environment failures, not content drift, so they
+                # must surface via the exit-2 contract instead of being
+                # conflated with real merge-SHA mismatches (exit 1).
+                print(f"  ENV:  {pid}: gh unreachable: {ex}", file=sys.stderr)
+                env_failures += 1
             except RuntimeError as ex:
                 print(f"  WARN: {pid}: gh fetch failed: {ex}")
                 issues += 1
 
+        # Environment failures take precedence over content issues: if we
+        # could not reach GitHub at all, the content check is inconclusive,
+        # so we must not claim the manifests are bad (exit 1). Exit 2
+        # signals "invocation / environment failure" per the documented
+        # contract, matching scripts/verify_verbatim.py.
+        if env_failures:
+            print(
+                f"\nSTRICT inconclusive: {env_failures} environment/connectivity "
+                f"failure(s) while resolving merge_sha via gh api. "
+                f"Re-run with network + authenticated gh to complete verification.",
+                file=sys.stderr,
+            )
+            sys.exit(2)
         if issues:
             print(f"\n{issues} strict-mode flag(s).")
             sys.exit(1)

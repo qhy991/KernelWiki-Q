@@ -157,11 +157,33 @@ def apply_triton_policy(policy, pr):
     # sm100-integration
     if "sm100" in archs:
         from fnmatch import fnmatch
-        integ_globs = ["**/triton_kernels/**", "**/triton/**"]
+        # Directory-scoped patterns catch files living under a triton tree,
+        # and basename-scoped patterns catch Triton backend-dispatch files
+        # like vllm/v1/attention/backends/triton_attn.py or
+        # vllm/v1/attention/ops/triton_reshape_and_cache_flash.py that sit
+        # outside any triton/ directory but are unambiguously Triton code.
+        integ_globs = [
+            "**/triton_kernels/**",
+            "**/triton/**",
+            "**/triton_*.py",
+            "**/*_triton.py",
+            "**/*_triton_*.py",
+        ]
         if any(fnmatch(p, g) for p in changed_paths for g in integ_globs):
             return True, None
-    # backend-fallback (heuristic string match)
-    for kw in ("fallback", "sm100 path", "cutlass is unavailable"):
+    # backend-fallback (heuristic string match). Include spaced and
+    # hyphenated variants because upstream titles use "Fall back to triton
+    # MOE" (pr-sglang-21780) as commonly as the compound "fallback".
+    fallback_keywords = (
+        "fallback",
+        "fall back",
+        "fall-back",
+        "falls back",
+        "falling back",
+        "sm100 path",
+        "cutlass is unavailable",
+    )
+    for kw in fallback_keywords:
         if kw in desc:
             return True, None
 

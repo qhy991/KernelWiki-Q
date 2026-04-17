@@ -4,8 +4,8 @@
 lane: triton
 generated_by: scripts/compute_core_prs.py
 total: 42
-captured: 7
-skipped: 35
+captured: 24
+skipped: 18
 prs:
 - id: pr-flashinfer-1025
   captured: true
@@ -22,17 +22,14 @@ prs:
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-pytorch-157241
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-pytorch-157752
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-pytorch-158646
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-pytorch-163388
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-pytorch-163583
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
@@ -40,29 +37,24 @@ prs:
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-pytorch-167020
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-pytorch-170112
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-pytorch-170190
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-pytorch-171129
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-pytorch-175091
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-pytorch-176495
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-pytorch-180470
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-sglang-20305
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-sglang-20910
   captured: true
 - id: pr-sglang-21019
@@ -82,32 +74,26 @@ prs:
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-sglang-21780
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-sglang-21888
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-sglang-22079
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-sglang-22323
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-vllm-36599
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-vllm-37054
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-vllm-37128
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-vllm-37199
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-vllm-37940
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-vllm-37948
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
@@ -118,11 +104,8 @@ prs:
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-vllm-38794
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-vllm-39007
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true
 - id: pr-vllm-39088
-  captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  captured: true

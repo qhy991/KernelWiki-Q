@@ -1,0 +1,14 @@
+origin_url: https://github.com/sgl-project/sglang/pull/21780
+upstream_repo: sgl-project/sglang
+upstream_sha: f60f2ccc
+license: inherits-from-upstream
+retrieved_at: '2026-04-17'
+asset_mode: verbatim
+size_cap_truncated: false
+generated_by: scripts/fetch_pr_diff.py
+source_pr_id: pr-sglang-21780
+files:
+- local_path: diff.patch
+  role: pr-diff
+  mode: upstream-patch
+  sha256: fa3ec36094f94ebecca5aaa9303428a114ccffcd08fbb401957ffa2ea7f5a9ac

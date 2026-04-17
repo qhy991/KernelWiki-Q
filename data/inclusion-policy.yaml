@@ -55,14 +55,32 @@ triton:
       match:
         languages_contains: triton
         architectures_contains: sm100
+        # Directory-scoped patterns catch files under a triton/ or
+        # triton_kernels/ tree. The basename-scoped patterns catch Triton
+        # backend-dispatch files (e.g. vllm/v1/attention/backends/
+        # triton_attn.py, vllm/v1/attention/ops/triton_reshape_and_cache_
+        # flash.py) that live outside any triton/ directory but are
+        # unambiguously Triton code. Widened in Round 17 after Codex
+        # flagged pr-vllm-37940 as a concrete miss.
         changed_paths_match:
           - "**/triton_kernels/**"
           - "**/triton/**"
+          - "**/triton_*.py"
+          - "**/*_triton.py"
+          - "**/*_triton_*.py"
     - sub_scope: backend-fallback
       match:
         languages_contains: triton
+        # Match spaced and hyphenated wording variants because upstream
+        # titles routinely use "Fall back to triton MOE"
+        # (pr-sglang-21780) alongside the compound "fallback". Widened in
+        # Round 17.
         description_contains_any:
           - "fallback"
+          - "fall back"
+          - "fall-back"
+          - "falls back"
+          - "falling back"
           - "SM100 path"
           - "when cuBLAS/CUTLASS is unavailable"
 
