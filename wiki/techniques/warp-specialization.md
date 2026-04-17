@@ -58,42 +58,56 @@ blackwell_gemm_warp_specialized(
     half* smem_A = reinterpret_cast<half*>(smem);
     half* smem_B = reinterpret_cast<half*>(smem + SMEM_A_SIZE);
 
-    // mbarrier pairs: producer signals "data ready", consumer signals "buffer free"
+    // mbarrier pairs: TMA hardware signals "data ready", MMA signals "buffer free"
     __shared__ uint64_t mbar_data_ready[NUM_STAGES];
     __shared__ uint64_t mbar_buffer_free[NUM_STAGES];
-    // MMA→epilogue handoff barrier (MMA warp arrives, epilogue warps wait)
+    // MMA→epilogue handoff barrier
     __shared__ uint64_t mbar_acc_complete;
+    // Phase tracking: mbarriers alternate parity on each reuse cycle
+    int phase_data[NUM_STAGES];
+    int phase_free[NUM_STAGES];
 
     if (warp_id == 0) {
-        // Initialize all mbarriers (only one thread needed)
         if (lane_id == 0) {
             for (int s = 0; s < NUM_STAGES; s++) {
-                mbarrier_init(&mbar_data_ready[s], 1);    // TMA arrival count
-                mbarrier_init(&mbar_buffer_free[s], 1);    // MMA arrival count
+                // TMA expects arrive.expect_tx → hardware completes
+                mbarrier_init(&mbar_data_ready[s], 1);
+                mbarrier_init(&mbar_buffer_free[s], 1);
             }
-            mbarrier_init(&mbar_acc_complete, 1);          // MMA arrival count
+            mbarrier_init(&mbar_acc_complete, 1);
         }
     }
-    // CTA-wide barrier: all warps must see initialized mbarriers
+    // Initialize phase counters (all start at 0)
+    for (int s = 0; s < NUM_STAGES; s++) {
+        phase_data[s] = 0;
+        phase_free[s] = 0;
+    }
     __syncthreads();
 
     if (warp_id == 0) {
-
+        // === TMA PRODUCER WARP ===
         for (int k_tile = 0; k_tile < num_k_tiles; k_tile++) {
             int stage = k_tile % NUM_STAGES;
 
-            // Wait for consumer to release this buffer
+            // Wait for consumer to release this buffer (with phase tracking)
             if (k_tile >= NUM_STAGES) {
-                mbarrier_wait(&mbar_buffer_free[stage]);
+                mbarrier_wait_parity(&mbar_buffer_free[stage], phase_free[stage]);
+                phase_free[stage] ^= 1;  // flip parity for next reuse
             }
 
-            // Issue TMA bulk copy: global -> shared memory
+            // Set expected TX bytes, then issue TMA. TMA hardware will
+            // signal mbar_data_ready upon transfer completion.
+            // Do NOT manually arrive — that races with the async transfer.
             if (lane_id == 0) {
+                uint32_t tx_bytes = TILE_A_BYTES + TILE_B_BYTES;
+                mbarrier_arrive_expect_tx(&mbar_data_ready[stage], tx_bytes);
                 tma_copy_async(smem_A + stage * TILE_A_SIZE,
-                               &params.A[k_tile * TILE_K], TILE_A_SIZE);
+                               &params.A[k_tile * TILE_K], TILE_A_SIZE,
+                               &mbar_data_ready[stage]);
                 tma_copy_async(smem_B + stage * TILE_B_SIZE,
-                               &params.B[k_tile * TILE_K], TILE_B_SIZE);
-                mbarrier_arrive(&mbar_data_ready[stage]);
+                               &params.B[k_tile * TILE_K], TILE_B_SIZE,
+                               &mbar_data_ready[stage]);
+                // TMA hardware arrives on mbar_data_ready when transfer completes
             }
         }
 
@@ -102,10 +116,13 @@ blackwell_gemm_warp_specialized(
         for (int k_tile = 0; k_tile < num_k_tiles; k_tile++) {
             int stage = k_tile % NUM_STAGES;
 
-            // Wait for producer to fill this buffer
-            mbarrier_wait(&mbar_data_ready[stage]);
+            // Wait for TMA to complete this stage (with phase tracking)
+            mbarrier_wait_parity(&mbar_data_ready[stage], phase_data[stage]);
+            phase_data[stage] ^= 1;
 
-            // Issue tcgen05.mma -- single thread launches the instruction
+            // Critical fence: ensure TMA data visible before MMA reads SMEM
+            tcgen05_fence_after_thread_sync();
+
             if (lane_id == 0) {
                 tcgen05_mma(smem_A + stage * TILE_A_SIZE,
                             smem_B + stage * TILE_B_SIZE);
