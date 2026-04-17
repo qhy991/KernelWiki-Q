@@ -18,6 +18,7 @@ performance_claims:
     value: 9.0
     utilization: "vs FlashAttention-2 forward"
     source_id: blog-nsa
+blackwell_relevance: "Sparse attention patterns transfer directly; Blackwell's larger L2 (126MB) and higher bandwidth benefit sparse block fetches."
 ---
 
 # Native Sparse Attention (NSA)

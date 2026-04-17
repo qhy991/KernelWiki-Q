@@ -8,6 +8,7 @@ sources: [blog-nsa, blog-gated-delta-net, blog-flash-attention-4]
 reproducibility: snippet
 architectures: [sm100, sm90]
 confidence: source-reported
+blackwell_relevance: "Documents Triton limitations on SM100 (no tcgen05/TMEM access) and when to use Triton vs CuTe-DSL on Blackwell."
 ---
 
 ## Overview

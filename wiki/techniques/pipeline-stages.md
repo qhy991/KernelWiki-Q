@@ -9,6 +9,7 @@ reproducibility: snippet
 prerequisites: [hw-tma, hw-tmem]
 related: [technique-warp-specialization, technique-double-buffering, hw-tma]
 sources: [blog-tcgen05-tutorial, blog-modular-blackwell, doc-nvidia-tuning-guide]
+blackwell_relevance: "Same mbarrier pattern on both architectures; Blackwell adds tcgen05 fence requirement between TMA and MMA."
 ---
 
 ## Overview

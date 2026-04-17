@@ -9,6 +9,7 @@ reproducibility: snippet
 prerequisites: [hw-tmem, hw-tcgen05-mma]
 related: [technique-persistent-kernels, technique-pipeline-stages, hw-tcgen05-mma]
 sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, blog-colfax-cutlass]
+blackwell_relevance: "Blackwell uses 16-warp single-thread MMA model (vs Hopper's 4-warp warp-group); fundamentally different structure."
 ---
 
 ## Overview

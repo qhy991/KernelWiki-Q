@@ -18,6 +18,7 @@ performance_claims:
     value: 10
     utilization: "vs Qwen3-32B at 32K+ context, O(n) linear complexity"
     source_id: blog-gated-delta-net
+blackwell_relevance: "Blackwell prefill kernel in progress; decode done for both SM90/SM100. TFLA uses tcgen05 PTX on Blackwell."
 ---
 
 # Gated Delta Net -- Linear Attention

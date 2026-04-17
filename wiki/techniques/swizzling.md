@@ -9,6 +9,7 @@ reproducibility: snippet
 prerequisites: [hw-tma]
 related: [hw-tma, technique-pipeline-stages, pattern-memory-bound]
 sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial]
+blackwell_relevance: "128-byte swizzling mandatory for Blackwell tcgen05 inputs; same concept on Hopper but less critical."
 ---
 
 ## Overview

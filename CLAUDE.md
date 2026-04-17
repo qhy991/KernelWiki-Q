@@ -96,7 +96,7 @@ performance_claims:
 
 - `scripts/validate.py` — Validates all frontmatter against `data/schemas.yaml`
 - `scripts/generate-indices.py` — Regenerates `queries/*.md` from frontmatter
-- Run: `python scripts/validate.py` then `python scripts/generate-indices.py`
+- Run: `python3 scripts/validate.py` then `python3 scripts/generate-indices.py`
 
 ## Scope Rules
 

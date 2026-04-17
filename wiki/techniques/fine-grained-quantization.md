@@ -9,6 +9,7 @@ reproducibility: snippet
 prerequisites: [hw-nvfp4]
 related: [hw-nvfp4, kernel-deepgemm, technique-fine-grained-quantization]
 sources: [blog-deepgemm, doc-nvidia-tuning-guide]
+blackwell_relevance: "Blackwell tcgen05 has native UE8M0 block scaling; Hopper requires external CUDA core promotion (Nc=128)."
 ---
 
 ## Overview

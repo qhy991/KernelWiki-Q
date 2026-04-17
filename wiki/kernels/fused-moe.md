@@ -18,6 +18,7 @@ performance_claims:
     value: 1262
     utilization: "~56%"
     source_id: contest-flashinfer-track-a
+blackwell_relevance: "SM100 enables native FP8 block-scale MoE via tcgen05 with higher throughput; technique transfers from Hopper FP8 MoE."
 ---
 
 # Fused MoE -- FP8 Block-Scale Routing + Dual GEMM

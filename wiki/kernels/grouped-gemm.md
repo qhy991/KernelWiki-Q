@@ -18,6 +18,7 @@ performance_claims:
     value: 11.2
     utilization: "compute-bound"
     source_id: contest-gpumode-p4
+blackwell_relevance: "SM100 CLC enables dynamic tile scheduling critical for variable-M grouped GEMM in MoE workloads."
 ---
 
 # Grouped GEMM for MoE

@@ -201,9 +201,15 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids):
                 f"expected '{constraints['type']}' for {page_type}"
             )
 
-    # Check blackwell_relevance required for migration pages
-    if page_type == "wiki-migration" and "blackwell_relevance" not in fm:
-        errors.append(f"{rel}: migration page missing 'blackwell_relevance'")
+    # Check blackwell_relevance required for any wiki page with sm90 but not sm100
+    # (Blackwell-first scope: Hopper content must justify its inclusion)
+    if page_type.startswith("wiki-"):
+        archs = fm.get("architectures", [])
+        if isinstance(archs, list) and "sm90" in archs and "blackwell_relevance" not in fm:
+            errors.append(
+                f"{rel}: page includes sm90 architecture but missing "
+                f"'blackwell_relevance' (required by Blackwell-first scope)"
+            )
 
     # Check performance_claims structure (including shape and numeric value)
     if "performance_claims" in fm and isinstance(fm["performance_claims"], list):
