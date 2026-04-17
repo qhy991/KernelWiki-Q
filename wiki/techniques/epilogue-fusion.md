@@ -126,12 +126,14 @@ __device__ void mma_epilogue_overlap(
             int tmem_col_offset = buf * 256;
             epilogue_store(params, t, tmem_col_offset, warp_id);
 
-            // Signal MMA that this buffer can be reused
-            if (warp_id == 2) {  // Only one warp needs to signal
+            // ALL epilogue warps must finish reading TMEM before MMA reuses
+            // the buffer. Each epilogue warp arrives on mbar_epi_done;
+            // mbar_epi_done is initialized with count = NUM_EPILOGUE_WARPS.
+            // MMA warp waits on this mbarrier before writing to this half.
+            if (lane_id == 0) {
                 mbarrier_arrive(&mbar_epi_done[buf]);
             }
-            // Barrier to ensure all epilogue warps finish before signal
-            // (In practice, use a separate intra-epilogue sync)
+            // mbar_epi_done[buf] fires only after ALL epilogue warps arrive
         }
     }
 }

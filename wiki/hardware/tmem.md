@@ -69,18 +69,23 @@ TMEM is **explicitly managed** by the programmer. There is no automatic allocati
 ### Allocation
 
 ```cuda
-__device__ uint32_t tmem_alloc(uint32_t num_cols) {
-    uint32_t tmem_addr;
+// Shared storage for CTA-wide broadcast of TMEM address
+__shared__ uint32_t s_tmem_addr;
+
+__device__ uint32_t tmem_alloc_cta(uint32_t num_cols) {
+    // Only thread 0 allocates; result must reach ALL warps in the CTA.
+    // __shfl_sync is warp-local — it cannot broadcast across warps.
     if (threadIdx.x == 0) {
+        uint32_t addr;
         asm volatile(
             "tcgen05.alloc.cta_group::1.sync.aligned.b32 %0, %1;"
-            : "=r"(tmem_addr)
+            : "=r"(addr)
             : "r"(num_cols)
         );
+        s_tmem_addr = addr;
     }
-    // Broadcast tmem_addr to all threads
-    tmem_addr = __shfl_sync(0xFFFFFFFF, tmem_addr, 0);
-    return tmem_addr;
+    __syncthreads();  // All warps now see s_tmem_addr
+    return s_tmem_addr;
 }
 ```
 

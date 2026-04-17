@@ -138,30 +138,44 @@ struct PersistentTileSchedulerSm100 {
         __syncthreads();
     }
 
+    // Shared storage for CTA-wide CLC result broadcast
+    // __shfl_sync is warp-local and cannot reach warps 1-15.
+    struct SharedClcState {
+        int tile_m, tile_n;
+        int valid;       // 1 = got tile, 0 = no more work
+        int cancelled;
+    };
+
     // Get next tile assignment from CLC
     CUTLASS_DEVICE static bool get_next_tile(
         void* clc_smem_buffer,
+        SharedClcState& shared_clc,
         int& tile_m,
         int& tile_n)
     {
-        bool valid = false;
         if (threadIdx.x == 0) {
-            valid = clc_query_tile(clc_smem_buffer, tile_m, tile_n);
+            int m, n;
+            bool v = clc_query_tile(clc_smem_buffer, m, n);
+            shared_clc.tile_m = m;
+            shared_clc.tile_n = n;
+            shared_clc.valid  = v ? 1 : 0;
         }
-        // Broadcast tile coordinates to all threads
-        tile_m = __shfl_sync(0xFFFFFFFF, tile_m, 0);
-        tile_n = __shfl_sync(0xFFFFFFFF, tile_n, 0);
-        valid  = __shfl_sync(0xFFFFFFFF, valid, 0);
-        return valid;
+        __syncthreads();  // All warps see the result
+        tile_m = shared_clc.tile_m;
+        tile_n = shared_clc.tile_n;
+        return shared_clc.valid != 0;
     }
 
     // Try to cancel the CTA when no more work
-    CUTLASS_DEVICE static bool try_cancel(void* clc_smem_buffer) {
-        bool cancelled = false;
+    CUTLASS_DEVICE static bool try_cancel(
+        void* clc_smem_buffer,
+        SharedClcState& shared_clc)
+    {
         if (threadIdx.x == 0) {
-            cancelled = clc_try_cancel(clc_smem_buffer);
+            shared_clc.cancelled = clc_try_cancel(clc_smem_buffer) ? 1 : 0;
         }
-        return __shfl_sync(0xFFFFFFFF, cancelled, 0);
+        __syncthreads();
+        return shared_clc.cancelled != 0;
     }
 };
 ```

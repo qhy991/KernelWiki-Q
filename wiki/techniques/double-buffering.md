@@ -104,14 +104,15 @@ __device__ void tmem_double_buffer_mainloop(
                 }
             }
 
-            // Signal MMA that buffer is drained
-            // Use __syncwarp() per epilogue warp, then one warp signals mbarrier.
-            // NOTE: Do NOT use __syncthreads() here — producer/MMA warps are
-            // in different branches and would deadlock.
-            __syncwarp();
-            if (warp_id == 2 && lane_id == 0) {
+            // All epilogue warps must finish reading TMEM before the MMA
+            // warp can overwrite this half-buffer. Each epilogue warp arrives
+            // on a shared mbarrier; the mbarrier is initialized with
+            // arrival_count = NUM_EPILOGUE_WARPS (e.g. 14 for warps 2-15).
+            // The MMA warp waits on this mbarrier before reusing the buffer.
+            if (lane_id == 0) {
                 mbarrier_arrive(&mbar_acc_drained[buf]);
             }
+            // mbar_acc_drained[buf] fires only after ALL epilogue warps arrive
         }
     }
 }
