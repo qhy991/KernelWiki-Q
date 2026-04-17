@@ -4,7 +4,7 @@ title: "Not Reaching Peak FLOPS"
 type: pattern
 tags: [tcgen05, 2sm-cooperative, pipeline-stages, warp-specialization]
 symptoms: [compute-bound, low-tensor-core-utilization, pipeline-stalls]
-candidate_techniques: [technique-pipeline-stages, technique-warp-specialization, technique-epilogue-fusion]
+candidate_techniques: [hw-2sm-cooperative, technique-pipeline-stages, technique-warp-specialization, technique-epilogue-fusion, technique-software-exp]
 related: [pattern-low-sm-utilization, pattern-register-pressure]
 sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, blog-flash-attention-4]
 ---

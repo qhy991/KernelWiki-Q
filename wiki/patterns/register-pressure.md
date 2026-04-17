@@ -4,7 +4,7 @@ title: "Register Pressure — Low Occupancy"
 type: pattern
 tags: [tmem, register-reuse, warp-specialization]
 symptoms: [register-pressure, low-occupancy, register-spilling]
-candidate_techniques: [technique-warp-specialization]
+candidate_techniques: [hw-tmem, technique-warp-specialization, migration-register-to-tmem]
 related: [pattern-compute-bound, hw-tmem]
 sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial]
 ---

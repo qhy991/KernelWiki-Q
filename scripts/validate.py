@@ -211,13 +211,14 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids, code_langs):
                 if tag not in vocab:
                     errors.append(f"{rel}: '{tag}' is not a valid {tag_field} value")
 
-    # Validate candidate_techniques must use technique- prefix
+    # Validate candidate_techniques entries are known page ID prefixes
+    valid_remedy_prefixes = ("technique-", "hw-", "migration-")
     if "candidate_techniques" in fm and isinstance(fm["candidate_techniques"], list):
         for ct in fm["candidate_techniques"]:
-            if not str(ct).startswith("technique-"):
+            if not str(ct).startswith(valid_remedy_prefixes):
                 errors.append(
-                    f"{rel}: candidate_techniques entry '{ct}' must use "
-                    f"'technique-' prefix (got non-technique page ID)"
+                    f"{rel}: candidate_techniques entry '{ct}' must use one of "
+                    f"{valid_remedy_prefixes} prefixes"
                 )
 
     # Validate architectures
