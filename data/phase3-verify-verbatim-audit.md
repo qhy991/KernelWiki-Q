@@ -1,6 +1,6 @@
 # Phase 3 SHA-pinned strict verify audit log
 
-Captured: 2026-04-17T21:29:28Z (refreshed after Round 17 bundle backfill)
+Captured: 2026-04-17T21:29:28Z (refreshed after Round 17 bundle backfill; Round 19 dropped 2 diff.patch-only bundles and refetched pr-sglang-21780 via the relaxed allowlist)
 Command : `python3 scripts/verify_verbatim.py --strict`
 Exit    : 0 (documented contract: 0 = full-corpus upstream byte-match; 1 = --strict content mismatch; 2 = env failure)
 
@@ -13,15 +13,18 @@ gh version 2.90.0 (2026-04-16)
 
 ## Scope
 
-- 93 asset bundles under `artifacts/` (76 pre-R17 + 17 Triton-universe
-  PRs fetched in Round 17 after widening the sm100-integration lane and
-  the backend-fallback keyword set in `scripts/compute_core_prs.py`)
-- 309 files with `mode: verbatim` or `mode: upstream-patch` and no `size_cap_truncated` marker
+- 91 asset bundles under `artifacts/` (76 pre-R17 + 17 Triton-universe
+  PRs fetched in Round 17 + 1 Round-18 key-file backfill for
+  pr-vllm-22738 − 2 bundles dropped in Round 19 after the
+  tests/benchmarks skip tightening removed pr-sglang-20305 and
+  pr-vllm-39644 from the core set; pr-sglang-21780 refetched with
+  key-files via the R18 relaxed allowlist)
+- 312 files with `mode: verbatim` or `mode: upstream-patch` and no `size_cap_truncated` marker
 
 ## stdout
 
 ```
-Verified 93 bundle(s).
+Verified 91 bundle(s).
 All verbatim/upstream-patch assets match upstream.
 ```
 

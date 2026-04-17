@@ -4,8 +4,8 @@
 lane: cute-dsl
 generated_by: scripts/compute_core_prs.py
 total: 25
-captured: 25
-skipped: 0
+captured: 24
+skipped: 1
 prs:
 - id: pr-cutlass-2139
   captured: true
@@ -56,4 +56,6 @@ prs:
 - id: pr-vllm-38251
   captured: true
 - id: pr-vllm-39644
-  captured: true
+  captured: false
+  skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
+    fetch_pr_diff.SKIP_GLOBS)

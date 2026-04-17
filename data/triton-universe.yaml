@@ -4,8 +4,8 @@
 lane: triton
 generated_by: scripts/compute_core_prs.py
 total: 42
-captured: 24
-skipped: 18
+captured: 23
+skipped: 19
 prs:
 - id: pr-flashinfer-1025
   captured: true
@@ -17,7 +17,8 @@ prs:
   captured: true
 - id: pr-pytorch-149059
   captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
+    fetch_pr_diff.SKIP_GLOBS)
 - id: pr-pytorch-149993
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
@@ -40,21 +41,26 @@ prs:
   captured: true
 - id: pr-pytorch-170112
   captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
+    fetch_pr_diff.SKIP_GLOBS)
 - id: pr-pytorch-170190
   captured: true
 - id: pr-pytorch-171129
   captured: true
 - id: pr-pytorch-175091
   captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
+    fetch_pr_diff.SKIP_GLOBS)
 - id: pr-pytorch-176495
   captured: true
 - id: pr-pytorch-180470
   captured: false
-  skipped_reason: Triton PR outside the three in-policy sub-scopes
+  skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
+    fetch_pr_diff.SKIP_GLOBS)
 - id: pr-sglang-20305
-  captured: true
+  captured: false
+  skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
+    fetch_pr_diff.SKIP_GLOBS)
 - id: pr-sglang-20910
   captured: true
 - id: pr-sglang-21019

@@ -31,6 +31,12 @@ cute-dsl:
         - "docs/**"
         - "**/CHANGELOG*"
         - "**/release_notes*"
+    # R19 tightening: language/tag alone is insufficient. If a PR is
+    # flagged cute-dsl only via metadata (languages or tags) and none of
+    # its changed_paths match the kernel/example globs above, skip it.
+    # Previously pr-vllm-39644 (only `tests/kernels/moe/test_cutedsl_moe.py`)
+    # was captured and shipped an empty bundle after SKIP_GLOBS.
+    - language_tag_only_without_kernel_path: true
 
   examples:
     captured:
@@ -87,6 +93,11 @@ triton:
   skip_criteria:
     - pure_hopper_only: "languages_contains triton AND architectures_contains_only sm90"
     - runtime_config_only: "changed_paths_match_only ['**/config/**', '**/__init__.py']"
+    # R19 tightening: benchmark-only PRs produce empty bundles after
+    # SKIP_GLOBS in fetch_pr_diff.py, so drop them before they enter the
+    # captured core set. Concrete miss fixed: pr-sglang-20305, whose
+    # every changed_path was under benchmark/kernels/.
+    - benchmark_only: "changed_paths_match_only ['benchmark/**', '**/benchmark/**', 'benchmarks/**', '**/benchmarks/**', 'bench/**', '**/bench/**']"
 
   examples:
     captured:

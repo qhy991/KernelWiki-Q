@@ -96,6 +96,74 @@ def path_matches_any(paths, globs):
     return any(fnmatch(p, g) for p in paths for g in globs)
 
 
+# Matches scripts/fetch_pr_diff.py SKIP_GLOBS: a PR whose every changed
+# path falls under one of these globs will produce an empty key-files/
+# bundle downstream. Keep in sync with fetch_pr_diff.SKIP_GLOBS.
+_FETCH_SKIP_GLOBS = (
+    "tests/**", "**/tests/**",
+    "test/**", "**/test/**",
+    "*_test.cu", "*_test.cpp", "*_tests.py", "**/test_*.py",
+    "**/*_test.py", "**/*_tests.py",
+    "**/conftest.py",
+    "benchmark/**", "benchmarks/**", "bench/**",
+    "**/benchmark/**", "**/benchmarks/**", "**/bench/**",
+    "**/bench_*.py", "**/*_bench.py", "**/*_benchmark.py",
+    "docs/**", "**/docs/**",
+    "**/README*", "**/CHANGELOG*", "**/release_notes*",
+    "**/LICENSE*", "**/NOTICE*",
+    ".github/**", "**/.github/**",
+    "ci/**", "**/ci/**",
+)
+
+
+def _pr_bundle_has_key_files(pr_id):
+    """Return True iff artifacts/prs/<repo>/PR-<N>/key-files/ exists and
+    contains at least one file. Used as a safety override for the
+    empty-bundle skip heuristic: if a bundle already has captured key
+    files, the source page's changed_paths is almost certainly
+    incomplete (the curator listed only a subset) and trusting the
+    bundle is the correct behavior. Without this override, stale source
+    pages like pr-cutlass-2378 (source page lists only 1 test file but
+    the PR actually changes 2 kernel .hpp files) would get falsely
+    skipped by the all-paths-are-tests rule.
+    """
+    if not pr_id or not pr_id.startswith("pr-"):
+        return False
+    parts = pr_id[3:].rsplit("-", 1)
+    if len(parts) != 2:
+        return False
+    repo_short, num = parts
+    bundle = REPO_ROOT / "artifacts" / "prs" / repo_short / f"PR-{num}"
+    key_dir = bundle / "key-files"
+    if not key_dir.is_dir():
+        return False
+    try:
+        return any(key_dir.rglob("*"))
+    except OSError:
+        return False
+
+
+def all_paths_would_be_skipped_by_fetch(paths, pr_id=None):
+    """Return True iff every path in `paths` matches fetch_pr_diff's
+    SKIP_GLOBS (tests / benchmarks / docs / ci). Such a PR would ship
+    only diff.patch — no key-files/ — so capturing it just pollutes the
+    corpus. Empty `paths` returns False (no evidence of a noise PR).
+
+    Safety override: if `pr_id` is provided and a bundle already exists
+    under artifacts/prs/ with captured key files, the source page's
+    changed_paths is treated as incomplete and the PR is NOT skipped.
+    """
+    if not paths:
+        return False
+    from fnmatch import fnmatch
+    all_skip = all(any(fnmatch(p, g) for g in _FETCH_SKIP_GLOBS) for p in paths)
+    if not all_skip:
+        return False
+    if pr_id and _pr_bundle_has_key_files(pr_id):
+        return False
+    return True
+
+
 def apply_cute_dsl_policy(policy, pr):
     """Return (captured: bool, skipped_reason: str|None)."""
     rules = policy.get("cute-dsl", {}) or {}
@@ -110,9 +178,9 @@ def apply_cute_dsl_policy(policy, pr):
         if isinstance(crit, dict) and "changed_paths_match" in crit:
             cute_globs.extend(crit["changed_paths_match"])
     matches_glob = path_matches_any(changed_paths, cute_globs) if cute_globs else False
-    matches = "cute-dsl" in langs or "cute-dsl" in tags or matches_glob
+    language_tag_match = "cute-dsl" in langs or "cute-dsl" in tags
 
-    if not matches:
+    if not (language_tag_match or matches_glob):
         return False, "not a cute-dsl PR"
 
     # Skip rule: docs/CHANGELOG/release_notes only
@@ -124,6 +192,20 @@ def apply_cute_dsl_policy(policy, pr):
         from fnmatch import fnmatch
         if all(any(fnmatch(p, g) for g in skip_globs) for p in changed_paths):
             return False, "documentation-only CuTe DSL PR"
+
+    # Tightening (R19): reject PRs whose every changed path would be
+    # dropped by scripts/fetch_pr_diff.py's SKIP_GLOBS (tests,
+    # benchmarks, docs, ci). Such PRs end up with diff.patch-only
+    # bundles and contaminate the captured core set. Concrete example:
+    # pr-vllm-39644 is tagged `cute-dsl` but its only changed_path is
+    # `tests/kernels/moe/test_cutedsl_moe.py`. Pass pr_id so the helper
+    # can consult the committed bundle state and avoid false-positive
+    # skips when the source page's changed_paths is incomplete.
+    if all_paths_would_be_skipped_by_fetch(changed_paths, pr.get("id")):
+        return False, (
+            "all changed_paths are tests/benchmarks/docs "
+            "(empty bundle after fetch_pr_diff.SKIP_GLOBS)"
+        )
 
     return True, None
 
@@ -149,6 +231,19 @@ def apply_triton_policy(policy, pr):
         runtime_only_globs = ["**/config/**", "**/__init__.py"]
         if all(any(fnmatch(p, g) for g in runtime_only_globs) for p in changed_paths):
             return False, "runtime-config-only Triton PR"
+    # R19: skip PRs whose every changed path is dropped by
+    # scripts/fetch_pr_diff.py's SKIP_GLOBS (tests / benchmarks / docs /
+    # ci). The sm100-integration sub-scope would otherwise match on
+    # basename patterns like benchmark_*_triton.py even when every path
+    # lives under benchmark/, emitting a diff.patch-only bundle.
+    # Concrete case: pr-sglang-20305, where all 30+ paths are under
+    # benchmark/kernels/. Pass pr_id so the helper can consult the
+    # committed bundle state before skipping.
+    if all_paths_would_be_skipped_by_fetch(changed_paths, pr.get("id")):
+        return False, (
+            "all changed_paths are tests/benchmarks/docs "
+            "(empty bundle after fetch_pr_diff.SKIP_GLOBS)"
+        )
 
     # Sub-scope matching
     # memory-bound-kernel
