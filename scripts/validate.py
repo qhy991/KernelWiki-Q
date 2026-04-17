@@ -152,6 +152,15 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids):
                 if tag not in vocab:
                     errors.append(f"{rel}: '{tag}' is not a valid {tag_field} value")
 
+    # Validate candidate_techniques must use technique- prefix
+    if "candidate_techniques" in fm and isinstance(fm["candidate_techniques"], list):
+        for ct in fm["candidate_techniques"]:
+            if not str(ct).startswith("technique-"):
+                errors.append(
+                    f"{rel}: candidate_techniques entry '{ct}' must use "
+                    f"'technique-' prefix (got non-technique page ID)"
+                )
+
     # Validate architectures
     valid_archs = set(valid_tags.get("architectures", []))
     if "architectures" in fm and isinstance(fm["architectures"], list):

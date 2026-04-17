@@ -45,11 +45,10 @@
 
 <a id="sgl-projectsglang"></a>
 ## sgl-project/sglang
-6 PRs
+5 PRs
 
 | PR | Title | Date | Techniques | Tags |
 |-----|-------|------|------------|------|
-| [#5626](../sources/prs/sglang/PR-5626.md) | DeepEP normal support gemm-contiguous | 2025-05-08 | fine-grained-quantization, kernel-fusion | moe, gemm |
 | [#5390](../sources/prs/sglang/PR-5390.md) | Add Cutlass MLA attention backend | 2025-04-28 | warp-specialization, persistent-kernel, tile-scheduling | tcgen05, mla, moe |
 | [#5432](../sources/prs/sglang/PR-5432.md) | [perf] introduce deep gemm group_gemm_masked as gemm | 2025-04-20 | fine-grained-quantization, kernel-fusion | gemm, moe, decode |
 | [#4165](../sources/prs/sglang/PR-4165.md) | DeepGemm integrate to gemm | 2025-03-10 | jit-compilation, fine-grained-quantization | gemm, jit-compilation |
