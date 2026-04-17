@@ -1,27 +1,60 @@
 ---
 id: contest-gpumode-p1
-title: "GPU Mode NVFP4 Hackathon - Problem 1: Batched GEMV"
+title: 'GPU Mode NVFP4 Hackathon - Problem 1: Batched GEMV'
 source_category: contest-report
-architectures: [sm100, sm100a]
-tags: [nvfp4, gemv, fp4, block-scale]
-techniques: [vectorized-loads, cache-policy, register-reuse, per-k-specialization, data-reuse, register-budgeting, loop-unrolling]
-hardware_features: [nvfp4, fp4, block-scale]
-kernel_types: [batched-gemv, gemv]
-languages: [cuda-cpp, ptx, cute-dsl]
+architectures:
+- sm100
+- sm100a
+tags:
+- nvfp4
+- gemv
+- fp4
+- block-scale
+techniques:
+- vectorized-loads
+- cache-policy
+- register-reuse
+- per-k-specialization
+- data-reuse
+- register-budgeting
+- loop-unrolling
+hardware_features:
+- nvfp4
+- fp4
+- block-scale
+kernel_types:
+- batched-gemv
+- gemv
+languages:
+- cuda-cpp
+- ptx
+- cute-dsl
 url: https://github.com/gpu-mode/reference-kernels
 submissions:
-  - rank: 1
-    participant: "Simon (veitner)"
-    score: "~18.5us geomean"
-    technique: "Full PTX assembly with cache policy differentiation, byte unpacking, and aggressive register budgeting (maxrregcount=32)"
-  - rank: 2
-    participant: "yue"
-    score: "~18.5us geomean"
-    technique: "Shared B vector reads across BLOCK_M rows, PTX load/decode path, ILP optimization"
-  - rank: 3
-    participant: "Amandeep"
-    score: "~18.5us geomean"
-    technique: "PTX assembly with per-K specialization, vectorized 256-bit loads, cache bypass for streamed matrix A"
+- rank: 1
+  participant: Simon (veitner)
+  score: ~18.5us geomean
+  technique: Full PTX assembly with cache policy differentiation, byte unpacking,
+    and aggressive register budgeting (maxrregcount=32)
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 2
+  participant: yue
+  score: ~18.5us geomean
+  technique: Shared B vector reads across BLOCK_M rows, PTX load/decode path, ILP
+    optimization
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 3
+  participant: Amandeep
+  score: ~18.5us geomean
+  technique: PTX assembly with per-K specialization, vectorized 256-bit loads, cache
+    bypass for streamed matrix A
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
 ---
 
 # Problem 1: NVFP4 Batched GEMV

@@ -1,0 +1,61 @@
+## Phase 3 Definition-of-Done fixtures
+## Consumed by scripts/check_dod_fixtures.py
+##
+## Each entry encodes a user-question that the repo must answer from local
+## files only. AC-7 passes when every fixture entry has:
+##   - at least one matching file in `required_assets` globs
+##   - the matched file is >= required_min_lines long
+##   - the matched file's enclosing bundle has a mode in required_provenance_modes
+##   - all required_content_patterns regexes match across the matched files
+##
+## Authors can add more fixture entries as the corpus grows; existing entries
+## are the contractual minimum.
+
+fixtures:
+  - question: "How do I write an NVFP4 kernel on B200 (end-to-end verbatim upstream code)?"
+    required_assets:
+      - "artifacts/prs/vllm/PR-16032/key-files/csrc/quantization/fp4/*.cu"
+      - "artifacts/prs/sglang/PR-20910/key-files/**/*.cu"
+      - "artifacts/blogs/yue-nvfp4-hackathon/code/*.ptx"
+    required_min_lines: 80
+    required_provenance_modes: [verbatim, extracted]
+    required_content_patterns:
+      - "nvfp4|fp4|e2m1"
+
+  - question: "How is warp specialization structured on Blackwell (producer / consumer / epilogue)?"
+    required_assets:
+      - "artifacts/prs/flashinfer/PR-1039/key-files/include/flashinfer/attention/blackwell/collective/sm100_fmha_fwd_mainloop_tma_warpspecialized.hpp"
+      - "artifacts/prs/flashinfer/PR-1039/key-files/include/flashinfer/attention/blackwell/collective/sm100_fmha_fwd_epilogue_tma_warpspecialized.hpp"
+      - "artifacts/prs/cutlass/PR-2466/key-files/examples/77_blackwell_fmha/kernel/sm100_fmha_bwd_mla_kernel_tma_warpspecialized.hpp"
+    required_min_lines: 100
+    required_provenance_modes: [verbatim]
+    required_content_patterns:
+      - "mbarrier|pipeline"
+      - "tcgen05|tma_load|cp\\.async"
+
+  - question: "How does CUTLASS configure PersistentScheduler plus CLC (Cluster Launch Control) on SM100?"
+    required_assets:
+      - "artifacts/prs/cutlass/PR-2161/diff.patch"
+      - "artifacts/prs/cutlass/PR-2161/key-files/**/*"
+    required_min_lines: 50
+    required_provenance_modes: [verbatim]
+    required_content_patterns:
+      - "grid_dependency_control|GDC|griddepcontrol"
+
+  - question: "How does FlashAttention-4 implement software-emulated exponential and softmax rescaling?"
+    required_assets:
+      - "artifacts/prs/cutlass/PR-2466/key-files/**/*.hpp"
+    required_min_lines: 80
+    required_provenance_modes: [verbatim]
+    required_content_patterns:
+      - "softmax|exp2?|rescale|maxi"
+
+  - question: "What does a hackathon-winning NVFP4 GEMV progression look like (CuTe DSL baseline to PTX assembly)?"
+    required_assets:
+      - "artifacts/blogs/yue-nvfp4-hackathon/code/01-*.cpp"
+      - "artifacts/blogs/yue-nvfp4-hackathon/code/04-*.ptx"
+      - "artifacts/blogs/yue-nvfp4-hackathon/code/05-*.cpp"
+    required_min_lines: 8
+    required_provenance_modes: [extracted]
+    required_content_patterns:
+      - "nvfp4|fp4|scale|asm"

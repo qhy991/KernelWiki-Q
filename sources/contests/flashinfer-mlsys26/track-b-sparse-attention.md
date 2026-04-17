@@ -1,31 +1,68 @@
 ---
 id: contest-flashinfer-track-b
-title: "FlashInfer MLSys 2026 - Track B: DeepSeek V3.2 Sparse Attention"
+title: 'FlashInfer MLSys 2026 - Track B: DeepSeek V3.2 Sparse Attention'
 source_category: contest-report
-architectures: [sm100, sm100a]
-tags: [sparse-attention, mla, fp8, block-scale, decode]
-techniques: [kernel-fusion, warp-specialization, pipeline-stages, fine-grained-quantization]
-hardware_features: [tcgen05, tmem, fp8, block-scale, tma]
-kernel_types: [sparse-attention, mla, attention, decode]
-languages: [cuda-cpp, cute-dsl, triton, tilelang]
+architectures:
+- sm100
+- sm100a
+tags:
+- sparse-attention
+- mla
+- fp8
+- block-scale
+- decode
+techniques:
+- kernel-fusion
+- warp-specialization
+- pipeline-stages
+- fine-grained-quantization
+hardware_features:
+- tcgen05
+- tmem
+- fp8
+- block-scale
+- tma
+kernel_types:
+- sparse-attention
+- mla
+- attention
+- decode
+languages:
+- cuda-cpp
+- cute-dsl
+- triton
+- tilelang
 url: https://mlsys26.flashinfer.ai/
 submissions:
-  - rank: 1
-    participant: "Gemini 2.5 Pro (AI baseline)"
-    score: "0.628x avg speedup vs FlashInfer"
-    technique: "evolve agent approach; sparse indexer + attention kernel generation"
-  - rank: 2
-    participant: "GPT-5 (2025-08-07)"
-    score: "0.467x avg speedup"
-    technique: "iterative refinement targeting two-stage sparse attention"
-  - rank: 3
-    participant: "Claude Opus 4.1"
-    score: "0.456x avg speedup"
-    technique: "code generation with FlashMLA sparse as reference"
-  - rank: notable
-    participant: "FlashMLA (DeepSeek)"
-    score: "1450 TFLOPS on B200 (sparse prefill)"
-    technique: "FP8 KV cache with token-level sparsity; 656 bytes/token (512 FP8 + 16 scales + 128 RoPE)"
+- rank: 1
+  participant: Gemini 2.5 Pro (AI baseline)
+  score: 0.628x avg speedup vs FlashInfer
+  technique: evolve agent approach; sparse indexer + attention kernel generation
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 2
+  participant: GPT-5 (2025-08-07)
+  score: 0.467x avg speedup
+  technique: iterative refinement targeting two-stage sparse attention
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 3
+  participant: Claude Opus 4.1
+  score: 0.456x avg speedup
+  technique: code generation with FlashMLA sparse as reference
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: notable
+  participant: FlashMLA (DeepSeek)
+  score: 1450 TFLOPS on B200 (sparse prefill)
+  technique: FP8 KV cache with token-level sparsity; 656 bytes/token (512 FP8 + 16
+    scales + 128 RoPE)
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
 ---
 
 # Track B: DeepSeek V3.2 Sparse Attention

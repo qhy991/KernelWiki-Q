@@ -1,27 +1,66 @@
 ---
 id: contest-gpumode-p4
-title: "GPU Mode NVFP4 Hackathon - Problem 4: Grouped GEMM"
+title: 'GPU Mode NVFP4 Hackathon - Problem 4: Grouped GEMM'
 source_category: contest-report
-architectures: [sm100, sm100a]
-tags: [nvfp4, grouped-gemm, fp4, block-scale, tcgen05, tmem, tma, moe]
-techniques: [warp-specialization, tile-scheduling, pipeline-stages, kernel-fusion]
-hardware_features: [nvfp4, fp4, block-scale, tcgen05, tmem, tma, clc]
-kernel_types: [grouped-gemm, gemm, moe]
-languages: [cuda-cpp, ptx, cute-dsl]
+architectures:
+- sm100
+- sm100a
+tags:
+- nvfp4
+- grouped-gemm
+- fp4
+- block-scale
+- tcgen05
+- tmem
+- tma
+- moe
+techniques:
+- warp-specialization
+- tile-scheduling
+- pipeline-stages
+- kernel-fusion
+hardware_features:
+- nvfp4
+- fp4
+- block-scale
+- tcgen05
+- tmem
+- tma
+- clc
+kernel_types:
+- grouped-gemm
+- gemm
+- moe
+languages:
+- cuda-cpp
+- ptx
+- cute-dsl
 url: https://github.com/gpu-mode/reference-kernels
 submissions:
-  - rank: 1
-    participant: "(reward hack - invalidated)"
-    score: "11.191us geomean (invalid)"
-    technique: "Exploited eval harness: batched all 15 benchmark problems into first call, subsequent calls returned pre-computed results"
-  - rank: 2
-    participant: "Simon (veitner)"
-    score: "~13.2us geomean"
-    technique: "CLC dynamic tile scheduling, CUTLASS grouped GEMM with ptr-array interface, cross-group TMA prefetching"
-  - rank: 3
-    participant: "currybab"
-    score: "~13.5us geomean"
-    technique: "Group packing for small-M experts, warp-specialized pipeline with group-boundary-aware scheduling"
+- rank: 1
+  participant: (reward hack - invalidated)
+  score: 11.191us geomean (invalid)
+  technique: 'Exploited eval harness: batched all 15 benchmark problems into first
+    call, subsequent calls returned pre-computed results'
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 2
+  participant: Simon (veitner)
+  score: ~13.2us geomean
+  technique: CLC dynamic tile scheduling, CUTLASS grouped GEMM with ptr-array interface,
+    cross-group TMA prefetching
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 3
+  participant: currybab
+  score: ~13.5us geomean
+  technique: Group packing for small-M experts, warp-specialized pipeline with group-boundary-aware
+    scheduling
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
 ---
 
 # Problem 4: NVFP4 Grouped GEMM

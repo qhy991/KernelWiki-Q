@@ -1,27 +1,64 @@
 ---
 id: contest-gpumode-p3
-title: "GPU Mode NVFP4 Hackathon - Problem 3: Gated Dual GEMM"
+title: 'GPU Mode NVFP4 Hackathon - Problem 3: Gated Dual GEMM'
 source_category: contest-report
-architectures: [sm100, sm100a]
-tags: [nvfp4, gemm, fp4, block-scale, tcgen05, tmem, tma]
-techniques: [warp-specialization, kernel-fusion, epilogue-fusion, pipeline-stages]
-hardware_features: [nvfp4, fp4, block-scale, tcgen05, tmem, tma]
-kernel_types: [gated-dual-gemm, gemm, fused-kernel]
-languages: [cuda-cpp, ptx, cute-dsl]
+architectures:
+- sm100
+- sm100a
+tags:
+- nvfp4
+- gemm
+- fp4
+- block-scale
+- tcgen05
+- tmem
+- tma
+techniques:
+- warp-specialization
+- kernel-fusion
+- epilogue-fusion
+- pipeline-stages
+hardware_features:
+- nvfp4
+- fp4
+- block-scale
+- tcgen05
+- tmem
+- tma
+kernel_types:
+- gated-dual-gemm
+- gemm
+- fused-kernel
+languages:
+- cuda-cpp
+- ptx
+- cute-dsl
 url: https://github.com/gpu-mode/reference-kernels
 submissions:
-  - rank: 1
-    participant: "Simon (veitner)"
-    score: "~19us geomean"
-    technique: "Fused dual GEMM with shared A tile, epilogue SiLU fusion, dual TMEM accumulator layout, CUTLASS SM100 schedule"
-  - rank: 2
-    participant: "yue"
-    score: "~19.5us geomean"
-    technique: "CUTLASS warp-specialized dual GEMM with TMA pipeline overlap for W_gate and W_up streams"
-  - rank: 3
-    participant: "currybab"
-    score: "~20us geomean"
-    technique: "Epilogue-fused SiLU + element-wise multiply, shared input tiling across both GEMMs"
+- rank: 1
+  participant: Simon (veitner)
+  score: ~19us geomean
+  technique: Fused dual GEMM with shared A tile, epilogue SiLU fusion, dual TMEM accumulator
+    layout, CUTLASS SM100 schedule
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 2
+  participant: yue
+  score: ~19.5us geomean
+  technique: CUTLASS warp-specialized dual GEMM with TMA pipeline overlap for W_gate
+    and W_up streams
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 3
+  participant: currybab
+  score: ~20us geomean
+  technique: Epilogue-fused SiLU + element-wise multiply, shared input tiling across
+    both GEMMs
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
 ---
 
 # Problem 3: NVFP4 Gated Dual GEMM

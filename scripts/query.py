@@ -190,6 +190,22 @@ def filter_pages(pages, args):
             if str(fm.get("confidence", "")) != args.confidence:
                 continue
 
+        if args.has_code:
+            ad = fm.get("artifact_dir")
+            if not ad:
+                continue
+            ad_path = WIKI_ROOT / ad
+            if not ad_path.is_dir():
+                continue
+            # Require at least one Phase 3 source file
+            exts = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".patch"}
+            has_any = any(
+                f.is_file() and f.suffix.lower() in exts
+                for f in ad_path.rglob("*")
+            )
+            if not has_any:
+                continue
+
         out.append(p)
     return out
 
@@ -237,6 +253,7 @@ def main():
     parser.add_argument("--architecture", help="Filter by architecture (sm100, sm100a, sm90, sm90a)")
     parser.add_argument("--symptom", help="Filter by pattern symptom (memory-bound, register-pressure, etc.)")
     parser.add_argument("--confidence", help="Filter by confidence (verified, source-reported, inferred, experimental)")
+    parser.add_argument("--has-code", action="store_true", help="Only return pages whose artifact_dir contains at least one source file")
     parser.add_argument("--limit", type=int, default=10, help="Max results (default 10)")
     parser.add_argument("--compact", action="store_true", help="Compact one-line-per-result output")
     parser.add_argument("--paths-only", action="store_true", help="Output only file paths, one per line")

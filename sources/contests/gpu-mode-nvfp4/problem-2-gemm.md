@@ -1,27 +1,62 @@
 ---
 id: contest-gpumode-p2
-title: "GPU Mode NVFP4 Hackathon - Problem 2: NVFP4 GEMM"
+title: 'GPU Mode NVFP4 Hackathon - Problem 2: NVFP4 GEMM'
 source_category: contest-report
-architectures: [sm100, sm100a]
-tags: [nvfp4, gemm, fp4, block-scale, tcgen05, tmem, tma]
-techniques: [warp-specialization, pipeline-stages, swizzling, register-reuse]
-hardware_features: [nvfp4, fp4, block-scale, tcgen05, tmem, tma]
-kernel_types: [gemm]
-languages: [cuda-cpp, ptx, cute-dsl]
+architectures:
+- sm100
+- sm100a
+tags:
+- nvfp4
+- gemm
+- fp4
+- block-scale
+- tcgen05
+- tmem
+- tma
+techniques:
+- warp-specialization
+- pipeline-stages
+- swizzling
+- register-reuse
+hardware_features:
+- nvfp4
+- fp4
+- block-scale
+- tcgen05
+- tmem
+- tma
+kernel_types:
+- gemm
+languages:
+- cuda-cpp
+- ptx
+- cute-dsl
 url: https://github.com/gpu-mode/reference-kernels
 submissions:
-  - rank: 1
-    participant: "Simon (veitner)"
-    score: "10.807us geomean"
-    technique: "CUTLASS SM100 warp-specialized NVFP4 GEMM with tcgen05.mma, optimized TMA pipeline depth and tile scheduling"
-  - rank: 2
-    participant: "yue"
-    score: "10.914us geomean"
-    technique: "CUTLASS-based warp specialization with tuned pipeline stages, TMA async bulk loads, TMEM accumulator management"
-  - rank: 3
-    participant: "currybab"
-    score: "10.931us geomean"
-    technique: "CUTLASS KernelPtrArrayTmaWarpSpecialized1SmNvf4Sm100 schedule with custom tile size and cluster shape tuning"
+- rank: 1
+  participant: Simon (veitner)
+  score: 10.807us geomean
+  technique: CUTLASS SM100 warp-specialized NVFP4 GEMM with tcgen05.mma, optimized
+    TMA pipeline depth and tile scheduling
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 2
+  participant: yue
+  score: 10.914us geomean
+  technique: CUTLASS-based warp specialization with tuned pipeline stages, TMA async
+    bulk loads, TMEM accumulator management
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 3
+  participant: currybab
+  score: 10.931us geomean
+  technique: CUTLASS KernelPtrArrayTmaWarpSpecialized1SmNvf4Sm100 schedule with custom
+    tile size and cluster shape tuning
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
 ---
 
 # Problem 2: NVFP4 GEMM

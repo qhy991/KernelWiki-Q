@@ -83,3 +83,16 @@ def sparse_attention_fwd(Q, K, V, Output, TopK_Indices,
 - Linear attention (GatedDeltaNet, FLA)
 - Sparse attention (NSA) with irregular access
 - **NOT** for peak-FLOPS compute-bound kernels (use CuTe-DSL instead)
+
+## Blackwell Triton Examples (verbatim upstream code shipped locally)
+
+The following Triton files ship **verbatim** under `artifacts/prs/` (pinned at each PR's merge SHA). Each PR is in the `triton-in-policy` capture lane defined by `data/inclusion-policy.yaml` — i.e., SM100-integration, memory-bound, or backend-fallback scope (not pure Hopper Triton).
+
+| File | Purpose | PR |
+|---|---|---|
+| [`artifacts/prs/flashinfer/PR-1025/key-files/flashinfer/triton/format_conversion.py`](../../artifacts/prs/flashinfer/PR-1025/key-files/flashinfer/triton/format_conversion.py) | FP8 / FP16 format conversion Triton kernels for FlashInfer | flashinfer#1025 |
+| [`artifacts/prs/sglang/PR-20910/key-files/python/sglang/jit_kernel/flash_attention_v4.py`](../../artifacts/prs/sglang/PR-20910/key-files/python/sglang/jit_kernel/flash_attention_v4.py) | FA4-style JIT-compiled attention kernel on Blackwell | sglang#20910 |
+| [`artifacts/prs/sglang/PR-20910/key-files/python/sglang/jit_kernel/norm.py`](../../artifacts/prs/sglang/PR-20910/key-files/python/sglang/jit_kernel/norm.py) | Normalization kernels (memory-bound SM100 Triton) | sglang#20910 |
+| [`artifacts/prs/sglang/PR-21019/key-files/python/sglang/jit_kernel/triton/gdn_fused_proj.py`](../../artifacts/prs/sglang/PR-21019/key-files/python/sglang/jit_kernel/triton/gdn_fused_proj.py) | GatedDeltaNet fused projection (linear-attention) Triton kernel | sglang#21019 |
+
+The full 42-PR universe is enumerated in `data/triton-universe.yaml`. Entries marked `captured: false` do not ship locally because they fall outside the three in-policy sub-scopes (see the policy file for reasons).

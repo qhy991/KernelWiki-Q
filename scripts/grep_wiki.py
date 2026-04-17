@@ -19,19 +19,35 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from _wiki_root import WIKI_ROOT  # noqa: E402
 
 
-def iter_files(scope):
-    """Yield markdown file paths under the given scope."""
+def iter_files(scope, exts=None):
+    """Yield file paths under the given scope.
+
+    Default: markdown files under wiki/sources. If `exts` is provided (a set
+    of lowercase extensions including the leading dot, e.g. {'.cu', '.cuh'}),
+    those extensions are ALSO searched across wiki/sources AND artifacts/.
+    """
     dirs = {
         "wiki": ["wiki"],
         "sources": ["sources"],
         "all": ["wiki", "sources"],
+        "artifacts": ["artifacts"],
     }
-    for sub in dirs.get(scope, ["wiki", "sources"]):
+    sub_list = dirs.get(scope, ["wiki", "sources"])
+    # When --ext is used, also search artifacts/ unless scope explicitly excludes it
+    if exts and "artifacts" not in sub_list and scope != "wiki" and scope != "sources":
+        sub_list = sub_list + ["artifacts"]
+
+    search_exts = {".md"} | (exts or set())
+
+    for sub in sub_list:
         base = WIKI_ROOT / sub
         if not base.exists():
             continue
-        for md in base.rglob("*.md"):
-            yield md
+        for f in base.rglob("*"):
+            if not f.is_file():
+                continue
+            if f.suffix.lower() in search_exts:
+                yield f
 
 
 def grep_file(path, compiled_patterns, context, any_match):
@@ -61,12 +77,13 @@ def grep_file(path, compiled_patterns, context, any_match):
 def main():
     parser = argparse.ArgumentParser(description="Text search across Blackwell kernel wiki")
     parser.add_argument("patterns", nargs="+", help="Search pattern(s) — all must match a line unless --any is used")
-    parser.add_argument("--only", choices=["wiki", "sources", "all"], default="all",
+    parser.add_argument("--only", choices=["wiki", "sources", "all", "artifacts"], default="all",
                         help="Restrict search scope (default: all)")
     parser.add_argument("--context", type=int, default=1, help="Context lines around each match (default 1)")
     parser.add_argument("--any", action="store_true", help="Match if ANY pattern matches a line (default: all must match)")
     parser.add_argument("--limit", type=int, default=20, help="Max files reported (default 20)")
     parser.add_argument("--files-only", action="store_true", help="Print only matching file paths")
+    parser.add_argument("--ext", default=None, help="Comma-separated extra extensions to search (without dots), e.g. 'cu,cuh,ptx,py'; auto-expands scope to include artifacts/")
     args = parser.parse_args()
 
     compiled = []
@@ -78,8 +95,12 @@ def main():
             print("       Hint: escape special chars ([](){}.*+?^$|\\) or quote the pattern.", file=sys.stderr)
             sys.exit(2)
 
+    ext_set = None
+    if args.ext:
+        ext_set = {"." + e.strip().lstrip(".").lower() for e in args.ext.split(",") if e.strip()}
+
     matched_files = []
-    for path in iter_files(args.only):
+    for path in iter_files(args.only, exts=ext_set):
         hits = grep_file(path, compiled, args.context, args.any)
         if hits:
             matched_files.append((path, hits))

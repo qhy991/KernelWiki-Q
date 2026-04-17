@@ -68,6 +68,7 @@ def main():
     parser.add_argument("--body-only", action="store_true", help="Print only the body (skip frontmatter)")
     parser.add_argument("--frontmatter-only", action="store_true", help="Print only the frontmatter as YAML")
     parser.add_argument("--follow-sources", action="store_true", help="Also print 500-char excerpt from each cited source")
+    parser.add_argument("--include-code", action="store_true", help="After the page body, print all files under the page's artifact_dir (Phase 3)")
     args = parser.parse_args()
 
     page_path = find_page(args.lookup)
@@ -108,6 +109,37 @@ def main():
                 print()
                 print(excerpt)
                 print()
+
+    if args.include_code and fm and "artifact_dir" in fm:
+        ad = fm.get("artifact_dir")
+        ad_path = WIKI_ROOT / ad
+        if ad_path.is_dir():
+            print()
+            print("---")
+            print(f"## Artifact Bundle: `{ad}`")
+            print()
+            exts = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".patch", ".md", ".yaml", ".txt"}
+            for f in sorted(ad_path.rglob("*")):
+                if not f.is_file() or f.suffix.lower() not in exts:
+                    continue
+                rel_to_bundle = f.relative_to(ad_path)
+                print(f"### `{rel_to_bundle}`")
+                print()
+                try:
+                    body_bytes = f.read_bytes()
+                    if f.stat().st_size > 200 * 1024:
+                        print(f"*(file is {f.stat().st_size} bytes; showing first 200 KiB)*")
+                        body_bytes = body_bytes[:200 * 1024]
+                    print("```" + (f.suffix.lstrip(".") or ""))
+                    print(body_bytes.decode("utf-8", errors="replace"))
+                    print("```")
+                    print()
+                except Exception as e:
+                    print(f"*(could not read: {e})*")
+                    print()
+        else:
+            print()
+            print(f"*(artifact_dir '{ad}' not found on disk)*")
 
 
 if __name__ == "__main__":

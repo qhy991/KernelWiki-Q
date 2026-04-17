@@ -94,6 +94,23 @@ def blackwell_gemm(A, B, C):
 4. First-class TMEM and tcgen05 support in CUTLASS 4.x
 5. Automatic layout computation and swizzle handling
 
+## Full Examples (verbatim upstream code shipped locally)
+
+The following CuTe DSL files ship **verbatim** in this repository under `artifacts/prs/cutlass/` (pinned at each PR's merge SHA). Open them with `python3 scripts/get_page.py <pr-id> --include-code` or read them directly.
+
+| File | Purpose | Size |
+|---|---|---|
+| [`artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_0.py`](../../artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_0.py) | Step 0 — FP16 GEMM baseline | 447 lines |
+| [`artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_2.py`](../../artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_2.py) | Step 2 — TMA pipelined load | 679 lines |
+| [`artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_3.py`](../../artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_3.py) | Step 3 — Warp specialization | 769 lines |
+| [`artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_4.py`](../../artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_4.py) | Step 4 — 2-SM cooperative | 1065 lines |
+| [`artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_5.py`](../../artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_5.py) | Step 5 — Persistent + CLC scheduler | 919 lines |
+| [`artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_6.py`](../../artifacts/prs/cutlass/PR-3106/key-files/examples/python/CuTeDSL/blackwell/tutorial_gemm/fp16_gemm_6.py) | Step 6 — Fully-optimized | 1002 lines |
+| [`artifacts/prs/cutlass/PR-2881/key-files/examples/python/CuTeDSL/blackwell/dense_gemm_persistent_prefetch.py`](../../artifacts/prs/cutlass/PR-2881/key-files/examples/python/CuTeDSL/blackwell/dense_gemm_persistent_prefetch.py) | Persistent GEMM with prefetch | full |
+| [`artifacts/prs/cutlass/PR-3021/key-files/python/CuTeDSL/cutlass/cute/arch/clc.py`](../../artifacts/prs/cutlass/PR-3021/key-files/python/CuTeDSL/cutlass/cute/arch/clc.py) | CLC (Cluster Launch Control) Python binding | full |
+
+The `fp16_gemm_{0..6}.py` series from `examples/python/CuTeDSL/blackwell/tutorial_gemm/` in NVIDIA/cutlass PR-3106 is the authoritative CuTe DSL learning path: it walks from a naive FP16 GEMM baseline to a fully-optimized SM100 GEMM (TMA + warp specialization + 2-SM cooperative + CLC persistent scheduler). Reading them in order is the recommended on-ramp.
+
 ## Related
 - [tcgen05-mma](../hardware/tcgen05-mma.md) — Underlying MMA instruction
 - [flash-attention-4](../kernels/flash-attention-4.md) — CuTe-DSL implementation

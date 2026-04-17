@@ -1,31 +1,65 @@
 ---
 id: contest-flashinfer-track-c
-title: "FlashInfer MLSys 2026 - Track C: Gated Delta Net"
+title: 'FlashInfer MLSys 2026 - Track C: Gated Delta Net'
 source_category: contest-report
-architectures: [sm100, sm100a]
-tags: [gated-delta-net, linear-attention, chunk-parallelism]
-techniques: [chunk-parallelism, kernel-fusion, warp-specialization, pipeline-stages]
-hardware_features: [tcgen05, tmem, tma]
-kernel_types: [gated-delta-net, linear-attention, decode, prefill]
-languages: [cuda-cpp, cute-dsl, triton, tilelang]
+architectures:
+- sm100
+- sm100a
+tags:
+- gated-delta-net
+- linear-attention
+- chunk-parallelism
+techniques:
+- chunk-parallelism
+- kernel-fusion
+- warp-specialization
+- pipeline-stages
+hardware_features:
+- tcgen05
+- tmem
+- tma
+kernel_types:
+- gated-delta-net
+- linear-attention
+- decode
+- prefill
+languages:
+- cuda-cpp
+- cute-dsl
+- triton
+- tilelang
 url: https://mlsys26.flashinfer.ai/
 submissions:
-  - rank: 1
-    participant: "Gemini 2.5 Pro (AI baseline)"
-    score: "0.628x avg speedup"
-    technique: "evolve agent generating GatedDeltaNet chunk-parallel prefill + recurrent decode"
-  - rank: 2
-    participant: "GPT-5"
-    score: "0.467x avg speedup"
-    technique: "iterative Triton kernel generation targeting linear attention delta rule"
-  - rank: 3
-    participant: "Claude Opus 4.1"
-    score: "0.456x avg speedup"
-    technique: "code generation referencing NVlabs/GatedDeltaNet and FLA kernels"
-  - rank: notable
-    participant: "FLA (Flash Linear Attention)"
-    score: "10x+ throughput vs Qwen3-32B at 32K+"
-    technique: "optimized Triton kernels for gated delta rule; variable-length support; chunk-based parallel prefill"
+- rank: 1
+  participant: Gemini 2.5 Pro (AI baseline)
+  score: 0.628x avg speedup
+  technique: evolve agent generating GatedDeltaNet chunk-parallel prefill + recurrent
+    decode
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 2
+  participant: GPT-5
+  score: 0.467x avg speedup
+  technique: iterative Triton kernel generation targeting linear attention delta rule
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: 3
+  participant: Claude Opus 4.1
+  score: 0.456x avg speedup
+  technique: code generation referencing NVlabs/GatedDeltaNet and FLA kernels
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
+- rank: notable
+  participant: FLA (Flash Linear Attention)
+  score: 10x+ throughput vs Qwen3-32B at 32K+
+  technique: optimized Triton kernels for gated delta rule; variable-length support;
+    chunk-based parallel prefill
+  submission_truth: unavailable
+  code_unavailable_reason: Phase 3 task9/task10 not yet executed; will be reclassified
+    when scripts/collect_contest_code.py runs
 ---
 
 # Track C: Gated Delta Net (Qwen3-Next)

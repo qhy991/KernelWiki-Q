@@ -1,0 +1,14 @@
+origin_url: https://github.com/flashinfer-ai/flashinfer/pull/1850
+upstream_repo: flashinfer-ai/flashinfer
+upstream_sha: f3ea9380
+license: inherits-from-upstream
+retrieved_at: '2026-04-17'
+asset_mode: verbatim
+size_cap_truncated: false
+generated_by: scripts/fetch_pr_diff.py
+source_pr_id: pr-flashinfer-1850
+files:
+- local_path: diff.patch
+  role: pr-diff
+  mode: upstream-patch
+  sha256: eea4765607969743e2bdc92e1dff5357626e92600055c0e1672f1596e5011492

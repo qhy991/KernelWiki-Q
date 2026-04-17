@@ -1,0 +1,14 @@
+origin_url: https://github.com/vllm-project/vllm/pull/39644
+upstream_repo: vllm-project/vllm
+upstream_sha: 620e8924
+license: inherits-from-upstream
+retrieved_at: '2026-04-17'
+asset_mode: verbatim
+size_cap_truncated: false
+generated_by: scripts/fetch_pr_diff.py
+source_pr_id: pr-vllm-39644
+files:
+- local_path: diff.patch
+  role: pr-diff
+  mode: upstream-patch
+  sha256: f30bad8a9481adf842005a2644bfebd07e436f7582a3f56a5acfa8992118447f
