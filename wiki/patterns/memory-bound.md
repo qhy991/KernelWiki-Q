@@ -4,7 +4,7 @@ title: "Memory Bandwidth Bound"
 type: pattern
 tags: [vectorized-loads, cache-policy, shared-memory-optimization]
 symptoms: [memory-bound, low-compute-utilization, high-memory-throughput]
-candidate_techniques: [technique-vectorized-loads, technique-swizzling, technique-swizzling]
+candidate_techniques: [technique-vectorized-loads, technique-swizzling, technique-pipeline-stages]
 related: [pattern-compute-bound, kernel-nvfp4-gemv]
 sources: [blog-yue-nvfp4, blog-amandeep-nvfp4, doc-nvidia-tuning-guide]
 ---

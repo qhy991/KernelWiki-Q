@@ -126,6 +126,15 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids):
         if isinstance(category, list):
             all_valid.update(category)
 
+    list_fields = ["tags", "techniques", "hardware_features", "kernel_types", "languages",
+                    "architectures", "related", "sources", "symptoms", "candidate_techniques",
+                    "prerequisites", "aliases"]
+    for tag_field in list_fields:
+        if tag_field in fm:
+            if not isinstance(fm[tag_field], list):
+                errors.append(f"{rel}: field '{tag_field}' must be a YAML list, got {type(fm[tag_field]).__name__}")
+                continue
+
     for tag_field in ["tags", "techniques", "hardware_features", "kernel_types", "languages"]:
         if tag_field in fm and isinstance(fm[tag_field], list):
             for tag in fm[tag_field]:
