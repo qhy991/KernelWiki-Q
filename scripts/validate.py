@@ -99,14 +99,23 @@ def _load_code_langs():
 
 # Patterns that indicate real code (not pseudocode or ASCII diagrams)
 _CODE_INDICATORS = re.compile(
+    # CUDA C++
     r'__global__|__device__|__shared__|__host__|'
     r'asm\s+volatile|#include|#define|#pragma|'
     r'\bvoid\b|\bint\b|\buint32_t\b|\buint64_t\b|\bfloat\b|\bhalf\b|'
-    r'\bdef\s+\w+|import\s+\w+|@triton\.jit|tl\.\w+|'
     r'\bstruct\b|\btypedef\b|\btemplate\b|\bnamespace\b|'
     r'\bfor\s*\(|\bwhile\s*\(|\bif\s*\(|return\s|'
+    # Python / Triton
+    r'\bdef\s+\w+|import\s+\w+|@triton\.jit|tl\.\w+|'
+    # PTX
     r'tcgen05|mbarrier|cp\.async|ld\.global|st\.global|'
-    r'\.reg\s|\.pred\s|cvt\.\w+|mov\.b32'
+    r'\.reg\s|\.pred\s|cvt\.\w+|mov\.b32|'
+    # TileLang (TVM-based DSL)
+    r'@T\.prim_func|T\.alloc_buffer|T\.grid|T\.block_attr|T\.reads|T\.writes|'
+    # cuTile (NVIDIA Python DSL)
+    r'cutile\.\w+|@cutile\.kernel|tile_load|tile_store|tile_mma|'
+    # JAX Pallas
+    r'pl\.\w+|@pl\.kernel|pallas\.|jax\.\w+|jnp\.\w+'
 )
 
 
