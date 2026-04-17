@@ -30,8 +30,47 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 ARTIFACTS_DIR = REPO_ROOT / "artifacts"
 
 
+class EnvError(RuntimeError):
+    """Environment / invocation failure (no gh, no network, auth missing, etc).
+
+    Separated from RuntimeError so the script's documented exit-code contract
+    can distinguish env failures (exit 2) from true upstream byte mismatches
+    (exit 1).
+    """
+
+
+# Heuristic substrings that flag a network / environment problem rather than
+# a real content mismatch. Matched case-insensitively on gh's stderr.
+_ENV_ERROR_HINTS = (
+    "could not resolve host",
+    "no such host",
+    "connection refused",
+    "connection reset",
+    "connection timed out",
+    "network is unreachable",
+    "dial tcp",
+    "temporary failure in name resolution",
+    "unable to resolve",
+    "certificate",
+    "tls handshake",
+    "proxy",
+    "authentication required",
+    "you must authenticate",
+    "not logged into",
+    "bad credentials",
+    "rate limit",
+    "api rate limit exceeded",
+)
+
+
+def _looks_like_env_error(stderr_text):
+    low = stderr_text.lower()
+    return any(h in low for h in _ENV_ERROR_HINTS)
+
+
 def run_gh(args):
-    """Run gh CLI. Return stdout bytes on success, raise RuntimeError on failure."""
+    """Run gh CLI. Returns stdout bytes on success; raises EnvError for env /
+    network / auth failures, or RuntimeError for anything else gh rejects."""
     try:
         res = subprocess.run(
             ["gh"] + list(args),
@@ -41,9 +80,12 @@ def run_gh(args):
         )
         return res.stdout
     except FileNotFoundError:
-        raise RuntimeError("gh CLI not found; install from https://cli.github.com/")
+        raise EnvError("gh CLI not found; install from https://cli.github.com/")
     except subprocess.CalledProcessError as e:
-        raise RuntimeError(f"gh {' '.join(args)} failed: {e.stderr.decode(errors='replace')}")
+        stderr_text = e.stderr.decode(errors="replace")
+        if _looks_like_env_error(stderr_text):
+            raise EnvError(f"gh {' '.join(args)} environment failure: {stderr_text.strip()[:200]}")
+        raise RuntimeError(f"gh {' '.join(args)} failed: {stderr_text.strip()[:200]}")
 
 
 def fetch_verbatim(upstream_repo, upstream_sha, upstream_path):
@@ -131,17 +173,22 @@ def iter_bundles(scope):
 
 
 def verify_bundle(bundle_root):
+    """Return (content_errors, env_errors) — two separate lists so the main
+    loop can distinguish true upstream byte mismatches from environment or
+    network failures when choosing its exit code.
+    """
     prov_path = bundle_root / "PROVENANCE.yaml"
     if not prov_path.is_file():
-        return [f"{bundle_root.relative_to(REPO_ROOT)}: missing PROVENANCE.yaml"]
+        return [f"{bundle_root.relative_to(REPO_ROOT)}: missing PROVENANCE.yaml"], []
     try:
         prov = yaml.safe_load(prov_path.read_text(encoding="utf-8")) or {}
     except yaml.YAMLError as e:
-        return [f"{prov_path.relative_to(REPO_ROOT)}: YAML parse error: {e}"]
+        return [f"{prov_path.relative_to(REPO_ROOT)}: YAML parse error: {e}"], []
 
     upstream_repo = prov.get("upstream_repo")
     upstream_sha = prov.get("upstream_sha")
     errors = []
+    env_errors = []
 
     for i, entry in enumerate(prov.get("files") or []):
         if not isinstance(entry, dict):
@@ -193,6 +240,9 @@ def verify_bundle(bundle_root):
                     )
                     continue
                 upstream_bytes = fetch_upstream_patch(file_upstream_repo, pr_num, file_upstream_sha)
+        except EnvError as e:
+            env_errors.append(f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: environment failure: {e}")
+            continue
         except RuntimeError as e:
             errors.append(f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: upstream fetch failed: {e}")
             continue
@@ -204,12 +254,12 @@ def verify_bundle(bundle_root):
                 f"{bundle_root.relative_to(REPO_ROOT)}/{lp}: {mode} byte mismatch "
                 f"(local {local_sha}..., upstream {upstream_sha12}...)"
             )
-    return errors
+    return errors, env_errors
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    parser.add_argument("--strict", action="store_true", help="Exit 1 on any mismatch (default: warn-only exit 0)")
+    parser.add_argument("--strict", action="store_true", help="Exit 1 on any content mismatch (default: warn-only exit 0)")
     parser.add_argument("--bundle", help="Verify a single bundle root instead of all")
     args = parser.parse_args()
 
@@ -217,18 +267,36 @@ def main():
         print("No artifacts/ directory; nothing to verify.")
         sys.exit(0)
 
-    all_errors = []
+    all_errors = []       # content / upstream byte mismatches
+    all_env_errors = []   # network / auth / gh-missing / rate-limit failures
     bundles_checked = 0
     for bundle in iter_bundles(args.bundle):
         bundles_checked += 1
-        errs = verify_bundle(bundle)
+        errs, env_errs = verify_bundle(bundle)
         all_errors.extend(errs)
+        all_env_errors.extend(env_errs)
 
     print(f"Verified {bundles_checked} bundle(s).")
+    # Print env errors with a distinct marker so operators can tell them apart.
+    if all_env_errors:
+        for e in all_env_errors:
+            print(f"  ENV: {e}", file=sys.stderr)
+        print(f"\n{len(all_env_errors)} environment failure(s).", file=sys.stderr)
     if all_errors:
         for e in all_errors:
             print(f"  WARN: {e}", file=sys.stderr)
         print(f"\n{len(all_errors)} mismatch(es) found.", file=sys.stderr)
+
+    # Exit-code contract (matches the file's module docstring):
+    #   0 — all verbatim/upstream-patch assets match, or (without --strict) only
+    #       content mismatches but no env failures
+    #   1 — --strict and at least one true upstream byte mismatch
+    #   2 — environment / invocation failure (gh missing, no network, etc)
+    #       takes precedence over content errors: a run that could not complete
+    #       is NOT the same as a run that completed and found a mismatch.
+    if all_env_errors:
+        sys.exit(2)
+    if all_errors:
         sys.exit(1 if args.strict else 0)
     print("All verbatim/upstream-patch assets match upstream.")
     sys.exit(0)
