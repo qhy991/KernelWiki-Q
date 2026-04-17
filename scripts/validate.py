@@ -81,7 +81,7 @@ def repro_at_least(level, minimum):
 
 def has_fenced_code(body):
     """Check if body contains at least one fenced code block."""
-    return bool(re.search(r'^```\w*\s*\n.*?\n```', body, re.MULTILINE | re.DOTALL))
+    return bool(re.search(r'^```[^\n]*\n.*?\n```', body, re.MULTILINE | re.DOTALL))
 
 
 def validate_file(filepath, schemas, valid_tags, all_source_ids):
@@ -120,12 +120,22 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids):
         if not str(fm["id"]).startswith(id_prefix):
             errors.append(f"{rel}: id '{fm['id']}' must start with '{id_prefix}'")
 
-    # Validate tags against controlled vocabulary
+    # Build per-field vocabulary sets
+    # "tags" is special: accepts any tag from any category
     all_valid = set()
     for category in valid_tags.values():
         if isinstance(category, list):
             all_valid.update(category)
 
+    field_vocab = {
+        "tags": all_valid,
+        "techniques": set(valid_tags.get("techniques", [])),
+        "hardware_features": set(valid_tags.get("hardware_features", [])),
+        "kernel_types": set(valid_tags.get("kernel_types", [])),
+        "languages": set(valid_tags.get("languages", [])),
+    }
+
+    # Check list type for all list-valued fields
     list_fields = ["tags", "techniques", "hardware_features", "kernel_types", "languages",
                     "architectures", "related", "sources", "symptoms", "candidate_techniques",
                     "prerequisites", "aliases"]
@@ -135,11 +145,12 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids):
                 errors.append(f"{rel}: field '{tag_field}' must be a YAML list, got {type(fm[tag_field]).__name__}")
                 continue
 
-    for tag_field in ["tags", "techniques", "hardware_features", "kernel_types", "languages"]:
+    # Validate each structured field against its own vocabulary
+    for tag_field, vocab in field_vocab.items():
         if tag_field in fm and isinstance(fm[tag_field], list):
             for tag in fm[tag_field]:
-                if tag not in all_valid:
-                    errors.append(f"{rel}: unknown tag '{tag}' in field '{tag_field}'")
+                if tag not in vocab:
+                    errors.append(f"{rel}: '{tag}' is not a valid {tag_field} value")
 
     # Validate architectures
     valid_archs = set(valid_tags.get("architectures", []))
@@ -204,10 +215,11 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids):
     # Check blackwell_relevance required for any wiki page with sm90 but not sm100
     # (Blackwell-first scope: Hopper content must justify its inclusion)
     if page_type.startswith("wiki-"):
-        archs = fm.get("architectures", [])
-        if isinstance(archs, list) and "sm90" in archs and "blackwell_relevance" not in fm:
+        archs = set(fm.get("architectures", []) if isinstance(fm.get("architectures"), list) else [])
+        hopper_archs = archs & {"sm90", "sm90a"}
+        if hopper_archs and "blackwell_relevance" not in fm:
             errors.append(
-                f"{rel}: page includes sm90 architecture but missing "
+                f"{rel}: page includes Hopper architecture {hopper_archs} but missing "
                 f"'blackwell_relevance' (required by Blackwell-first scope)"
             )
 
