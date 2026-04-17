@@ -97,11 +97,25 @@ def _load_code_langs():
     return langs
 
 
-def has_fenced_code(body, code_langs):
-    """Check if body contains a fenced code block with a known programming language."""
-    for m in re.finditer(r'^```(\S*)\s*\n.*?\n```', body, re.MULTILINE | re.DOTALL):
+# Patterns that indicate real code (not pseudocode or ASCII diagrams)
+_CODE_INDICATORS = re.compile(
+    r'__global__|__device__|__shared__|__host__|'
+    r'asm\s+volatile|#include|#define|#pragma|'
+    r'\bvoid\b|\bint\b|\buint32_t\b|\buint64_t\b|\bfloat\b|\bhalf\b|'
+    r'\bdef\s+\w+|import\s+\w+|@triton\.jit|tl\.\w+|'
+    r'\bstruct\b|\btypedef\b|\btemplate\b|\bnamespace\b|'
+    r'\bfor\s*\(|\bwhile\s*\(|\bif\s*\(|return\s|'
+    r'tcgen05|mbarrier|cp\.async|ld\.global|st\.global|'
+    r'\.reg\s|\.pred\s|cvt\.\w+|mov\.b32'
+)
+
+
+def has_compilable_code(body, code_langs):
+    """Check if body contains a fenced code block with a known language AND real code."""
+    for m in re.finditer(r'^```(\S*)\s*\n(.*?)\n```', body, re.MULTILINE | re.DOTALL):
         info = m.group(1).lower()
-        if info in code_langs:
+        block = m.group(2)
+        if info in code_langs and _CODE_INDICATORS.search(block):
             return True
     return False
 
@@ -329,7 +343,7 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids, code_langs):
     # Check technique/kernel/language pages have fenced code
     if page_type in ("wiki-technique", "wiki-kernel", "wiki-language"):
         body = read_body(filepath)
-        if not has_fenced_code(body, code_langs):
+        if not has_compilable_code(body, code_langs):
             errors.append(f"{rel}: {page_type} page must contain fenced code block (reproducibility >= snippet)")
 
     return errors

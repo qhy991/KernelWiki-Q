@@ -2,6 +2,7 @@
 """Generate query index pages from YAML frontmatter in sources/ and wiki/."""
 
 import re
+import sys
 import yaml
 from pathlib import Path
 from collections import defaultdict
@@ -40,15 +41,24 @@ def load_valid_languages():
 
 def collect_all_pages():
     pages = []
+    errors = []
     for search_dir in [SOURCES_DIR, WIKI_DIR]:
         if not search_dir.exists():
             continue
         for md_file in sorted(search_dir.rglob("*.md")):
             fm = extract_frontmatter(md_file)
-            if fm and isinstance(fm, dict):
+            if fm is None:
+                errors.append(str(md_file.relative_to(REPO_ROOT)))
+            elif isinstance(fm, dict):
                 fm["_path"] = md_file.relative_to(REPO_ROOT).as_posix()
                 fm["_dir"] = search_dir.relative_to(REPO_ROOT).as_posix()
                 pages.append(fm)
+    if errors:
+        print(f"ERROR: {len(errors)} files have missing/unparseable frontmatter:")
+        for e in errors:
+            print(f"  {e}")
+        print("Run python3 scripts/validate.py first to fix these files.")
+        sys.exit(1)
     return pages
 
 
