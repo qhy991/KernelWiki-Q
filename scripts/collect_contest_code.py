@@ -73,6 +73,30 @@ def load_manifest():
     return yaml.safe_load(MANIFEST.read_text(encoding="utf-8")) or {}
 
 
+def _resolve_canonical_file(entry, files_list):
+    """Return the bundle-local filename that should be used as the
+    submission's `code_path`.
+
+    If the manifest entry declares `canonical_file`, that name MUST
+    match one of the bundle's `local_path`s (returns None otherwise so
+    the caller can flag a configuration error). Without `canonical_file`
+    the final file in `files_list` is chosen because contest
+    progression-style bundles (step 1 -> ... -> step N) record the
+    winning kernel last; using `files_list[0]` pointed at the reference
+    / baseline fragment instead, which was the Round-20 bug Codex
+    flagged (R21 P2).
+    """
+    declared = entry.get("canonical_file") if isinstance(entry, dict) else None
+    if declared:
+        for f in files_list:
+            if f.get("local_path") == declared:
+                return declared
+        return None
+    if not files_list:
+        return None
+    return files_list[-1].get("local_path")
+
+
 def collect_one(contest_page, sub_idx, sub, manifest):
     """Returns (new_sub_dict, wrote_any_files: bool, error: str|None)."""
     contest_slug = contest_page.parent.name
@@ -180,7 +204,13 @@ def collect_one(contest_page, sub_idx, sub, manifest):
                 encoding="utf-8",
             )
             new_sub["submission_truth"] = truth
-            new_sub["code_path"] = f"artifacts/contests/{contest_slug}/{problem_slug}/submissions/{ra_slug}/{files_list[0]['local_path']}"
+            canonical = _resolve_canonical_file(entry, files_list)
+            if canonical is None:
+                return new_sub, False, (
+                    f"manifest canonical_file='{entry.get('canonical_file')}' does not "
+                    f"match any local_path in the fetched bundle; fix the manifest"
+                )
+            new_sub["code_path"] = f"artifacts/contests/{contest_slug}/{problem_slug}/submissions/{ra_slug}/{canonical}"
             new_sub.pop("code_unavailable_reason", None)
             return new_sub, True, None
 
@@ -241,7 +271,13 @@ def collect_one(contest_page, sub_idx, sub, manifest):
                 encoding="utf-8",
             )
             new_sub["submission_truth"] = "reconstructed-from-blog"
-            new_sub["code_path"] = f"artifacts/contests/{contest_slug}/{problem_slug}/submissions/{ra_slug}/{files_list[0]['local_path']}"
+            canonical = _resolve_canonical_file(entry, files_list)
+            if canonical is None:
+                return new_sub, False, (
+                    f"manifest canonical_file='{entry.get('canonical_file')}' does not "
+                    f"match any local_path in the reconstructed bundle for {blog_slug}"
+                )
+            new_sub["code_path"] = f"artifacts/contests/{contest_slug}/{problem_slug}/submissions/{ra_slug}/{canonical}"
             new_sub.pop("code_unavailable_reason", None)
             return new_sub, True, None
 
@@ -296,9 +332,15 @@ def main():
 
     print(f"Collected code for {wrote} submissions; marked {unavailable} as unavailable.")
     if fails:
-        print(f"\n{len(fails)} soft failure(s):")
+        # R21: a soft failure used to fall through to exit 0, which let
+        # sources/contests/** drift silently from data/contest-sources.yaml
+        # in CI. A manifest typo, missing blog bundle, or gh fetch error
+        # now terminates the run non-zero so regeneration workflows fail
+        # loudly instead of committing a half-collected state.
+        print(f"\n{len(fails)} soft failure(s):", file=sys.stderr)
         for f in fails:
-            print(f"  {f}")
+            print(f"  {f}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

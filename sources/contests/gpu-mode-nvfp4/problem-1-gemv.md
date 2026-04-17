@@ -37,14 +37,14 @@ submissions:
   technique: Full PTX assembly with cache policy differentiation, byte unpacking,
     and aggressive register budgeting (maxrregcount=32)
   submission_truth: reconstructed-from-blog
-  code_path: artifacts/contests/gpu-mode-nvfp4/problem-1-gemv/submissions/rank-1-simon-veitner/01-reference-core-computation-part-1.cpp
+  code_path: artifacts/contests/gpu-mode-nvfp4/problem-1-gemv/submissions/rank-1-simon-veitner/04-strategy-3-atomic-free-shared-memory-reduction.cpp
 - rank: 2
   participant: yue
   score: ~23.0us geomean
   technique: Shared B vector reads across BLOCK_M rows, PTX load/decode path, ILP
     optimization
   submission_truth: reconstructed-from-blog
-  code_path: artifacts/contests/gpu-mode-nvfp4/problem-1-gemv/submissions/rank-2-yue/01-step-1-cute-dsl-baseline-100us.cpp
+  code_path: artifacts/contests/gpu-mode-nvfp4/problem-1-gemv/submissions/rank-2-yue/05-step-5-ilp-optimization-22-9us.cpp
 - rank: 3
   participant: Amandeep
   score: ~24.0us geomean
