@@ -2,8 +2,8 @@
 
 > Auto-generated. Do not edit manually.
 
+<a id="nvidiacutlass"></a>
 ## NVIDIA/cutlass
-<!-- anchor: nvidiacutlass -->
 7 PRs
 
 | PR | Title | Date | Techniques | Tags |
@@ -16,8 +16,8 @@
 | [#2161](../sources/prs/cutlass/PR-2161.md) | Blockwise Improvement and Programmatic Dependent Launch | 2025-03-10 | persistent-kernel, tile-scheduling | pdl, gdc, gemm |
 | [#2139](../sources/prs/cutlass/PR-2139.md) | Blockwise and Groupwise GEMM for Blackwell and Improvements for Hopper | 2025-02-26 | warp-specialization, fine-grained-quantization | gemm, grouped-gemm, fp8 |
 
+<a id="flashinfer-aiflashinfer"></a>
 ## flashinfer-ai/flashinfer
-<!-- anchor: flashinfer-aiflashinfer -->
 6 PRs
 
 | PR | Title | Date | Techniques | Tags |
@@ -29,8 +29,8 @@
 | [#1668](../sources/prs/flashinfer/PR-1668.md) | TGV GEMM as a BF16 backend alternative to cuBLAS | 2025-09-14 | persistent-kernel, tile-scheduling | gemm, fp8, tcgen05 |
 | [#1548](../sources/prs/flashinfer/PR-1548.md) | perf: Enable SplitK and fix tile-scheduling for moe fp4 fused moe | 2025-09-05 | tile-scheduling, fine-grained-quantization | moe, fp4, gemm |
 
+<a id="pytorchpytorch"></a>
 ## pytorch/pytorch
-<!-- anchor: pytorchpytorch -->
 7 PRs
 
 | PR | Title | Date | Techniques | Tags |
@@ -43,8 +43,8 @@
 | [#150705](../sources/prs/pytorch/PR-150705.md) | [CUDA] Only use vec128 if CUDA version is newer than 12.8 | 2025-04-04 | vectorized-loads | cuda-cpp |
 | [#150640](../sources/prs/pytorch/PR-150640.md) | [CUDA][avgpool2d] Fix backward launch bounds again for sm100, sm120 | 2025-04-03 |  | cuda-cpp |
 
+<a id="sgl-projectsglang"></a>
 ## sgl-project/sglang
-<!-- anchor: sgl-projectsglang -->
 6 PRs
 
 | PR | Title | Date | Techniques | Tags |
@@ -56,8 +56,8 @@
 | [#3529](../sources/prs/sglang/PR-3529.md) | integrate blockwise fp8 kernel | 2025-02-12 | fine-grained-quantization | fp8, fine-grained-quantization, moe |
 | [#3056](../sources/prs/sglang/PR-3056.md) | feat: integrate gemm_fp8 kernel into gemm | 2025-01-22 | fine-grained-quantization | fp8, gemm, moe |
 
+<a id="vllm-projectvllm"></a>
 ## vllm-project/vllm
-<!-- anchor: vllm-projectvllm -->
 6 PRs
 
 | PR | Title | Date | Techniques | Tags |

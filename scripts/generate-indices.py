@@ -156,10 +156,10 @@ def generate_by_repo(pages):
 
     for repo in sorted(repos.keys()):
         prs = sorted(repos[repo], key=lambda x: x.get("date", ""), reverse=True)
-        # Stable anchor: repo slug without count (so index.md links don't break)
+        # Real HTML anchor so index.md fragment links work in any renderer
         slug = repo.lower().replace("/", "")
+        lines.append(f'<a id="{slug}"></a>')
         lines.append(f"## {repo}")
-        lines.append(f"<!-- anchor: {slug} -->")
         lines.append(f"{len(prs)} PRs")
         lines.append("")
         lines.append("| PR | Title | Date | Techniques | Tags |")

@@ -121,14 +121,14 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids):
             errors.append(f"{rel}: id '{fm['id']}' must start with '{id_prefix}'")
 
     # Build per-field vocabulary sets
-    # "tags" is special: accepts any tag from any category
-    all_valid = set()
-    for category in valid_tags.values():
-        if isinstance(category, list):
-            all_valid.update(category)
+    # "tags" accepts only topical categories (not architectures/confidence/etc.)
+    topical_categories = ["hardware_features", "techniques", "kernel_types", "languages"]
+    tags_valid = set()
+    for cat in topical_categories:
+        tags_valid.update(valid_tags.get(cat, []))
 
     field_vocab = {
-        "tags": all_valid,
+        "tags": tags_valid,
         "techniques": set(valid_tags.get("techniques", [])),
         "hardware_features": set(valid_tags.get("hardware_features", [])),
         "kernel_types": set(valid_tags.get("kernel_types", [])),
