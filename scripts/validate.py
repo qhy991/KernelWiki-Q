@@ -22,13 +22,23 @@ BUNDLE_SIZE_CAP_BYTES = 5 * 1024 * 1024
 
 # Phase 3 source-file extensions that must live in an asset bundle (AC-2).
 # `.txt` was added in R23 to cover extract_blog_code.py's unlabeled-fence
-# extraction fallback (R20). Bundles like artifacts/blogs/
-# amandeep-nvfp4-attempts/code/*.txt are real source assets that must be
-# subject to the same orphan-detection + manifest-drift checks as .cu /
-# .py / etc. Without .txt here, find_orphan_source_files() and
-# validate_bundle()'s drift scan would silently pass stale or
-# undeclared text snippets in the four R20 blog bundles.
-ASSET_SOURCE_EXTS = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".patch", ".pyx", ".inl", ".txt"}
+# extraction fallback (R20). `.sh`, `.yaml`, `.json` were added in R33 to
+# keep this set in sync with extract_blog_code.py's EXT_MAP (the extractor
+# emits shell / yaml / json fences into bundles, and orphan + manifest-
+# drift detection must cover them too — otherwise a stale `deploy.sh`
+# under artifacts/blogs/<slug>/code/ would pass validate.py silently).
+# Keep this set identical to the code-ext subset of get_page.py
+# --include-code and query.py --has-code; the three together are the
+# Phase-3 asset-source contract.
+ASSET_SOURCE_EXTS = {
+    ".cu", ".cuh", ".ptx",
+    ".cpp", ".h", ".hpp",
+    ".py", ".pyx",
+    ".patch",
+    ".inl",
+    ".txt",
+    ".sh", ".yaml", ".json",
+}
 
 
 def load_yaml_file(path):
@@ -567,10 +577,21 @@ def find_orphan_source_files():
     orphans = []
     if not ARTIFACTS_DIR.is_dir():
         return orphans
+    # R33: with `.yaml` now in ASSET_SOURCE_EXTS, per-blog MANIFEST.yaml
+    # files at `artifacts/blogs/<slug>/MANIFEST.yaml` would otherwise be
+    # flagged as orphans (the recognized bundle root is the `code/`
+    # subdir). MANIFEST.yaml is metadata the extractor writes at the
+    # parent by design; validate_bundle's drift check already excludes
+    # it by name, so mirror that exclusion here. `approach.md` and
+    # `bench.txt` are similar bundle-adjacent metadata from earlier
+    # rounds that may live above the recognized root.
+    _ORPHAN_EXCLUDE_NAMES = {"MANIFEST.yaml", "approach.md", "bench.txt"}
     for path in ARTIFACTS_DIR.rglob("*"):
         if not path.is_file():
             continue
         if path.suffix.lower() not in ASSET_SOURCE_EXTS:
+            continue
+        if path.name in _ORPHAN_EXCLUDE_NAMES:
             continue
         # find nearest bundle root
         in_bundle = any(str(path).startswith(str(root) + "/") or str(path) == str(root) for root in bundle_roots)

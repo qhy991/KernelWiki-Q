@@ -187,13 +187,17 @@ def main():
             # (CUTLASS header snippets), .cxx / .cc (alt C++ extensions), and
             # .pyx (Triton / Cython-style Python kernels). Also includes
             # .patch for the whole-PR diff, .md / .yaml / .txt for bundle
-            # metadata (MANIFEST.yaml, PROVENANCE.yaml, approach.md, etc.).
+            # metadata (MANIFEST.yaml, PROVENANCE.yaml, approach.md, etc.),
+            # and .sh (R33) for shell fences extract_blog_code emits via
+            # its EXT_MAP bash/shell/sh -> .sh mapping. Keep in sync with
+            # validate.py ASSET_SOURCE_EXTS and query.py --has-code exts.
             exts = {
                 ".cu", ".cuh", ".ptx",
                 ".cpp", ".cxx", ".cc", ".c",
                 ".h", ".hpp", ".hxx", ".inl",
                 ".py", ".pyx",
                 ".patch",
+                ".sh",
                 ".md", ".yaml", ".yml", ".txt", ".json",
             }
             for f in sorted(ad_path.rglob("*")):

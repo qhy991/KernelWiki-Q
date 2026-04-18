@@ -409,6 +409,14 @@ def main():
                 new_sub, ok, err = dict(sub), False, f"swap failed: {swap_err}"
             if err:
                 fails.append(f"{contest_md.relative_to(REPO)}[{i}]: {err}")
+                # R33: preserve the ORIGINAL submission dict on failure
+                # so the contest page doesn't drift ahead of the
+                # actually-installed bundles. collect_one() may have
+                # mutated fields like `submission_truth` before
+                # raising, and appending that partial state would
+                # persist metadata that no longer matches
+                # artifacts/contests/**.
+                new_sub = dict(sub)
             if ok:
                 wrote += 1
             elif new_sub.get("submission_truth") == "unavailable":

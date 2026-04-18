@@ -201,12 +201,16 @@ def filter_pages(pages, args):
             # fenced blocks under artifacts/blogs/<slug>/code/NN-<name>.txt via
             # the EXT_MAP.get(lang, "txt") fallback. These are real code
             # snippets whose fence just lacked a language tag (R20 widening).
-            # Excluding .txt would hide blogs like blog-amandeep-nvfp4,
-            # blog-modular-blackwell, blog-nvfp4-format-details, and
-            # blog-vllm-deepseek-v3-sparse whose extracted bundles are
-            # .txt-only (R22 Codex finding).
+            #
+            # `.sh`, `.yaml`, `.json` are also counted (R33) to match
+            # extract_blog_code.py's EXT_MAP mappings for bash / shell /
+            # yaml / json fences. Keep this set in sync with
+            # validate.py's ASSET_SOURCE_EXTS and get_page.py's
+            # --include-code exts; the three together form the Phase-3
+            # asset-source contract.
             exts = {".cu", ".cuh", ".ptx", ".py", ".cpp", ".h", ".hpp", ".inl",
-                    ".pyx", ".cxx", ".cc", ".txt"}
+                    ".pyx", ".cxx", ".cc", ".txt",
+                    ".sh", ".yaml", ".json"}
             candidate_dirs = []
 
             # Primary: explicit page-level artifact_dir.

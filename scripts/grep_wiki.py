@@ -47,7 +47,9 @@ def iter_files(scope, exts=None):
     if scope == "artifacts" and not exts:
         # R32 default for --only artifacts: match every source-file
         # extension the Phase 3 emitters actually produce. Keeps `.md`
-        # so MANIFEST/README-style notes are still searchable.
+        # so MANIFEST/README-style notes are still searchable. `.sh`
+        # added in R33 for shell fences emitted via EXT_MAP
+        # bash/shell/sh -> .sh.
         search_exts = {
             ".md",
             ".cu", ".cuh", ".ptx",
@@ -56,6 +58,7 @@ def iter_files(scope, exts=None):
             ".py", ".pyx",
             ".patch",
             ".txt",
+            ".sh",
             ".yaml", ".yml", ".json",
         }
     else:
