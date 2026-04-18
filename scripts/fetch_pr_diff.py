@@ -669,6 +669,10 @@ def main():
                 print(f"    WARN: file-list fetch failed: {e}", file=sys.stderr)
                 continue
             emit_bundle(repo, pr_num, pid, merge_sha, file_list, None, dry_run=True)
+            # R31: count a successful preview as a successful target so
+            # `ok == len(targets)` and `partial_failure` stays False. A
+            # successful dry-run should exit 0, not 1.
+            ok += 1
             continue
         if args.dry_run:
             # Run the preview logic without hitting GitHub: use the
@@ -683,8 +687,14 @@ def main():
             if not stored_paths:
                 print(f"    DRY-RUN {pid}: source page has no changed_paths; "
                       f"use --dry-run-live to preview from the real PR file list")
+                # R31: an advisory "use --dry-run-live" message is a
+                # successful dry-run outcome (the preview told the user
+                # what to do). Not a fetch failure.
+                ok += 1
                 continue
             emit_bundle(repo, pr_num, pid, merge_sha, synth_file_list, None, dry_run=True)
+            # R31: see --dry-run-live branch above.
+            ok += 1
             continue
         try:
             file_list = fetch_pr_file_list(repo, pr_num)
