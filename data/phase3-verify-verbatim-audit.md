@@ -13,22 +13,19 @@ gh version 2.90.0 (2026-04-16)
 
 ## Scope
 
-- 91 asset bundles under `artifacts/` (94 post-R27 − 3 Triton PRs
-  dropped in R30 because their titles carried non-Blackwell vendor
-  prefixes — `[ROCm]` for pr-pytorch-170190, `[Intel GPU]` for
-  pr-pytorch-163388, `[XPU]` for pr-vllm-39088; `architectures:
-  [sm100]` was incidental Triton-backend coverage, not Blackwell
-  kernel authorship. Also dropped the synthesized pseudo-code
-  `ping-pong-scheduling-from-fa4-blog.cu` from `artifacts/kernels/
-  ping-pong-scheduling/full/` — it contained placeholders like
-  `issue_mma`, `wait_mma`, and should not have been published under
-  `mode: extracted` per the Codex R30 P1 finding.)
+- 89 asset bundles under `artifacts/` (91 post-R30 − 2 blog
+  extraction bundles that turned `code_present: false` in R32 after
+  the unlabeled-fence heuristic tightened to reject comment-only
+  content: `amandeep-nvfp4-attempts` and `modular-blackwell-matmul`
+  had all-`//`-comment explanatory fences that weren't real code.
+  Previous R30 counts: 94 post-R27 − 3 Triton PRs dropped in R30
+  for non-Blackwell vendor title prefixes.)
 - 301 files with `mode: verbatim` or `mode: upstream-patch` and no `size_cap_truncated` marker (was 310; minus the files in the 3 dropped vendor-prefixed PR bundles and the pseudo-code file in ping-pong-scheduling/full)
 
 ## stdout
 
 ```
-Verified 91 bundle(s).
+Verified 89 bundle(s).
 All verbatim/upstream-patch assets match upstream.
 ```
 

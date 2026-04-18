@@ -25,6 +25,13 @@ def iter_files(scope, exts=None):
     Default: markdown files under wiki/sources. If `exts` is provided (a set
     of lowercase extensions including the leading dot, e.g. {'.cu', '.cuh'}),
     those extensions are ALSO searched across wiki/sources AND artifacts/.
+
+    R32: when scope=='artifacts' the default search set includes common
+    source-code extensions in addition to `.md`. Artifact bundles rarely
+    contain markdown — the hits users expect live in `.cu` / `.py` /
+    `.ptx` / `.patch` etc. files. Without this default, `--only artifacts`
+    without `--ext` reports `No matches` even when the code bundles
+    contain the pattern.
     """
     dirs = {
         "wiki": ["wiki"],
@@ -37,7 +44,22 @@ def iter_files(scope, exts=None):
     if exts and "artifacts" not in sub_list and scope != "wiki" and scope != "sources":
         sub_list = sub_list + ["artifacts"]
 
-    search_exts = {".md"} | (exts or set())
+    if scope == "artifacts" and not exts:
+        # R32 default for --only artifacts: match every source-file
+        # extension the Phase 3 emitters actually produce. Keeps `.md`
+        # so MANIFEST/README-style notes are still searchable.
+        search_exts = {
+            ".md",
+            ".cu", ".cuh", ".ptx",
+            ".cpp", ".cxx", ".cc", ".c",
+            ".h", ".hpp", ".hxx", ".inl",
+            ".py", ".pyx",
+            ".patch",
+            ".txt",
+            ".yaml", ".yml", ".json",
+        }
+    else:
+        search_exts = {".md"} | (exts or set())
 
     for sub in sub_list:
         base = WIKI_ROOT / sub

@@ -74,21 +74,28 @@ def is_extractable_block(lang, body):
 
 
 _BULLET_RE = re.compile(r"^\s*([-*•]|\d+[.)])\s+\S")
+_COMMENT_LINE_RE = re.compile(r"^\s*(?://|#|/\*|\*/|\*|<!--)")
 
 
 def _looks_like_code_fence(body):
-    """Heuristic: an unlabeled fence is treated as code unless its body
-    is dominantly bullet / numbered prose.
+    """Heuristic: an unlabeled fence is treated as code only when it
+    (a) is not dominantly bullet / numbered prose AND (b) carries a
+    positive code signal — i.e. at least one non-comment line.
 
-    A fence whose non-blank lines are >50% bullets or numbered-list
-    items is rejected. Short fences (1-3 non-blank lines) are accepted
-    to preserve formulas and config snippets (`x_hat = s * deq(q)`,
-    `DP=8, EP=8, TP=1`). Fences with code-ish punctuation (`//`, `{}`,
-    `(...)`, `=`, CLI flags `--foo`) are accepted even when short.
+    Bullet check: if >50% of non-blank lines are bullet or numbered
+    list items, reject.
+    Positive code signal: at least one non-blank line that does NOT
+    start with a comment marker (`//`, `#`, `/*`, `*/`, `*`, `<!--`).
+    A fence made up entirely of `//`-style commentary is explanatory
+    notes, not source — R32 fix on top of R26's bullet-only check
+    after Codex observed that nsight / modular-blackwell explanation
+    fences were still being extracted as `.txt` "code".
 
-    This matches every case in the shipped corpus: the four
-    attempt-writeup fences (75%+ bullets) are rejected; the nsight /
-    modular / formula / config fences (no bullets) are accepted.
+    Short fences (1-3 non-blank lines) still benefit — single-line
+    formulas (`x_hat = s * deq(q)`) and configs (`DP=8, EP=8, TP=1`,
+    `vllm serve deepseek... --tensor-parallel-size 8`) have no
+    comment prefix and pass. Fenced prose blocks masquerading as
+    code via `//`-only comments now correctly reject.
     """
     lines = [ln for ln in body.strip().splitlines() if ln.strip()]
     if not lines:
@@ -96,6 +103,9 @@ def _looks_like_code_fence(body):
     bullet_lines = sum(1 for ln in lines if _BULLET_RE.match(ln))
     bullet_ratio = bullet_lines / len(lines)
     if bullet_ratio > 0.5:
+        return False
+    non_comment = [ln for ln in lines if not _COMMENT_LINE_RE.match(ln)]
+    if not non_comment:
         return False
     return True
 

@@ -1,16 +1,4 @@
 slug: amandeep-nvfp4-attempts
 origin_url: https://amandeepsp.github.io/blog/nvfp4-blackwell-gemv/
-code_present: true
-total_blocks: 2
+code_present: false
 generated_by: scripts/extract_blog_code.py
-files:
-- local_path: code/01-nsight-compute-analysis.txt
-  heading_path: '# Twelve Attempts at NVFP4 Batched GEMV (Amandeep Singh) > ## Key
-    Debugging Methodology > ### Nsight Compute Analysis'
-  fence_lang: ''
-  sha256: 5bb9c5f50e5460554bf710cfe9793f050464d093c31b5901bb685131ef82af6b
-- local_path: code/02-performance-model.txt
-  heading_path: '# Twelve Attempts at NVFP4 Batched GEMV (Amandeep Singh) > ## Key
-    Debugging Methodology > ### Performance Model'
-  fence_lang: ''
-  sha256: f749dcdd03973d04df5a123d17170ee45940d8685905d1aa75c06f752574f73c
