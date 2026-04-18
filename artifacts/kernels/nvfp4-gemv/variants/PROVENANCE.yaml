@@ -22,11 +22,11 @@ files:
   role: derived-source
   mode: derived
   sha256: ad45619f3d924a0abaf13e5db0a999f3f54dcea567cd19df2dc7ebbdbd414738
-- local_path: 04-step-5-ilp-optimization-22-9us.cpp
-  role: derived-source
-  mode: derived
-  sha256: 5857546cfa33fc13de0f5a81a94881e8993f715f4ce36c96c777d629b2516097
-- local_path: 05-step-4-ptx-assembly-27us.ptx
+- local_path: 04-step-4-ptx-assembly-27us.ptx
   role: derived-source
   mode: derived
   sha256: 3a4fde2e82fa03aad2795255cc8f2569172cc1147cb500ae3344d8704a718aa5
+- local_path: 05-step-5-ilp-optimization-22-9us.cpp
+  role: derived-source
+  mode: derived
+  sha256: 5857546cfa33fc13de0f5a81a94881e8993f715f4ce36c96c777d629b2516097

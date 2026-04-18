@@ -30,6 +30,7 @@ sources:
 - contest-gpumode-p3
 - blog-deepgemm
 - blog-tflops-gap-fp4-moe
+- pr-vllm-23696
 performance_claims:
 - gpu: B200
   dtype: nvfp4
