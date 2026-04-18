@@ -435,7 +435,16 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
             entry["size_cap_truncated"] = True
         files_entries.append(entry)
 
-    # Bundle cap: drop diff.patch if over
+    # Bundle cap enforcement. Two-stage:
+    #  1. If over cap, drop diff.patch entirely (it's derived from the
+    #     key-files anyway; users can regenerate via `gh pr diff`).
+    #  2. If STILL over cap, replace the largest key-files with
+    #     size_cap_truncated stubs in descending-size order until the
+    #     remaining bundle fits. Smaller files stay intact so the user
+    #     retains as much real content as possible.
+    # Previously only stage 1 ran; a PR with many ~1 MiB key-files
+    # (e.g. six .cu files totalling ~6 MiB) would ship over the
+    # documented 5 MiB cap.
     bundle_truncated = False
     if bundle_total > BUNDLE_SIZE_CAP:
         diff_path = bundle / "diff.patch"
@@ -445,6 +454,43 @@ def emit_bundle(repo, pr_num, pr_id, merge_sha, file_list, whole_diff, dry_run=F
             bundle_total -= drop_bytes
             # Remove the diff.patch entry from files_entries
             files_entries = [e for e in files_entries if e.get("local_path") != "diff.patch"]
+            bundle_truncated = True
+    if bundle_total > BUNDLE_SIZE_CAP:
+        # Still over cap after dropping diff.patch. Replace the largest
+        # remaining key-files with stubs until under cap. Iterate by
+        # current on-disk size (largest first) so we truncate the
+        # fewest files needed.
+        def _key_file_size(entry):
+            lp = entry.get("local_path") or ""
+            if not lp.startswith("key-files/"):
+                return -1
+            fp = bundle / lp
+            return fp.stat().st_size if fp.is_file() else -1
+
+        candidates = sorted(
+            [e for e in files_entries if _key_file_size(e) > 0],
+            key=_key_file_size,
+            reverse=True,
+        )
+        for entry in candidates:
+            if bundle_total <= BUNDLE_SIZE_CAP:
+                break
+            lp = entry["local_path"]
+            fp = bundle / lp
+            upstream_path = entry.get("upstream_path", "")
+            upstream_sha = entry.get("upstream_sha", merge_sha)
+            original_size = fp.stat().st_size
+            stub = (
+                f"/* bundle_cap_truncated: upstream file fits the per-file "
+                f"cap but the aggregate bundle size exceeds "
+                f"{BUNDLE_SIZE_CAP} bytes. Re-fetch upstream at "
+                f"{repo}:{upstream_path}@{upstream_sha} to read the "
+                f"full content. */\n"
+            ).encode("utf-8")
+            fp.write_bytes(stub)
+            entry["sha256"] = sha256_bytes(stub)
+            entry["size_cap_truncated"] = True
+            bundle_total += len(stub) - original_size
             bundle_truncated = True
 
     # Write PROVENANCE.yaml

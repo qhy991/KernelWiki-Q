@@ -6,7 +6,7 @@ retrieved_at: '2026-04-17'
 asset_mode: extracted
 size_cap_truncated: false
 generated_by: scripts/collect_contest_code.py
-source_contest_id: contest-gpu-mode-nvfp4-problem-1-gemv
+source_contest_id: contest-gpumode-p1
 files:
 - local_path: 02-reference-core-computation-part-1.cpp
   role: extracted-block

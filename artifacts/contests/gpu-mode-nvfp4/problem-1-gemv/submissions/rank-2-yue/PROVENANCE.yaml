@@ -6,7 +6,7 @@ retrieved_at: '2026-04-17'
 asset_mode: extracted
 size_cap_truncated: false
 generated_by: scripts/collect_contest_code.py
-source_contest_id: contest-gpu-mode-nvfp4-problem-1-gemv
+source_contest_id: contest-gpumode-p1
 files:
 - local_path: 01-step-1-cute-dsl-baseline-100us.cpp
   role: extracted-block

@@ -97,19 +97,35 @@ def _resolve_canonical_file(entry, files_list):
     return files_list[-1].get("local_path")
 
 
-def collect_one(contest_page, sub_idx, sub, manifest):
+def collect_one(contest_page, sub_idx, sub, manifest, contest_page_id=None):
     """Returns (new_sub_dict, wrote_any_files: bool, error: str|None)."""
     contest_slug = contest_page.parent.name
     problem_slug = contest_page.stem
     rank = sub.get("rank")
     participant = sub.get("participant") or "anon"
     ra_slug = rank_author_slug(rank, participant)
+    bundle_dir = CONTESTS_ART / contest_slug / problem_slug / "submissions" / ra_slug
 
     # Consult manifest: data/contest-sources.yaml structured as:
     # {contest: {problem: {rank-N-author-slug: {kind, origin_url, ...}}}}
     entry = ((manifest.get(contest_slug) or {}).get(problem_slug) or {}).get(ra_slug)
     if not entry:
         # No manifest entry — remain unavailable with structural reason.
+        # R28: also delete any previously-collected bundle directory.
+        # Without this, a manifest entry that's removed leaves stale
+        # code under artifacts/contests/... which `query.py --has-code`
+        # and `get_page.py --include-code` would still surface even
+        # though the contest page declares the submission unavailable.
+        if bundle_dir.is_dir():
+            shutil.rmtree(bundle_dir)
+            # Clean up the now-empty `submissions/` parent if we were
+            # the last entry (keeps the tree tidy; failure is non-fatal).
+            parent = bundle_dir.parent
+            try:
+                if parent.is_dir() and not any(parent.iterdir()):
+                    parent.rmdir()
+            except OSError:
+                pass
         new_sub = dict(sub)
         new_sub["submission_truth"] = "unavailable"
         new_sub["code_unavailable_reason"] = (
@@ -121,21 +137,17 @@ def collect_one(contest_page, sub_idx, sub, manifest):
 
     kind = entry.get("kind")
     origin_url = entry.get("origin_url", "")
-    bundle_dir = CONTESTS_ART / contest_slug / problem_slug / "submissions" / ra_slug
 
     new_sub = dict(sub)
     files_list = []
 
     # For unavailable kinds, never create the bundle directory.
+    # R28: use rmtree for full recursion; the previous iter+unlink loop
+    # would leave stale subdirectories behind when a bundle that had
+    # nested key-files was reclassified to discord-only / unavailable.
     if kind in ("discord-only", "unavailable-public"):
         if bundle_dir.is_dir():
-            for f in bundle_dir.iterdir():
-                if f.is_file():
-                    f.unlink()
-            try:
-                bundle_dir.rmdir()
-            except OSError:
-                pass
+            shutil.rmtree(bundle_dir)
         new_sub["submission_truth"] = "unavailable"
         new_sub["code_unavailable_reason"] = entry.get("reason", f"kind={kind}; no public code")
         new_sub.pop("code_path", None)
@@ -206,7 +218,7 @@ def collect_one(contest_page, sub_idx, sub, manifest):
                 "asset_mode": "verbatim",
                 "size_cap_truncated": False,
                 "generated_by": "scripts/collect_contest_code.py",
-                "source_contest_id": f"contest-{contest_slug}-{problem_slug}",
+                "source_contest_id": contest_page_id or f"contest-{contest_slug}-{problem_slug}",
                 "files": files_list,
             }
             (bundle_dir / "PROVENANCE.yaml").write_text(
@@ -274,7 +286,7 @@ def collect_one(contest_page, sub_idx, sub, manifest):
                 "asset_mode": "extracted",
                 "size_cap_truncated": False,
                 "generated_by": "scripts/collect_contest_code.py",
-                "source_contest_id": f"contest-{contest_slug}-{problem_slug}",
+                "source_contest_id": contest_page_id or f"contest-{contest_slug}-{problem_slug}",
                 "files": files_list,
             }
             (bundle_dir / "PROVENANCE.yaml").write_text(
@@ -358,7 +370,12 @@ def main():
             if args.dry_run:
                 new_subs.append(sub)
                 continue
-            new_sub, ok, err = collect_one(contest_md, i, sub, manifest)
+            # R28: pass the contest page's real frontmatter id so the
+            # emitted PROVENANCE `source_contest_id` links back to the
+            # right source page. Path-derived ids (contest-<dir>-<stem>)
+            # don't match curator-assigned ids like `contest-gpumode-p1`.
+            page_id = fm.get("id") if isinstance(fm, dict) else None
+            new_sub, ok, err = collect_one(contest_md, i, sub, manifest, contest_page_id=page_id)
             if err:
                 fails.append(f"{contest_md.relative_to(REPO)}[{i}]: {err}")
             if ok:
