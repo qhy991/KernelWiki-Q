@@ -203,13 +203,21 @@ def _derive_filename(idx, heading_path, lang, seen_names):
 
 def _file_header(slug, heading_path, lang, ext):
     """Build the per-file provenance header injected by the extractor.
-    C-family extensions get `//` comments; everything else gets `#`.
+    C-family extensions get `//` comments; JSON gets no header (it has
+    no comment syntax); everything else gets `#`.
 
     The header cites the bundle's actual PROVENANCE.yaml path
     (`artifacts/blogs/<slug>/code/PROVENANCE.yaml`); the `code/` suffix
     matters because that is where the asset-bundle root lives and where
     the provenance metadata is written. Without the suffix readers
     following the trail would land on a non-existent file.
+
+    R34: JSON doesn't allow any comment syntax (not `//`, not `#`, not
+    `/* */`) so a `#`-prefixed header would make the extracted `.json`
+    file unparseable. Emit JSON with no provenance prelude — the
+    bundle-level PROVENANCE.yaml still records the block's heading_path
+    and origin, so readers following the backlink still get the full
+    metadata, just not inlined into the JSON file itself.
     """
     if ext in ("cu", "cuh", "cpp", "ptx", "h", "hpp"):
         return (
@@ -218,6 +226,8 @@ def _file_header(slug, heading_path, lang, ext):
             f"// Original fence language: {lang}\n"
             f"// See artifacts/blogs/{slug}/code/PROVENANCE.yaml for origin + license metadata.\n\n"
         )
+    if ext == "json":
+        return ""
     return (
         f"# Extracted from sources/blogs/{slug}.md by scripts/extract_blog_code.py\n"
         f"# Heading: {heading_path}\n"

@@ -430,11 +430,26 @@ def validate_file(filepath, schemas, valid_tags, all_source_ids, code_langs):
             target = REPO_ROOT / ad
             if not target.is_dir():
                 errors.append(f"{rel}: artifact_dir '{ad}' does not resolve to an existing directory")
-            elif not ad.startswith("artifacts/"):
-                errors.append(
-                    f"{rel}: artifact_dir '{ad}' must live under 'artifacts/' "
-                    f"(code assets are quarantined from wiki/ per AC-9)"
-                )
+            else:
+                # R34: resolve symlinks / `..` traversal before checking
+                # containment under REPO_ROOT/artifacts. A raw
+                # startswith('artifacts/') check accepts strings like
+                # 'artifacts/../sources/prs' that escape the quarantine.
+                # get_page.py --include-code and query.py --has-code
+                # both follow the resolved path, so the validator must
+                # compare resolved-vs-resolved too.
+                try:
+                    resolved = target.resolve()
+                    artifacts_root = (REPO_ROOT / "artifacts").resolve()
+                    if resolved != artifacts_root and artifacts_root not in resolved.parents:
+                        errors.append(
+                            f"{rel}: artifact_dir '{ad}' must live under 'artifacts/' "
+                            f"(code assets are quarantined from wiki/ per AC-9); "
+                            f"resolves to '{resolved}' which is outside "
+                            f"'{artifacts_root}'"
+                        )
+                except (OSError, RuntimeError) as e:
+                    errors.append(f"{rel}: artifact_dir '{ad}' could not be resolved: {e}")
 
     # Phase 3 AC-3: nested submissions[*] validation on source-contest pages
     if page_type == "source-contest" and "submissions" in fm:
@@ -461,6 +476,14 @@ def validate_contest_submissions(fm, filepath, schemas):
     contest_slug = filepath.parent.name
     problem_slug = filepath.stem
     expected_prefix = f"artifacts/contests/{contest_slug}/{problem_slug}/submissions/"
+    # R34: resolve-vs-resolve containment check. A raw startswith
+    # would accept a `code_path` like `artifacts/contests/<c>/<p>/
+    # submissions/../rank-2-other/file.cpp` which escapes the
+    # submission bundle for this row.
+    try:
+        expected_root = (REPO_ROOT / expected_prefix).resolve()
+    except (OSError, RuntimeError):
+        expected_root = REPO_ROOT / expected_prefix
 
     for i, entry in enumerate(subs):
         if not isinstance(entry, dict):
@@ -492,12 +515,25 @@ def validate_contest_submissions(fm, filepath, schemas):
                     errors.append(
                         f"{rel}: submissions[{i}].code_path '{cp}' does not exist"
                     )
-                elif not cp.startswith(expected_prefix):
-                    errors.append(
-                        f"{rel}: submissions[{i}].code_path '{cp}' must live under "
-                        f"'{expected_prefix}' (the page's own implicit submission bundle), "
-                        f"not an arbitrary location inside artifacts/contests/"
-                    )
+                else:
+                    # R34: compare RESOLVED paths so `..` traversal is
+                    # caught. A raw startswith string check accepts
+                    # `.../submissions/../rank-2-other/...` which
+                    # points outside this row's submission bundle.
+                    try:
+                        resolved_cp = target.resolve()
+                        if expected_root not in resolved_cp.parents and resolved_cp != expected_root:
+                            errors.append(
+                                f"{rel}: submissions[{i}].code_path '{cp}' must live under "
+                                f"'{expected_prefix}' (the page's own implicit submission bundle), "
+                                f"not an arbitrary location inside artifacts/contests/; "
+                                f"resolves to '{resolved_cp}' which is outside "
+                                f"'{expected_root}'"
+                            )
+                    except (OSError, RuntimeError) as e:
+                        errors.append(
+                            f"{rel}: submissions[{i}].code_path '{cp}' could not be resolved: {e}"
+                        )
         # Reject unknown fields strictly
         allowed_fields = set(required) | set(optional)
         for k in entry.keys():
@@ -678,7 +714,26 @@ def validate_bundle(bundle_root, known_source_ids):
         if not abs_path.is_file():
             errors.append(f"{rel}/PROVENANCE.yaml: files[{i}].local_path '{lp}' does not exist in bundle")
             continue
-        declared_paths.add(abs_path.resolve())
+        # R34: reject manifest entries whose resolved path escapes the
+        # bundle root (e.g. `../outside.py`). Without this check,
+        # files[*].local_path can satisfy is_file() while pointing at
+        # content that isn't actually part of the bundle, undermining
+        # the flat-ownership / manifest-drift invariants.
+        try:
+            resolved_path = abs_path.resolve()
+            resolved_root = bundle_root.resolve()
+            if resolved_root not in resolved_path.parents and resolved_path != resolved_root:
+                errors.append(
+                    f"{rel}/PROVENANCE.yaml: files[{i}].local_path '{lp}' escapes "
+                    f"the bundle root (resolves to '{resolved_path}', outside '{resolved_root}')"
+                )
+                continue
+        except (OSError, RuntimeError) as e:
+            errors.append(
+                f"{rel}/PROVENANCE.yaml: files[{i}].local_path '{lp}' could not be resolved: {e}"
+            )
+            continue
+        declared_paths.add(resolved_path)
         # SHA verification (unless size_cap_truncated: true on this entry)
         truncated = bool(entry.get("size_cap_truncated"))
         if sha and not truncated:
