@@ -13,19 +13,20 @@ gh version 2.90.0 (2026-04-16)
 
 ## Scope
 
-- 89 asset bundles under `artifacts/` (91 post-R30 − 2 blog
-  extraction bundles that turned `code_present: false` in R32 after
-  the unlabeled-fence heuristic tightened to reject comment-only
-  content: `amandeep-nvfp4-attempts` and `modular-blackwell-matmul`
-  had all-`//`-comment explanatory fences that weren't real code.
-  Previous R30 counts: 94 post-R27 − 3 Triton PRs dropped in R30
-  for non-Blackwell vendor title prefixes.)
+- 87 asset bundles under `artifacts/` (89 post-R32 − 2 more blog
+  extraction bundles that turned `code_present: false` in R35 after
+  the unlabeled-fence heuristic tightened to reject formulas / configs
+  without a code-structure signal (`;`, `{`, `}`, or language keyword):
+  `nvfp4-format-details` had only a single dequantization formula
+  (`x_hat_i = s_m * s_b * deq_FP4(q_i)`) and
+  `vllm-deepseek-v3-sparse-attention` had deployment configs
+  (`DP=8, EP=8, TP=1`, `vllm serve ... --tensor-parallel-size 8`).)
 - 301 files with `mode: verbatim` or `mode: upstream-patch` and no `size_cap_truncated` marker (was 310; minus the files in the 3 dropped vendor-prefixed PR bundles and the pseudo-code file in ping-pong-scheduling/full)
 
 ## stdout
 
 ```
-Verified 89 bundle(s).
+Verified 87 bundle(s).
 All verbatim/upstream-patch assets match upstream.
 ```
 

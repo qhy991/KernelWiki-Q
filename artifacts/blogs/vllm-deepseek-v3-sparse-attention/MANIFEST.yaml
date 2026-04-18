@@ -1,16 +1,4 @@
 slug: vllm-deepseek-v3-sparse-attention
 origin_url: https://blog.vllm.ai/2025/09/29/deepseek-v3-2.html
-code_present: true
-total_blocks: 2
+code_present: false
 generated_by: scripts/extract_blog_code.py
-files:
-- local_path: code/01-deployment-configuration.txt
-  heading_path: '# DeepSeek-V3.2-Exp in vLLM: Fine-Grained Sparse Attention in Action
-    > ## Deployment Configuration'
-  fence_lang: ''
-  sha256: fd3820f8dc1d5e5d0fbf563cff3b3fa47221f20d33bb4ed214934ddd3a7af04d
-- local_path: code/02-deployment-configuration.txt
-  heading_path: '# DeepSeek-V3.2-Exp in vLLM: Fine-Grained Sparse Attention in Action
-    > ## Deployment Configuration'
-  fence_lang: ''
-  sha256: 149e2c08457bcb985373182c55c08e291b50d9c10172dcedfbba53a737c6038c

@@ -1,6 +1,0 @@
-# Extracted from sources/blogs/nvfp4-format-details.md by scripts/extract_blog_code.py
-# Heading: # NVFP4 Format Details (Harold Benoit) > ## Dequantization Formula
-# Original fence language: 
-# See artifacts/blogs/nvfp4-format-details/code/PROVENANCE.yaml for origin + license metadata.
-
-x_hat_i = s_m * s_b * deq_FP4(q_i)

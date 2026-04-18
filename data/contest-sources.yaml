@@ -12,19 +12,21 @@ gpu-mode-nvfp4:
     rank-1-simon-veitner:
       kind: inline-from-blog
       blog_slug: simon-nvfp4-gemv
-      # File list matches the R20-updated blog bundle numbering (an
-      # unlabeled "core computation" prose fence now appears at index 01,
-      # shifting the three C++ strategy fences down by one).
+      # File list after R35 heuristic tightening re-dropped the
+      # single-line "core computation" formula fence (no code-structure
+      # signal). The three C++ strategy fences returned to indices
+      # 01-03 because the formula fence was previously shifting them
+      # to 02-04 under R20's permissive heuristic.
       files:
-        - "02-reference-core-computation-part-1.cpp"
-        - "03-strategy-1-k-parallel-grid-with-atomic-accumulation.cpp"
-        - "04-strategy-3-atomic-free-shared-memory-reduction.cpp"
+        - "01-reference-core-computation-part-1.cpp"
+        - "02-strategy-1-k-parallel-grid-with-atomic-accumulation.cpp"
+        - "03-strategy-3-atomic-free-shared-memory-reduction.cpp"
       # R21: canonical_file names the actual final/winning kernel so the
       # contest page's `code_path` lands on the real submission instead
       # of the first file in the progression (which is a reference /
       # baseline fragment). Strategy-3 (atomic-free shared-memory
       # reduction) is the final approach described in Simon's blog.
-      canonical_file: "04-strategy-3-atomic-free-shared-memory-reduction.cpp"
+      canonical_file: "03-strategy-3-atomic-free-shared-memory-reduction.cpp"
       origin_url: "https://veitner.bearblog.dev/nvfp4-gemv/"
     rank-2-yue:
       kind: inline-from-blog

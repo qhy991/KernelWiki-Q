@@ -37,7 +37,7 @@ submissions:
   technique: Full PTX assembly with cache policy differentiation, byte unpacking,
     and aggressive register budgeting (maxrregcount=32)
   submission_truth: reconstructed-from-blog
-  code_path: artifacts/contests/gpu-mode-nvfp4/problem-1-gemv/submissions/rank-1-simon-veitner/04-strategy-3-atomic-free-shared-memory-reduction.cpp
+  code_path: artifacts/contests/gpu-mode-nvfp4/problem-1-gemv/submissions/rank-1-simon-veitner/03-strategy-3-atomic-free-shared-memory-reduction.cpp
 - rank: 2
   participant: yue
   score: ~23.0us geomean

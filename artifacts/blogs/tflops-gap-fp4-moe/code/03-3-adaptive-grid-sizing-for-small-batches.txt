@@ -1,8 +1,0 @@
-# Extracted from sources/blogs/tflops-gap-fp4-moe.md by scripts/extract_blog_code.py
-# Heading: # TFLOPS Gap: Why FP4 MoE Kernel Engineering Matters on Blackwell > ## Three Key Optimization Techniques > ### 3. Adaptive Grid Sizing for Small Batches
-# Original fence language: 
-# See artifacts/blogs/tflops-gap-fp4-moe/code/PROVENANCE.yaml for origin + license metadata.
-
-Initial:     grid=128, block=360
-Iteration 1: grid=256, block=180
-Iteration 2: grid=256, block=180 (stop, block > 64)

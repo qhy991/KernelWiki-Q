@@ -1,10 +1,4 @@
 slug: nvfp4-format-details
 origin_url: https://haroldbenoit.com/notes/ml/engineering/precision/nvfp4-format
-code_present: true
-total_blocks: 1
+code_present: false
 generated_by: scripts/extract_blog_code.py
-files:
-- local_path: code/01-dequantization-formula.txt
-  heading_path: '# NVFP4 Format Details (Harold Benoit) > ## Dequantization Formula'
-  fence_lang: ''
-  sha256: 289e01aa0b23caca47805e87c2b036bea430208bcd4f547af6374f74f784382f

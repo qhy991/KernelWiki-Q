@@ -1,24 +1,12 @@
 slug: tflops-gap-fp4-moe
 origin_url: https://huggingface.co/blog/apsys/blackwell-nvfp4-comparison
 code_present: true
-total_blocks: 3
+total_blocks: 1
 generated_by: scripts/extract_blog_code.py
 files:
-- local_path: code/01-2-blackwell-specific-cutlass-schedules-and-tma.txt
-  heading_path: '# TFLOPS Gap: Why FP4 MoE Kernel Engineering Matters on Blackwell
-    > ## Three Key Optimization Techniques > ### 2. Blackwell-Specific CUTLASS Schedules
-    and TMA'
-  fence_lang: ''
-  sha256: 7c16df062e02f2dc236b08c1e9a5ce5dedc60449bf1728df93a7ad2473386398
-- local_path: code/02-2-blackwell-specific-cutlass-schedules-and-tma.cu
+- local_path: code/01-2-blackwell-specific-cutlass-schedules-and-tma.cu
   heading_path: '# TFLOPS Gap: Why FP4 MoE Kernel Engineering Matters on Blackwell
     > ## Three Key Optimization Techniques > ### 2. Blackwell-Specific CUTLASS Schedules
     and TMA'
   fence_lang: cuda
   sha256: b6c10617286d018fc75ab114d0603a9fba29533ef01ec3290fc5ddcaa863e1a2
-- local_path: code/03-3-adaptive-grid-sizing-for-small-batches.txt
-  heading_path: '# TFLOPS Gap: Why FP4 MoE Kernel Engineering Matters on Blackwell
-    > ## Three Key Optimization Techniques > ### 3. Adaptive Grid Sizing for Small
-    Batches'
-  fence_lang: ''
-  sha256: ed99281a415f59e86e9de65cfbd3f93edebeda8dd4d5156f8aa801ae08c1d6ed

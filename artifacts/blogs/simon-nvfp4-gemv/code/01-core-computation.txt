@@ -1,6 +1,0 @@
-# Extracted from sources/blogs/simon-nvfp4-gemv.md by scripts/extract_blog_code.py
-# Heading: # NVFP4 GEMV and Improved NVFP4 GEMV (Simon Veitner) > ## Part 1: Reference CuTe DSL Implementation > ### Core Computation
-# Original fence language: 
-# See artifacts/blogs/simon-nvfp4-gemv/code/PROVENANCE.yaml for origin + license metadata.
-
-res += tArA[i] * tArSFA[i] * tBrB[i] * tBrSFB[i]

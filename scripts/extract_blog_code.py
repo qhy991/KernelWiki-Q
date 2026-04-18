@@ -75,27 +75,45 @@ def is_extractable_block(lang, body):
 
 _BULLET_RE = re.compile(r"^\s*([-*•]|\d+[.)])\s+\S")
 _COMMENT_LINE_RE = re.compile(r"^\s*(?://|#|/\*|\*/|\*|<!--)")
+# R35: real-code structure markers. Formulas (`x = f(y)`), configs
+# (`DP=8, EP=8, TP=1`), shell commands (`vllm serve ...`), and output
+# logs (`Initial: grid=128`) all lack these. Source code carries at
+# least one of:
+#   - `;` or `{` / `}` (C-family statement terminators or blocks)
+#   - a language keyword: control flow (for/while/if/else/return),
+#     definition (def/class/struct/template/namespace/typedef/using),
+#     or GPU / low-level markers (__global__/__device__/__host__,
+#     extern/static/inline/void).
+_CODE_STRUCTURE_RE = re.compile(
+    r"[;{}]"
+    r"|\b(?:def|class|struct|template|namespace|typedef|using|"
+    r"for|while|if|else|return|extern|static|inline|void|"
+    r"__global__|__device__|__host__|__forceinline__|__shared__|"
+    r"asm\s+volatile)\b"
+)
 
 
 def _looks_like_code_fence(body):
     """Heuristic: an unlabeled fence is treated as code only when it
     (a) is not dominantly bullet / numbered prose AND (b) carries a
-    positive code signal — i.e. at least one non-comment line.
+    positive code signal (non-comment line) AND (c) carries a real
+    code-structure signal.
 
-    Bullet check: if >50% of non-blank lines are bullet or numbered
-    list items, reject.
-    Positive code signal: at least one non-blank line that does NOT
+    Bullet check (R26): if >50% of non-blank lines are bullet or
+    numbered list items, reject.
+    Non-comment check (R32): at least one non-blank line that does NOT
     start with a comment marker (`//`, `#`, `/*`, `*/`, `*`, `<!--`).
-    A fence made up entirely of `//`-style commentary is explanatory
-    notes, not source — R32 fix on top of R26's bullet-only check
-    after Codex observed that nsight / modular-blackwell explanation
-    fences were still being extracted as `.txt` "code".
+    Code-structure check (R35): at least one non-comment line must
+    contain a statement terminator / block brace (`;`, `{`, `}`) or a
+    language keyword (for / while / if / return / def / class / etc.).
+    This rejects formulas (`x_hat = s * deq(q)`), configs
+    (`DP=8, EP=8, TP=1`), shell commands (`vllm serve ...`), and
+    output logs (`Initial: grid=128`) which would otherwise pass the
+    first two checks via a single non-comment line without being real
+    source code.
 
-    Short fences (1-3 non-blank lines) still benefit — single-line
-    formulas (`x_hat = s * deq(q)`) and configs (`DP=8, EP=8, TP=1`,
-    `vllm serve deepseek... --tensor-parallel-size 8`) have no
-    comment prefix and pass. Fenced prose blocks masquerading as
-    code via `//`-only comments now correctly reject.
+    Known-language fences (`lang in EXT_MAP`) still bypass the
+    heuristic entirely — those are explicit curator declarations.
     """
     lines = [ln for ln in body.strip().splitlines() if ln.strip()]
     if not lines:
@@ -106,6 +124,8 @@ def _looks_like_code_fence(body):
         return False
     non_comment = [ln for ln in lines if not _COMMENT_LINE_RE.match(ln)]
     if not non_comment:
+        return False
+    if not any(_CODE_STRUCTURE_RE.search(ln) for ln in non_comment):
         return False
     return True
 

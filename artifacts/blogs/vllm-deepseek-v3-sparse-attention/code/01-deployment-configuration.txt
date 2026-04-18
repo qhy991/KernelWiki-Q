@@ -1,6 +1,0 @@
-# Extracted from sources/blogs/vllm-deepseek-v3-sparse-attention.md by scripts/extract_blog_code.py
-# Heading: # DeepSeek-V3.2-Exp in vLLM: Fine-Grained Sparse Attention in Action > ## Deployment Configuration
-# Original fence language: 
-# See artifacts/blogs/vllm-deepseek-v3-sparse-attention/code/PROVENANCE.yaml for origin + license metadata.
-
-DP=8, EP=8, TP=1
