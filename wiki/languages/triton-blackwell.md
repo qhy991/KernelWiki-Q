@@ -91,7 +91,6 @@ The following Triton files ship **verbatim** under `artifacts/prs/` (pinned at e
 | File | Purpose | PR |
 |---|---|---|
 | [`artifacts/prs/flashinfer/PR-1025/key-files/flashinfer/triton/format_conversion.py`](../../artifacts/prs/flashinfer/PR-1025/key-files/flashinfer/triton/format_conversion.py) | FP8 / FP16 format conversion Triton kernels for FlashInfer | flashinfer#1025 |
-| [`artifacts/prs/sglang/PR-20910/key-files/python/sglang/jit_kernel/flash_attention_v4.py`](../../artifacts/prs/sglang/PR-20910/key-files/python/sglang/jit_kernel/flash_attention_v4.py) | FA4-style JIT-compiled attention kernel on Blackwell | sglang#20910 |
 | [`artifacts/prs/sglang/PR-20910/key-files/python/sglang/jit_kernel/norm.py`](../../artifacts/prs/sglang/PR-20910/key-files/python/sglang/jit_kernel/norm.py) | Normalization kernels (memory-bound SM100 Triton) | sglang#20910 |
 | [`artifacts/prs/sglang/PR-21019/key-files/python/sglang/jit_kernel/triton/gdn_fused_proj.py`](../../artifacts/prs/sglang/PR-21019/key-files/python/sglang/jit_kernel/triton/gdn_fused_proj.py) | GatedDeltaNet fused projection (linear-attention) Triton kernel | sglang#21019 |
 

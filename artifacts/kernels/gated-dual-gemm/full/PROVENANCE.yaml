@@ -13,7 +13,7 @@ files:
   role: pr-diff
   mode: upstream-patch
 - local_path: blackwell-cutlass-schedules-and-tma.cu
-  sha256: b6c10617286d018fc75ab114d0603a9fba29533ef01ec3290fc5ddcaa863e1a2
+  sha256: e720037bbdb5ee5054259a331cdaf489e7135a44038d66d1fd9d9e5998b75255
   role: extracted-block
   mode: extracted
   upstream_path: sources/blogs/tflops-gap-fp4-moe.md
