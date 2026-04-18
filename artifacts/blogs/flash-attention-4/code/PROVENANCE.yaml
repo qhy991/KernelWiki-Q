@@ -13,13 +13,7 @@ files:
   upstream_path: inline-in-blog-markdown
   heading_path: '## Key Code > ### Software exp (Cody-Waite + Horner)'
   sha256: 6fba9c537831bba7b175ee3a050e3adb5ddf99193dee550b7122a4663e3f9164
-- local_path: 02-ping-pong-scheduling.cu
-  role: extracted-block
-  mode: extracted
-  upstream_path: inline-in-blog-markdown
-  heading_path: '## Key Code > ### Ping-pong scheduling'
-  sha256: efc093bcbdfc98878c7dda2083e3c905b9856db6f5694208457372f41e71e623
-- local_path: 03-2-cta-cooperative-backward.cu
+- local_path: 02-2-cta-cooperative-backward.cu
   role: extracted-block
   mode: extracted
   upstream_path: inline-in-blog-markdown

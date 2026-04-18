@@ -4,8 +4,8 @@
 lane: triton
 generated_by: scripts/compute_core_prs.py
 total: 42
-captured: 24
-skipped: 18
+captured: 21
+skipped: 21
 prs:
 - id: pr-flashinfer-1025
   captured: true
@@ -30,7 +30,9 @@ prs:
 - id: pr-pytorch-158646
   captured: true
 - id: pr-pytorch-163388
-  captured: true
+  captured: false
+  skipped_reason: Triton PR tagged for a non-Blackwell vendor backend in title ([Inductor]);
+    SM100 metadata is incidental Triton backend coverage, not Blackwell kernel authorship
 - id: pr-pytorch-163583
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
@@ -44,7 +46,9 @@ prs:
   skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
     fetch_pr_diff.SKIP_GLOBS)
 - id: pr-pytorch-170190
-  captured: true
+  captured: false
+  skipped_reason: Triton PR tagged for a non-Blackwell vendor backend in title ([ROCm]);
+    SM100 metadata is incidental Triton backend coverage, not Blackwell kernel authorship
 - id: pr-pytorch-171129
   captured: true
 - id: pr-pytorch-175091
@@ -113,4 +117,6 @@ prs:
 - id: pr-vllm-39007
   captured: true
 - id: pr-vllm-39088
-  captured: true
+  captured: false
+  skipped_reason: Triton PR tagged for a non-Blackwell vendor backend in title ([XPU]);
+    SM100 metadata is incidental Triton backend coverage, not Blackwell kernel authorship

@@ -79,15 +79,31 @@ def graph_closure_from_wiki():
 
 
 def contest_referenced_prs():
-    """Collect every PR ID mentioned inside a sources/contests/**/*.md body."""
+    """Collect PR IDs explicitly listed in a contest page's frontmatter
+    `referenced_prs:` field.
+
+    R30: switched from a full-text regex scan to an explicit structured
+    list. The regex-over-body approach picked up PR IDs mentioned in
+    prose (e.g. `pr-sglang-21239` appearing in a `code_unavailable_reason`
+    string), which pulled unrelated PRs into the generated core set.
+    Curators who want a contest page to bring a PR into core must now
+    declare it explicitly:
+
+        ---
+        ...
+        referenced_prs:
+          - pr-cutlass-2466
+          - pr-vllm-23696
+        ---
+    """
     ids = set()
     for md in sorted((SOURCES / "contests").rglob("*.md")):
-        try:
-            text = md.read_text(encoding="utf-8")
-        except OSError:
+        fm, _ = extract_frontmatter(md)
+        if not isinstance(fm, dict):
             continue
-        for match in PR_ID_RE.findall(text):
-            ids.add(match)
+        for pid in fm.get("referenced_prs") or []:
+            if isinstance(pid, str) and pid.startswith("pr-"):
+                ids.add(pid)
     return ids
 
 
@@ -259,6 +275,27 @@ def apply_triton_policy(policy, pr):
     # Skip pure Hopper
     if archs and archs.issubset({"sm90", "sm90a"}):
         return False, "pure Hopper Triton (no SM100 relevance)"
+    # R30: skip non-Blackwell-vendor Triton PRs. pytorch/pytorch tags
+    # many Triton PRs with `architectures: [sm100]` because the Triton
+    # backend has SM100 support generally, even when the PR itself is
+    # scoped to a different GPU backend (ROCm / AMD / Intel GPU / XPU /
+    # HIP / MPS / CPU). Concrete examples:
+    #   pr-pytorch-170190: "[ROCm] Enable shared memory based pruning..."
+    #   pr-pytorch-163388: "[Inductor][Intel GPU] Save threads_per_warp..."
+    # The convention is `[<Vendor>]` prefix in the PR title. Match
+    # case-insensitively so `[rocm]` / `[Intel GPU]` etc. all catch.
+    import re as _re
+    _NON_BLACKWELL_VENDOR_RE = _re.compile(
+        r"\[\s*(rocm|amd|hip|intel\s*gpu|xpu|mps|cpu)\s*\]",
+        _re.IGNORECASE,
+    )
+    title = str(pr.get("title") or "")
+    if _NON_BLACKWELL_VENDOR_RE.search(title):
+        return False, (
+            f"Triton PR tagged for a non-Blackwell vendor backend in title "
+            f"({title.split(']')[0]}]); SM100 metadata is incidental Triton "
+            f"backend coverage, not Blackwell kernel authorship"
+        )
     # Skip runtime-config-only
     if changed_paths:
         from fnmatch import fnmatch

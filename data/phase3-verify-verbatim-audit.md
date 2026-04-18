@@ -13,19 +13,22 @@ gh version 2.90.0 (2026-04-16)
 
 ## Scope
 
-- 94 asset bundles under `artifacts/` (95 post-R26 − 1 removed in R27
-  when pr-sglang-21428's metadata-only cute-dsl capture was dropped
-  per policy: the PR touched only `python/sglang/srt/layers/attention/
-  linear/kda_backend.py`, a backend-dispatch file with no cute /
-  cutedsl / CuTeDSL path marker, so policy's
-  `language_tag_only_without_kernel_path: true` skip rule now applies
-  after the two-tier STRONG / KERNEL_OR_EXAMPLE glob refactor.)
-- 310 files with `mode: verbatim` or `mode: upstream-patch` and no `size_cap_truncated` marker (was 312; minus the 2 files in the dropped pr-sglang-21428 bundle)
+- 91 asset bundles under `artifacts/` (94 post-R27 − 3 Triton PRs
+  dropped in R30 because their titles carried non-Blackwell vendor
+  prefixes — `[ROCm]` for pr-pytorch-170190, `[Intel GPU]` for
+  pr-pytorch-163388, `[XPU]` for pr-vllm-39088; `architectures:
+  [sm100]` was incidental Triton-backend coverage, not Blackwell
+  kernel authorship. Also dropped the synthesized pseudo-code
+  `ping-pong-scheduling-from-fa4-blog.cu` from `artifacts/kernels/
+  ping-pong-scheduling/full/` — it contained placeholders like
+  `issue_mma`, `wait_mma`, and should not have been published under
+  `mode: extracted` per the Codex R30 P1 finding.)
+- 301 files with `mode: verbatim` or `mode: upstream-patch` and no `size_cap_truncated` marker (was 310; minus the files in the 3 dropped vendor-prefixed PR bundles and the pseudo-code file in ping-pong-scheduling/full)
 
 ## stdout
 
 ```
-Verified 94 bundle(s).
+Verified 91 bundle(s).
 All verbatim/upstream-patch assets match upstream.
 ```
 

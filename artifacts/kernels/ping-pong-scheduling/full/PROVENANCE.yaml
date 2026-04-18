@@ -13,9 +13,3 @@ files:
   role: upstream-file
   mode: verbatim
   upstream_path: examples/77_blackwell_fmha/kernel/sm100_fmha_bwd_kernel_tma_warpspecialized.hpp
-- local_path: ping-pong-scheduling-from-fa4-blog.cu
-  sha256: efc093bcbdfc98878c7dda2083e3c905b9856db6f5694208457372f41e71e623
-  role: extracted-block
-  mode: extracted
-  upstream_path: sources/blogs/flash-attention-4.md
-  heading_path: '## Key Code > ### Ping-pong scheduling'

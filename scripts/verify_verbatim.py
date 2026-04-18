@@ -134,28 +134,31 @@ def fetch_upstream_patch(upstream_repo, pr_number, expected_sha=None):
     """Fetch the PR's diff at the declared upstream_sha.
 
     Strategy:
-      1. GET /repos/{repo}/pulls/{N} to read merge_commit_sha and head.sha.
-      2. If expected_sha is provided, it must prefix-match merge_commit_sha
-         (our stored SHAs are often 8-char shortcuts, so we accept prefix match).
-         Mismatch -> hard error: the PR has been amended upstream and the patch
-         we shipped no longer corresponds to the state at our pinned SHA.
-      3. Return the stable diff via `gh pr diff`; for merged PRs the diff is
-         frozen at merge_commit_sha, so this byte-matches what we shipped.
+      1. GET /repos/{repo}/pulls/{N} to read merge_commit_sha.
+      2. If expected_sha is provided, it must prefix-match
+         merge_commit_sha (our stored SHAs are often 8-char shortcuts,
+         so we accept prefix match). Mismatch -> hard error: the PR
+         has been amended upstream and the patch we shipped no longer
+         corresponds to the state at our pinned SHA. R30: removed the
+         fallback to head.sha — a stale merge_sha pointing at head
+         (after squash/rebase merge, or when the PR branch was kept
+         alive) would have silently passed otherwise.
+      3. Return the stable diff via `gh pr diff`; for merged PRs the
+         diff is frozen at merge_commit_sha, so this byte-matches what
+         we shipped.
     """
     if expected_sha:
         pr_json = run_gh(["api", f"/repos/{upstream_repo}/pulls/{pr_number}"])
         pr_data = json.loads(pr_json)
         merge_sha = pr_data.get("merge_commit_sha") or ""
-        head_sha = (pr_data.get("head") or {}).get("sha") or ""
-        ok = any(
-            upstream and upstream.startswith(expected_sha)
-            for upstream in (merge_sha, head_sha)
-        )
-        if not ok:
+        if not (merge_sha and merge_sha.startswith(expected_sha)):
+            head_sha = (pr_data.get("head") or {}).get("sha") or ""
             raise RuntimeError(
-                f"upstream_sha {expected_sha!r} does not match upstream "
-                f"merge_commit_sha={merge_sha[:12]}... or head.sha={head_sha[:12]}... "
-                f"for {upstream_repo}#{pr_number}; the PR was amended upstream"
+                f"upstream_sha {expected_sha!r} does not prefix-match "
+                f"merge_commit_sha={merge_sha[:12]}... "
+                f"(head.sha={head_sha[:12]}... shown for reference; "
+                f"not accepted) for {upstream_repo}#{pr_number}; "
+                f"the PR was amended upstream"
             )
     out = run_gh(["pr", "diff", str(pr_number), "-R", upstream_repo])
     return out

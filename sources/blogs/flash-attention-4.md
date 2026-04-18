@@ -64,6 +64,7 @@ __device__ __forceinline__ float sw_exp2(float x) {
 
 ### Ping-pong scheduling
 
+<!-- extract-skip: synthesized pseudo-code illustrating the scheduling concept (issue_mma, wait_mma, softmax_and_rescale are placeholders, not upstream functions). Not safe to publish under artifacts/blogs/** as mode=extracted. -->
 ```cuda
 // Ping-pong two 128-token query tiles per CTA. While one tile is in the
 // softmax/rescale stage, the other issues tcgen05.mma — the 2x tensor-core

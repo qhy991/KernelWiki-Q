@@ -213,21 +213,24 @@ def main():
                     print(f"  FAIL: {pid}: upstream state is not merged (state={data.get('state')})")
                     issues += 1
                 else:
-                    # sources/prs/**/*.md stores abbreviated 8-char merge_sha
-                    # values; gh returns the full 40-char merge_commit_sha.
-                    # Accept the stored value as a valid prefix of either the
-                    # full merge_commit_sha or head.sha — same convention
-                    # scripts/verify_verbatim.py uses.
+                    # sources/prs/**/*.md stores abbreviated 8-char
+                    # merge_sha values; gh returns the full 40-char
+                    # merge_commit_sha. R30: match ONLY against
+                    # merge_commit_sha (the actual merged revision).
+                    # Previously this check also accepted a prefix
+                    # match against head.sha, which let stale merge_sha
+                    # values pass strict verification whenever the PR
+                    # branch was kept alive after merge or a squash/
+                    # rebase merge moved the merge commit away from
+                    # head — the recorded `merge_sha` no longer named
+                    # the commit the bundle was fetched from.
                     upstream_merge = str(data.get("merge_commit_sha") or "")
-                    upstream_head = str((data.get("head") or {}).get("sha") or "")
-                    ok = any(
-                        upstream and upstream.startswith(sha)
-                        for upstream in (upstream_merge, upstream_head)
-                    )
-                    if not ok:
+                    if not (upstream_merge and upstream_merge.startswith(sha)):
+                        upstream_head = str((data.get("head") or {}).get("sha") or "")
                         print(
                             f"  FAIL: {pid}: recorded merge_sha={sha[:12]}... does not prefix-match "
-                            f"upstream merge_commit_sha={upstream_merge[:12]}... or head.sha={upstream_head[:12]}..."
+                            f"upstream merge_commit_sha={upstream_merge[:12]}... "
+                            f"(head.sha={upstream_head[:12]}... shown for reference; not accepted)"
                         )
                         issues += 1
             except EnvError as ex:

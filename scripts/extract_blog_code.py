@@ -100,11 +100,22 @@ def _looks_like_code_fence(body):
     return True
 
 
+_EXTRACT_SKIP_RE = re.compile(r"<!--\s*extract-skip\b.*?-->", re.IGNORECASE)
+
+
 def parse_markdown(md_path):
     """Yield (heading_path, fence_lang, fence_body) for every fenced code block.
 
     heading_path is "## A > ### B" — the nearest ancestor chain of markdown
     headings above the fence.
+
+    R30: an HTML comment matching `<!-- extract-skip ... -->` on the
+    immediately-preceding non-blank line suppresses the fence. Curators
+    use this marker when a code block is synthesized pseudo-code,
+    placeholder sketches, or otherwise not verbatim upstream. Without
+    the marker, such blocks would be published under `artifacts/blogs/**`
+    with `mode: extracted`, falsely asserting a provenance guarantee
+    the content doesn't actually meet.
     """
     try:
         text = md_path.read_text(encoding="utf-8")
@@ -134,6 +145,7 @@ def parse_markdown(md_path):
         # fence detection (```lang or ~~~lang)
         mf = re.match(r"^```(\S*)\s*$", line)
         if mf:
+            fence_open_idx = i
             lang = mf.group(1).strip().lower()
             buf = []
             i += 1
@@ -143,6 +155,14 @@ def parse_markdown(md_path):
             # closing fence
             if i < len(lines):
                 i += 1
+            # Check for an extract-skip directive on the immediately
+            # preceding non-blank line (blank lines between directive
+            # and fence are tolerated).
+            k = fence_open_idx - 1
+            while k >= 0 and not lines[k].strip():
+                k -= 1
+            if k >= 0 and _EXTRACT_SKIP_RE.search(lines[k]):
+                continue
             hp = " > ".join(f"{'#'*lvl} {t}" for lvl, t in heading_stack) if heading_stack else "(root)"
             yield hp, lang, "\n".join(buf) + "\n"
             continue
