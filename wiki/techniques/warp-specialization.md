@@ -208,7 +208,7 @@ mbarrier.try_wait.parity.shared.b64  %pred, [%mbar_buffer_free + %stage_offset],
 
 ## CUTLASS SM100 Warp Specialization
 
-In CUTLASS 4.x, the SM100 GEMM collective (`CollectiveMma_1SM`) implements this pattern with CuTe abstractions:
+In CUTLASS 4.5.0, the SM100 GEMM collective (`CollectiveMma_1SM`) implements this pattern with CuTe abstractions:
 
 ```cuda
 // CUTLASS SM100 warp role dispatch (simplified from CollectiveMma)

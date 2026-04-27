@@ -182,7 +182,7 @@ The 71% MMA utilization represents the state of the art for attention kernels on
 ## Caveats
 
 - SM100 only -- no fallback to SM90
-- Requires CuTe DSL toolchain (CUTLASS 4.x + Python frontend)
+- Requires CuTe DSL toolchain (CUTLASS 4.5.0 + Python frontend)
 - Ping-pong scheduling most effective for headdim=128; smaller headdims may not fully overlap
 
 ## Sources

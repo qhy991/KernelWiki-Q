@@ -156,7 +156,7 @@ __device__ void mma_epilogue_overlap(
 
 ## CUTLASS Epilogue Patterns
 
-CUTLASS 4.x provides composable epilogue visitors that fuse arbitrary element-wise operations after GEMM:
+CUTLASS 4.5.0 provides composable epilogue visitors that fuse arbitrary element-wise operations after GEMM:
 
 ```cuda
 // CUTLASS SM100 epilogue with fused scale + bias + activation

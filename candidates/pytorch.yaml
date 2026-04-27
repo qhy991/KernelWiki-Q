@@ -1,5 +1,5 @@
 repo: pytorch/pytorch
-searched_at: '2026-04-17'
+searched_at: '2026-04-27'
 keywords_used:
 - blackwell
 - sm100
@@ -43,8 +43,7 @@ prs:
   reason: 'matched: inductor'
   files_changed: []
 - number: 177193
-  title: '[Inductor][MPS] Fix half-precision type mismatches in Metal shader codegen
-    (#176436)'
+  title: '[Inductor][MPS] Fix half-precision type mismatches in Metal shader codegen (#176436)'
   date: '2026-03-11'
   decision: include
   reason: 'matched: cuda+13'
@@ -164,8 +163,7 @@ prs:
   reason: 'matched: inductor'
   files_changed: []
 - number: 172261
-  title: Revert "[CI] Add IoU-based accuracy checking for inductor tests segmentation
-    models"
+  title: Revert "[CI] Add IoU-based accuracy checking for inductor tests segmentation models"
   date: '2026-01-12'
   decision: exclude
   reason: non-kernel change
@@ -195,8 +193,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 171895
-  title: '[cherry-pick][cuDNN][SDPA] cuDNN SDPA off-by-default for cuDNN versions
-    < 12.9 (#171627)'
+  title: '[cherry-pick][cuDNN][SDPA] cuDNN SDPA off-by-default for cuDNN versions < 12.9 (#171627)'
   date: '2026-01-07'
   decision: include
   reason: 'matched: sdpa'
@@ -268,8 +265,7 @@ prs:
   reason: 'borderline: CUDA graph infra'
   files_changed: []
 - number: 170726
-  title: '[cherry-pick] Revert "[Inductor XPU GEMM] Step 1/N: Refactor cutlass configuration.
-    (#160174)"'
+  title: '[cherry-pick] Revert "[Inductor XPU GEMM] Step 1/N: Refactor cutlass configuration. (#160174)"'
   date: '2025-12-18'
   decision: exclude
   reason: non-kernel change
@@ -299,8 +295,7 @@ prs:
   reason: 'borderline: build infra'
   files_changed: []
 - number: 170486
-  title: '[flex_attention] adds support for low precision K/V inputs in compiled mode
-    with GPU'
+  title: '[flex_attention] adds support for low precision K/V inputs in compiled mode with GPU'
   date: '2025-12-16'
   decision: include
   reason: 'matched: inductor'
@@ -426,8 +421,7 @@ prs:
   reason: 'matched: sdpa'
   files_changed: []
 - number: 164364
-  title: '[SDPA] [MPS] Fixes regression in 2.8.0 for scaled_dot_product_attention
-    using mps'
+  title: '[SDPA] [MPS] Fixes regression in 2.8.0 for scaled_dot_product_attention using mps'
   date: '2025-10-01'
   decision: include
   reason: 'matched: sdpa'
@@ -469,8 +463,7 @@ prs:
   reason: 'borderline: CI/CD adjacent'
   files_changed: []
 - number: 163764
-  title: '[Cherry-Pick] [CD] CUDA 13 specific followup changes. Remove sm50-70 From
-    CUDA 12.6 and CUDA 12.8 builds (#162455)'
+  title: '[Cherry-Pick] [CD] CUDA 13 specific followup changes. Remove sm50-70 From CUDA 12.6 and CUDA 12.8 builds (#162455)'
   date: '2025-09-24'
   decision: defer
   reason: 'borderline: CI/CD adjacent'
@@ -494,15 +487,13 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 163583
-  title: '[2.9 cherry pick][triton] update 3.5 pin to bbb06c0334a6772b92d24bde54956e675c8c6604
-    (#163382)'
+  title: '[2.9 cherry pick][triton] update 3.5 pin to bbb06c0334a6772b92d24bde54956e675c8c6604 (#163382)'
   date: '2025-09-22'
   decision: include
   reason: 'matched: wgmma'
   files_changed: []
 - number: 163388
-  title: '[Inductor][Intel GPU] Save `threads_per_warp` from tirton compiled kernel
-    for launching kernel correctly in cpp wrapper.'
+  title: '[Inductor][Intel GPU] Save `threads_per_warp` from tirton compiled kernel for launching kernel correctly in cpp wrapper.'
   date: '2025-09-20'
   decision: include
   reason: 'matched: inductor'
@@ -520,8 +511,7 @@ prs:
   reason: 'matched: inductor'
   files_changed: []
 - number: 163265
-  title: '[Release 2.9] [cuDNN][SDPA][submodule] Roll-back cuDNN frontend upgrade,
-    update Met…'
+  title: '[Release 2.9] [cuDNN][SDPA][submodule] Roll-back cuDNN frontend upgrade, update Met…'
   date: '2025-09-18'
   decision: include
   reason: 'matched: sdpa'
@@ -533,8 +523,7 @@ prs:
   reason: 'matched: inductor'
   files_changed: []
 - number: 162596
-  title: '[CD] Aarch64 Fix packaging ``libarm_compute.so`` and other libraries to
-    the aarch64 CUDA wheels'
+  title: '[CD] Aarch64 Fix packaging ``libarm_compute.so`` and other libraries to the aarch64 CUDA wheels'
   date: '2025-09-10'
   decision: defer
   reason: 'borderline: CI/CD adjacent'
@@ -552,8 +541,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 161816
-  title: '[Reland][Inductor] Prune configs that require more shared memory than the
-    hardware limit'
+  title: '[Reland][Inductor] Prune configs that require more shared memory than the hardware limit'
   date: '2025-08-29'
   decision: defer
   reason: 'borderline: config only'
@@ -565,8 +553,7 @@ prs:
   reason: 'borderline: benchmark/test-adjacent'
   files_changed: []
 - number: 158646
-  title: '[cherry-pick][inductor][triton] Update HAS_WARP_SPEC to check triton.Config
-    params. Update Triton Hash to top of release/3.4.x stack'
+  title: '[cherry-pick][inductor][triton] Update HAS_WARP_SPEC to check triton.Config params. Update Triton Hash to top of release/3.4.x stack'
   date: '2025-07-18'
   decision: defer
   reason: 'borderline: config only'
@@ -602,8 +589,7 @@ prs:
   reason: 'matched: inductor'
   files_changed: []
 - number: 157718
-  title: '[dynamo] do not issue lru_cache warning for functions in the top-level torch
-    namespace'
+  title: '[dynamo] do not issue lru_cache warning for functions in the top-level torch namespace'
   date: '2025-07-07'
   decision: include
   reason: 'matched: inductor'

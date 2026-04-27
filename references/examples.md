@@ -1,3 +1,8 @@
+---
+version_sensitive:
+  id: vs-triton-3.6-blackwell-tcgen05
+---
+
 # Worked Query Examples
 
 Concrete patterns showing how to translate a user question into a navigation path and synthesize an answer.

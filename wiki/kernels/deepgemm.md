@@ -24,6 +24,7 @@ related:
 - hw-nvfp4
 sources:
 - blog-deepgemm
+- pr-deepgemm-304
 - pr-cutlass-2139
 - pr-vllm-23696
 performance_claims:

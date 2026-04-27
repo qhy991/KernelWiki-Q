@@ -1,3 +1,8 @@
+---
+version_sensitive:
+  id: vs-triton-3.6-blackwell-tcgen05
+---
+
 # Topic Map / Primer
 
 A compact, authoritative map of the knowledge base. Use this as a fast lookup table when the user's question is broad — each row tells you exactly which page to open.
@@ -105,6 +110,7 @@ All page IDs below resolve via `get_page.py <id>`. All paths are relative to the
 | vllm-project/vllm | 126 | `candidates/vllm.yaml` |
 | flashinfer-ai/flashinfer | 126 | `candidates/flashinfer.yaml` |
 | pytorch/pytorch | 71 | `candidates/pytorch.yaml` |
+| deepseek-ai/DeepGEMM | 1 | `candidates/deepgemm.yaml` |
 
 Query by repo: `python3 scripts/query.py --repo <name>`.
 

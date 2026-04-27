@@ -1,8 +1,8 @@
 origin_url: https://tridao.me/blog/2026/flash4/
 upstream_repo: blog
-upstream_sha: none
+upstream_sha: c9a560f44002da92d82680036e3482d0ac4939a3
 license: inherits-from-source-blog
-retrieved_at: 2026-04-16
+retrieved_at: 2026-04-27
 asset_mode: extracted
 generated_by: scripts/extract_blog_code.py
 size_cap_truncated: false

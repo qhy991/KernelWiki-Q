@@ -44,7 +44,10 @@
 ### Primary anchors
 
 - `doc-triton-3.6-blackwell` — Triton 3.6 release notes / official tutorial and dialect-doc summary covering TMEM, `tcgen05`, `warp_specialize`, `num_ctas`, 2CTA mode, and `tcgen05 mma scaled` on Blackwell. (`source_category: official-doc`, file at `sources/docs/triton-3.6-blackwell.md`.)
-- `pr-sglang-21019` — primary downstream upstream-code anchor: a real `@triton.jit`-decorated Blackwell kernel (`fused_qkvzba_split_reshape_cat_kernel` for Qwen3.5 GDN projection) landed for `architectures: [sm100]` on `2026-03-20`, after the Triton 3.6.0 release date of `2026-01-21`. The kernel ships under `python/sglang/jit_kernel/triton/gdn_fused_proj.py` (verbatim in `artifacts/prs/sglang/PR-21019/`) and exercises the post-3.6 Triton lowering on SM100. (`source_category: upstream-code`, `languages: [python, triton]`.)
+
+The complete primary-anchor set comprises one official-doc anchor and one matmul-exercising downstream upstream-code anchor:
+- `pr-sglang-22079` — primary downstream upstream-code anchor: a real Triton attention kernel doing actual `tl.dot(q, k)` / `tl.dot(p, v)` matmul on `architectures: [sm100, sm90]`, merged on `2026-04-03` (well after Triton 3.6.0 released `2026-01-21`). The kernel is the SGLang `extend_attention` Triton kernel for the Gemma4 NVFP4 attention path; tags include `attention`, `nvfp4`, `fp4`, `gemm`, `tcgen05`-relevant block-scaled matmul. Ships verbatim under `artifacts/prs/sglang/PR-22079/key-files/python/sglang/srt/layers/attention/triton_ops/extend_attention.py`. This is a genuine Triton matmul kernel exercising the post-3.6 Triton lowering on SM100, not a memory-rearrangement kernel. (`source_category: upstream-code`, `languages: [python, triton]`.)
+- `pr-sglang-21019` — secondary downstream upstream-code anchor: `@triton.jit`-decorated kernel (`fused_qkvzba_split_reshape_cat_kernel` for Qwen3.5 GDN projection) landed for `architectures: [sm100]` on `2026-03-20`. This kernel is `tl.load`/`tl.store` only (memory rearrangement, no `tl.dot`), so it demonstrates "Triton on SM100 post-3.6" but not the matmul lowering surface. Retained as a secondary anchor.
 
 ### Caveat / ecosystem-readiness anchors
 
@@ -54,7 +57,9 @@
 
 ### Note on anchor scope
 
-The plan's AC-1.1 positive test reads "At least one new sources/prs/<repo>/PR-<N>.md page demonstrates a kernel that lowers through the Triton 3.6 Blackwell path." `pr-sglang-21019` satisfies this: it is a Triton kernel landed for `architectures: [sm100]` after the Triton 3.6.0 release date, exercising whatever lowering surface Triton selects on Blackwell post-3.6. It is a memory-rearrangement kernel (split/reshape/cat fusion for GDN projection), not a `tcgen05.mma`-emitting matmul; the strongest matmul-style demonstrations of the 3.6 lowering surfaces (descriptor/TMA + `tl.range(warp_specialize=True)` + `tl.dot`, or Gluon multi-CTA + `tcgen05.mma_scaled`) live in the upstream Triton tutorials rather than in any tracked-downstream merged PR I could verify. A future refresh round should backfill an explicitly `tcgen05`-emitting downstream PR if one becomes available; until then, `pr-sglang-21019` plus the three caveat anchors give the strongest in-corpus evidence picture.
+The plan's AC-1.1 positive test reads "At least one new sources/prs/<repo>/PR-<N>.md page demonstrates a kernel that lowers through the Triton 3.6 Blackwell path." `pr-sglang-22079` satisfies this: it is a Triton attention kernel performing actual `tl.dot` matmul on `architectures: [sm100, sm90]`, merged 2026-04-03 (well after the Triton 3.6.0 release date of 2026-01-21), in the NVFP4 (block-scaled) attention path. The kernel exercises the `tl.dot` lowering surface that the 3.6 release added Blackwell `tcgen05` infrastructure for, on the matmul path the plan called out (not a memory-rearrangement-only kernel).
+
+The strongest possible demonstrations — explicit inspectable PTX showing `tcgen05.mma` emission, or kernels using `tl.dot_scaled` / `warp_specialize` with descriptor/TMA structure — were not found in any tracked-repo PR locally. They currently live in the upstream Triton tutorials. A future refresh round should backfill such an anchor if one becomes available in tracked downstream repos.
 
 ## Recommended wiki rewrite framing
 - Triton 3.6 materially changes the Blackwell story.

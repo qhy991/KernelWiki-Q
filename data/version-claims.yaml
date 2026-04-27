@@ -31,6 +31,7 @@ claims:
       - data/inclusion-policy.yaml::triton.description
     source_ids:
       - doc-triton-3.6-blackwell
+      - pr-sglang-22079
       - pr-sglang-21019
       - pr-sglang-5390
       - pr-sglang-21595

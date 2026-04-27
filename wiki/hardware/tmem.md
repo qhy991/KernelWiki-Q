@@ -287,7 +287,7 @@ TMEM is **not** a replacement for shared memory. Its strength is in serving as a
 
 ## TMEM in the CUTLASS Abstraction
 
-In CUTLASS 3.x for SM100, TMEM is managed through CuTe layouts:
+In CUTLASS 4.5.0 for SM100, TMEM is managed through CuTe layouts:
 
 ```python
 # CuTe-DSL example: TMEM accumulator layout

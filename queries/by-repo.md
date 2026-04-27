@@ -41,6 +41,14 @@
 | [#2037](../sources/prs/cutlass/PR-2037.md) | Groupwise scaling along M for FP8 gemm | 2025-01-13 | warp-specialization | fp8, gemm, tma |
 | [#2033](../sources/prs/cutlass/PR-2033.md) | [EVT] Add support for Row/Col broadcast PtrArray | 2025-01-08 | epilogue-fusion, kernel-fusion | epilogue-fusion, kernel-fusion, tma |
 
+<a id="deepseek-aideepgemm"></a>
+## deepseek-ai/DeepGEMM
+1 PRs
+
+| PR | Title | Date | Techniques | Tags |
+|-----|-------|------|------------|------|
+| [#304](../sources/prs/DeepGEMM/PR-304.md) | [Public release 26/04] Introducing Mega MoE, FP4 Indexer and other features/fixes | 2026-04-17 | kernel-fusion, fine-grained-quantization, communication-overlap | gemm, moe, fused-kernel |
+
 <a id="flashinfer-aiflashinfer"></a>
 ## flashinfer-ai/flashinfer
 126 PRs

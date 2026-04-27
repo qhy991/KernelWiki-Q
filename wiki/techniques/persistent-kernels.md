@@ -128,7 +128,7 @@ __global__ void hopper_persistent_gemm(GemmParams params)
 
 ## CUTLASS PersistentTileSchedulerSm100
 
-CUTLASS 4.x provides `PersistentTileSchedulerSm100` that wraps the CLC hardware:
+CUTLASS 4.5.0 provides `PersistentTileSchedulerSm100` that wraps the CLC hardware:
 
 ```cuda
 // CUTLASS SM100 persistent tile scheduler (simplified)

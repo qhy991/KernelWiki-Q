@@ -16,7 +16,7 @@ tags:
 - sparse-attention
 - tcgen05
 - tmem
-retrieved_at: 2026-04-16
+retrieved_at: 2026-04-27
 artifact_dir: artifacts/blogs/flashmla/code
 ---
 

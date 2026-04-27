@@ -655,11 +655,35 @@ def validate_version_claims_registry(all_source_ids):
         for sid in claim.get("source_ids", []) or []:
             if sid not in all_source_ids:
                 errors.append(f"data/version-claims.yaml::{cid}: source_id '{sid}' does not resolve")
-        # applies_to existence (split on "::" for YAML JSON-pointer form)
+        # applies_to: every target must EXIST and CARRY the matching pointer.
+        # Reverse direction enforcement (the AC-2 strict check Codex Round 3
+        # required): existence alone is insufficient.
         for applies in claim.get("applies_to", []) or []:
-            file_part = applies.split("::", 1)[0]
-            if not (REPO_ROOT / file_part).exists():
+            file_part, _, scalar_pointer = applies.partition("::")
+            target_path = REPO_ROOT / file_part
+            if not target_path.exists():
                 errors.append(f"data/version-claims.yaml::{cid}: applies_to '{applies}' (file '{file_part}') does not exist")
+                continue
+            if scalar_pointer:
+                # YAML JSON-pointer form (e.g. data/inclusion-policy.yaml::triton.description).
+                # The reverse-direction proof for these is the existence of
+                # an authoring rule recorded elsewhere; we don't try to rewrite
+                # YAML scalars to embed a pointer. The `applies_to` path itself
+                # is the authoring-time anchor.
+                continue
+            # Markdown file: must carry version_sensitive: <id> in frontmatter.
+            try:
+                fm = extract_frontmatter(target_path)
+            except Exception as e:
+                errors.append(f"data/version-claims.yaml::{cid}: applies_to '{applies}' frontmatter parse failed: {e}")
+                continue
+            if not fm or not isinstance(fm, dict):
+                errors.append(f"data/version-claims.yaml::{cid}: applies_to '{applies}' has no frontmatter (AC-2 reverse direction: target must carry version_sensitive: {cid})")
+                continue
+            vs = fm.get("version_sensitive")
+            ptr_id = vs.get("id") if isinstance(vs, dict) else vs
+            if ptr_id != cid:
+                errors.append(f"data/version-claims.yaml::{cid}: applies_to '{applies}' carries version_sensitive id={ptr_id!r}, expected {cid!r} (AC-2 reverse direction)")
 
     # Forward direction: every page in scope with a per-page pointer must
     # resolve to a registry entry. Pages without a pointer are not flagged
@@ -730,6 +754,87 @@ def validate_plan_supersession():
     supersession_index = REPO_ROOT / "references" / "supersession.md"
     if supersession_index.exists():
         errors.append("references/supersession.md: must not exist (DEC-7 chose per-file header mechanism, not the index)")
+    return errors
+
+
+## AC-4 skip-audit coverage check. Every ledger row with `decision: include`
+## must appear EITHER as a generated `sources/prs/<repo-slug>/PR-<N>.md` page
+## OR as a `data/pr-page-skipped.yaml` row. Closes the FlashInfer Jan→Apr
+## gap deterministically (per AC-5 negative test).
+def validate_skip_audit_coverage():
+    errors = []
+    audit_path = DATA_DIR / "pr-page-skipped.yaml"
+    audit_rows = []
+    if audit_path.is_file():
+        try:
+            data = yaml.safe_load(audit_path.read_text(encoding="utf-8"))
+            audit_rows = (data or {}).get("rows") or []
+        except yaml.YAMLError as e:
+            return [f"data/pr-page-skipped.yaml: invalid YAML ({e})"]
+    audit_keys = {(row["repo"], row["pr_number"]) for row in audit_rows
+                  if isinstance(row, dict) and "repo" in row and "pr_number" in row}
+
+    if not CANDIDATES_DIR.exists():
+        return errors
+    for ledger_file in sorted(CANDIDATES_DIR.glob("*.yaml")):
+        ledger = yaml.safe_load(ledger_file.read_text(encoding="utf-8")) or {}
+        repo_full = ledger.get("repo")
+        if not repo_full:
+            continue
+        repo_slug = repo_full.split("/")[1] if "/" in repo_full else ledger_file.stem
+        outdir = REPO_ROOT / "sources" / "prs" / repo_slug
+        existing_pages = set()
+        if outdir.is_dir():
+            for p in outdir.glob("PR-*.md"):
+                try:
+                    existing_pages.add(int(p.stem.split("-")[1]))
+                except (ValueError, IndexError):
+                    pass
+        for row in ledger.get("prs", []) or []:
+            if not isinstance(row, dict):
+                continue
+            if str(row.get("decision", "")).lower() != "include":
+                continue
+            num = row.get("number")
+            if num in existing_pages:
+                continue
+            if (repo_full, num) in audit_keys:
+                continue
+            errors.append(
+                f"AC-4 coverage: {repo_full} PR #{num} is `decision: include` "
+                f"but has neither sources/prs/{repo_slug}/PR-{num}.md nor a "
+                f"data/pr-page-skipped.yaml row"
+            )
+    return errors
+
+
+## AC-5 cutoff/search-results consistency. Every ledger's `searched_at`
+## must equal `data/refresh-cutoff.yaml::cutoff_date` (when the cutoff
+## file exists). If the file is absent, AC-5 is advisory (warn only).
+def validate_refresh_cutoff_alignment():
+    errors = []
+    cutoff_path = DATA_DIR / "refresh-cutoff.yaml"
+    if not cutoff_path.is_file():
+        return errors  # Advisory: no cutoff means no enforcement
+    try:
+        cutoff_data = yaml.safe_load(cutoff_path.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as e:
+        return [f"data/refresh-cutoff.yaml: invalid YAML ({e})"]
+    cutoff = cutoff_data.get("cutoff_date")
+    if cutoff is None:
+        return [f"data/refresh-cutoff.yaml: missing cutoff_date"]
+    cutoff_str = cutoff.isoformat() if hasattr(cutoff, "isoformat") else str(cutoff)
+    if not CANDIDATES_DIR.exists():
+        return errors
+    for ledger_file in sorted(CANDIDATES_DIR.glob("*.yaml")):
+        ledger = yaml.safe_load(ledger_file.read_text(encoding="utf-8")) or {}
+        sa = ledger.get("searched_at")
+        sa_str = sa.isoformat() if hasattr(sa, "isoformat") else str(sa)
+        if sa_str != cutoff_str:
+            errors.append(
+                f"AC-5: {ledger_file.relative_to(REPO_ROOT)}::searched_at "
+                f"({sa_str!r}) != data/refresh-cutoff.yaml::cutoff_date ({cutoff_str!r})"
+            )
     return errors
 
 
@@ -1060,6 +1165,12 @@ def main():
 
     # AC-9 supersession header check.
     all_errors.extend(validate_plan_supersession())
+
+    # AC-4 skip-audit coverage check.
+    all_errors.extend(validate_skip_audit_coverage())
+
+    # AC-5 cutoff/search-results alignment check.
+    all_errors.extend(validate_refresh_cutoff_alignment())
 
     print(f"Validated {file_count} files ({len(all_source_ids)} source IDs collected)")
     if bundle_count or orphans:

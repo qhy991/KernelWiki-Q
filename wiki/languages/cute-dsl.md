@@ -12,7 +12,7 @@ confidence: source-reported
 
 ## Overview
 
-CuTe (CUDA Templates) DSL is the primary abstraction layer in CUTLASS 4.x for Blackwell kernels. FlashAttention-4 was implemented entirely in CuTe-DSL (Python variant), achieving 20-30× faster compilation than C++ templates.
+CuTe (CUDA Templates) DSL is the primary abstraction layer in CUTLASS 4.5.0 for Blackwell kernels. FlashAttention-4 was implemented entirely in CuTe-DSL (Python variant), achieving 20-30× faster compilation than C++ templates.
 
 ## SM100 MMA Atoms
 
@@ -91,7 +91,7 @@ def blackwell_gemm(A, B, C):
 1. **20-30× faster compilation** than C++ CUTLASS templates
 2. Python-native: easier to iterate and debug
 3. Same performance as hand-written C++ (FlashAttention-4: 1605 TFLOPS)
-4. First-class TMEM and tcgen05 support in CUTLASS 4.x
+4. First-class TMEM and tcgen05 support in CUTLASS 4.5.0
 5. Automatic layout computation and swizzle handling
 
 ## Full Examples (verbatim upstream code shipped locally)

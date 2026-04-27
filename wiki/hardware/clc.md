@@ -157,7 +157,7 @@ Use cases for `try_cancel`:
 
 ## CUTLASS Integration
 
-CUTLASS 3.x for SM100 provides CLC support through the `PersistentScheduler` class:
+CUTLASS 4.5.0 for SM100 provides CLC support through the `PersistentScheduler` class:
 
 ```cuda
 // CUTLASS SM100 persistent GEMM with CLC scheduling

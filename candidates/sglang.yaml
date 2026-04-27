@@ -1,5 +1,5 @@
 repo: sgl-project/sglang
-searched_at: '2026-04-17'
+searched_at: '2026-04-27'
 keywords_used:
 - blackwell
 - sm100
@@ -119,8 +119,7 @@ prs:
   reason: 'borderline: dispatch/selector (Python-only likely)'
   files_changed: []
 - number: 22537
-  title: Add runai-model-streamer into Python packages installed in Dockerfile and
-    fix NotADirectoryError Docker regression
+  title: Add runai-model-streamer into Python packages installed in Dockerfile and fix NotADirectoryError Docker regression
   date: '2026-04-10'
   decision: defer
   reason: 'borderline: build infra'
@@ -168,8 +167,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 22424
-  title: '[AMD] Use aiter CK layernorm2d for LayerNorm to reduce NSA indexer kernel
-    launches'
+  title: '[AMD] Use aiter CK layernorm2d for LayerNorm to reduce NSA indexer kernel launches'
   date: '2026-04-09'
   decision: include
   reason: 'matched: mla'
@@ -193,8 +191,7 @@ prs:
   reason: 'borderline: dispatch/selector (Python-only likely)'
   files_changed: []
 - number: 22336
-  title: '[AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x
-    and MI35x'
+  title: '[AMD] Add GLM-5.1-FP8 nightly accuracy and performance benchmarks for MI30x and MI35x'
   date: '2026-04-08'
   decision: defer
   reason: 'borderline: benchmark/test-adjacent'
@@ -284,8 +281,7 @@ prs:
   reason: 'borderline: benchmark/test-adjacent'
   files_changed: []
 - number: 22199
-  title: '[Spec][Ngram] Add output-as-corpus accept length benchmark for external
-    SAM'
+  title: '[Spec][Ngram] Add output-as-corpus accept length benchmark for external SAM'
   date: '2026-04-06'
   decision: defer
   reason: 'borderline: benchmark/test-adjacent'
@@ -309,8 +305,7 @@ prs:
   reason: 'borderline: CI/CD adjacent'
   files_changed: []
 - number: 22145
-  title: '[Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same
-    logic with mooncake, Step 1/2 for Qwen3.5 support)'
+  title: '[Disagg][NIXL] Fix heterogeneous TP KV transfer for non-MLA models (same logic with mooncake, Step 1/2 for Qwen3.5 support)'
   date: '2026-04-05'
   decision: include
   reason: 'matched: mla'
@@ -328,8 +323,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 22098
-  title: Revert "[Bugfix] Temporarily skip TRTLLM attention on (G)B300 (SM103) to
-    avoid high-concurrency hang"
+  title: Revert "[Bugfix] Temporarily skip TRTLLM attention on (G)B300 (SM103) to avoid high-concurrency hang"
   date: '2026-04-04'
   decision: exclude
   reason: non-kernel change
@@ -365,8 +359,7 @@ prs:
   reason: 'borderline: config only'
   files_changed: []
 - number: 22051
-  title: '[MUSA][9/N] Add FA3 attention backend support through MATE (MUSA AI Tensor
-    Engine)'
+  title: '[MUSA][9/N] Add FA3 attention backend support through MATE (MUSA AI Tensor Engine)'
   date: '2026-04-03'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -396,8 +389,7 @@ prs:
   reason: 'matched: blackwell'
   files_changed: []
 - number: 21906
-  title: '[Bugfix] Temporarily skip TRTLLM attention on (G)B300 (SM103) to avoid high-concurrency
-    hang'
+  title: '[Bugfix] Temporarily skip TRTLLM attention on (G)B300 (SM103) to avoid high-concurrency hang'
   date: '2026-04-02'
   decision: include
   reason: 'matched: sm100'
@@ -439,8 +431,7 @@ prs:
   reason: 'matched: sm100'
   files_changed: []
 - number: 21861
-  title: '  [GDN] Remove FlashInfer GDN decode + no_buffer guard and default to FlashInfer
-    on SM100+  '
+  title: '  [GDN] Remove FlashInfer GDN decode + no_buffer guard and default to FlashInfer on SM100+  '
   date: '2026-04-01'
   decision: defer
   reason: 'borderline: refactor/cleanup'
@@ -482,8 +473,7 @@ prs:
   reason: 'borderline: benchmark/test-adjacent'
   files_changed: []
 - number: 21736
-  title: '[Benchmark] Add auto benchmark tool with YAML-driven server flag search
-    and canonical dataset format'
+  title: '[Benchmark] Add auto benchmark tool with YAML-driven server flag search and canonical dataset format'
   date: '2026-03-31'
   decision: exclude
   reason: non-kernel change
@@ -519,8 +509,7 @@ prs:
   reason: 'borderline: refactor/cleanup'
   files_changed: []
 - number: 21625
-  title: '[CI] [FlashInfer v0.6.7] Use offline quantized checkpoint for MXFP8 Gemm
-    tests'
+  title: '[CI] [FlashInfer v0.6.7] Use offline quantized checkpoint for MXFP8 Gemm tests'
   date: '2026-03-29'
   decision: exclude
   reason: non-kernel change
@@ -556,8 +545,7 @@ prs:
   reason: 'borderline: CI/CD adjacent'
   files_changed: []
 - number: 21511
-  title: '[AMD] Enable FP8 KV cache and FP8 attention kernel for NSA on MI300/MI355
-    with TileLang backend'
+  title: '[AMD] Enable FP8 KV cache and FP8 attention kernel for NSA on MI300/MI355 with TileLang backend'
   date: '2026-03-27'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -605,8 +593,7 @@ prs:
   reason: 'borderline: dependency work'
   files_changed: []
 - number: 21366
-  title: '[diffusion] refactor: move format-specific weight loading hooks (quant-related)
-    to a dedicated file'
+  title: '[diffusion] refactor: move format-specific weight loading hooks (quant-related) to a dedicated file'
   date: '2026-03-25'
   decision: exclude
   reason: non-kernel change
@@ -708,8 +695,7 @@ prs:
   reason: 'borderline: dependency work'
   files_changed: []
 - number: 21219
-  title: 'Split pr-test.yml: extract sgl-kernel, jit-kernel, and multimodal-gen tests
-    into separate workflow files'
+  title: 'Split pr-test.yml: extract sgl-kernel, jit-kernel, and multimodal-gen tests into separate workflow files'
   date: '2026-03-23'
   decision: defer
   reason: 'borderline: CI/CD adjacent'
@@ -823,8 +809,7 @@ prs:
   reason: 'borderline: config only'
   files_changed: []
 - number: 20792
-  title: Revert "[Nvidia] Add trtllm mnnvl allreduce with unified flashinfer allreduce
-    fusion api"
+  title: Revert "[Nvidia] Add trtllm mnnvl allreduce with unified flashinfer allreduce fusion api"
   date: '2026-03-17'
   decision: exclude
   reason: non-kernel change
@@ -878,8 +863,7 @@ prs:
   reason: 'matched: blackwell'
   files_changed: []
 - number: 20606
-  title: 'FIX: (NSA) Compute topk_indices_offset when NSA prefill flashmla_sparse
-    is used with FP8 KV cache'
+  title: 'FIX: (NSA) Compute topk_indices_offset when NSA prefill flashmla_sparse is used with FP8 KV cache'
   date: '2026-03-15'
   decision: include
   reason: 'matched: blackwell'
@@ -933,15 +917,13 @@ prs:
   reason: 'matched: nvfp4'
   files_changed: []
 - number: 20409
-  title: '[AMD][AITER] Guard _use_mla_ps_kernel with self.use_mla in draft_extend_v2
-    paths'
+  title: '[AMD][AITER] Guard _use_mla_ps_kernel with self.use_mla in draft_extend_v2 paths'
   date: '2026-03-12'
   decision: include
   reason: 'matched: mla'
   files_changed: []
 - number: 20399
-  title: '[AMD][Bug-fix] Fix gpu fault when run the test with dp-attention-enabled
-    and max-concurrency is over 256'
+  title: '[AMD][Bug-fix] Fix gpu fault when run the test with dp-attention-enabled and max-concurrency is over 256'
   date: '2026-03-12'
   decision: defer
   reason: 'borderline: benchmark/test-adjacent'
@@ -1013,8 +995,7 @@ prs:
   reason: 'borderline: benchmark/test-adjacent'
   files_changed: []
 - number: 20214
-  title: '[FlashInfer v0.6.6][RL] Support fp8-last-n-bf16 RL for `flashinfer_trtllm_routed`
-    moe backend'
+  title: '[FlashInfer v0.6.6][RL] Support fp8-last-n-bf16 RL for `flashinfer_trtllm_routed` moe backend'
   date: '2026-03-09'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -1062,8 +1043,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 20067
-  title: MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR
-    fusion in prepare_attn
+  title: MiniMax-M2.5 - Support dp attention, dp reduce scatter, FP4 all gather, AR fusion in prepare_attn
   date: '2026-03-07'
   decision: include
   reason: 'matched: cutlass'
@@ -1231,8 +1211,7 @@ prs:
   reason: 'matched: blackwell'
   files_changed: []
 - number: 19736
-  title: '[AMD] Fix Qwen3-Coder-Next: Add missing k_scale/v_scale args to extend_attention_fwd
-    in aiter_backend'
+  title: '[AMD] Fix Qwen3-Coder-Next: Add missing k_scale/v_scale args to extend_attention_fwd in aiter_backend'
   date: '2026-03-03'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -1298,8 +1277,7 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 19537
-  title: '[FlashInfer v0.6.4] [RL] Integrate FlashInfer mxfp8 gemm, MoE, and routed
-    MoE'
+  title: '[FlashInfer v0.6.4] [RL] Integrate FlashInfer mxfp8 gemm, MoE, and routed MoE'
   date: '2026-02-28'
   decision: include
   reason: 'matched: flashinfer'
@@ -1443,8 +1421,7 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 19086
-  title: '[Fix][Qwen3.5] Fix KV cache slice transfer for GQA models with replicated
-    KV heads'
+  title: '[Fix][Qwen3.5] Fix KV cache slice transfer for GQA models with replicated KV heads'
   date: '2026-02-20'
   decision: include
   reason: 'matched: mla'
@@ -1642,15 +1619,13 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 18526
-  title: '[AMD] Enable cudagraph for aiter nsa backend and add aiter impl for nsa
-    pr…'
+  title: '[AMD] Enable cudagraph for aiter nsa backend and add aiter impl for nsa pr…'
   date: '2026-02-10'
   decision: defer
   reason: 'borderline: CUDA graph infra'
   files_changed: []
 - number: 18496
-  title: '[FIX] Correct JIT kernel compilation on newer GPUs with outdated driver
-    metadata.'
+  title: '[FIX] Correct JIT kernel compilation on newer GPUs with outdated driver metadata.'
   date: '2026-02-09'
   decision: include
   reason: 'matched: blackwell'
@@ -1668,8 +1643,7 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 18500
-  title: '[Flashinfer Autotune] Fix FlashInfer FP4 MoE autotuning crash by removing
-    incorrect flatten on hidden_states_scale'
+  title: '[Flashinfer Autotune] Fix FlashInfer FP4 MoE autotuning crash by removing incorrect flatten on hidden_states_scale'
   date: '2026-02-09'
   decision: defer
   reason: 'borderline: tuning/autotuner infra'
@@ -1729,8 +1703,7 @@ prs:
   reason: 'matched: cutlass'
   files_changed: []
 - number: 18361
-  title: 'feat(gdn): add FlashInfer K-last SSM layout support for GDN prefill and
-    decode for Hopper'
+  title: 'feat(gdn): add FlashInfer K-last SSM layout support for GDN prefill and decode for Hopper'
   date: '2026-02-06'
   decision: include
   reason: 'matched: cutlass'
@@ -1868,8 +1841,7 @@ prs:
   reason: 'matched: sm100'
   files_changed: []
 - number: 17985
-  title: '[MUSA][9/N] Add FA3 attention backend support through MATE (MUSA AI Tensor
-    Engine)'
+  title: '[MUSA][9/N] Add FA3 attention backend support through MATE (MUSA AI Tensor Engine)'
   date: '2026-01-30'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -1881,15 +1853,13 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 17897
-  title: Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment,
-    and weight loading fixes)#17833
+  title: Support DeepSeek-OCR-2 in SGLang (OCR2 vision pipeline, tokenization alignment, and weight loading fixes)#17833
   date: '2026-01-28'
   decision: include
   reason: 'matched: mla'
   files_changed: []
 - number: 17816
-  title: 'fix(quantization): add sgl_kernel fallback for FP4 quantize on Blackwell
-    GPUs'
+  title: 'fix(quantization): add sgl_kernel fallback for FP4 quantize on Blackwell GPUs'
   date: '2026-01-27'
   decision: include
   reason: 'matched: blackwell'
@@ -1961,8 +1931,7 @@ prs:
   reason: 'borderline: refactor/cleanup'
   files_changed: []
 - number: 17449
-  title: Add mxfp8 support for online quantization, Triton dense linear, and CUTLASS
-    MoE
+  title: Add mxfp8 support for online quantization, Triton dense linear, and CUTLASS MoE
   date: '2026-01-21'
   decision: include
   reason: 'matched: blackwell'
@@ -1974,8 +1943,7 @@ prs:
   reason: 'borderline: dispatch/selector (Python-only likely)'
   files_changed: []
 - number: 17460
-  title: '[CPU][Fix CI] Solidate torch version for sgl-kernel-cpu and fix device orientation
-    error'
+  title: '[CPU][Fix CI] Solidate torch version for sgl-kernel-cpu and fix device orientation error'
   date: '2026-01-21'
   decision: defer
   reason: 'borderline: CI/CD adjacent'
@@ -1987,8 +1955,7 @@ prs:
   reason: 'borderline: refactor/cleanup'
   files_changed: []
 - number: 17499
-  title: '[MUSA][7/N] Enhance CUDA / PyNccl wrapper to support MTLink connectivity
-    detection'
+  title: '[MUSA][7/N] Enhance CUDA / PyNccl wrapper to support MTLink connectivity detection'
   date: '2026-01-21'
   decision: include
   reason: 'matched: cutlass'
@@ -2030,8 +1997,7 @@ prs:
   reason: 'borderline: dispatch/selector (Python-only likely)'
   files_changed: []
 - number: 17309
-  title: '[Refactor] Set `fp4-gemm-backend=auto` on SM100 and rename `fp4-gemm-backend`
-    with `flashinfer_` prefix'
+  title: '[Refactor] Set `fp4-gemm-backend=auto` on SM100 and rename `fp4-gemm-backend` with `flashinfer_` prefix'
   date: '2026-01-18'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -2043,8 +2009,7 @@ prs:
   reason: 'matched: cutlass'
   files_changed: []
 - number: 17246
-  title: '[MUSA][4/N] Add common device utilities, distributed backend, and custom
-    op wiring'
+  title: '[MUSA][4/N] Add common device utilities, distributed backend, and custom op wiring'
   date: '2026-01-17'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -2128,8 +2093,7 @@ prs:
   reason: 'borderline: benchmark/test-adjacent'
   files_changed: []
 - number: 16974
-  title: '[SPEC_V2] Enable cudagraph draft_extend for trtllm_mla_backend and Acclen
-    Fix for DP under cudagraph mode'
+  title: '[SPEC_V2] Enable cudagraph draft_extend for trtllm_mla_backend and Acclen Fix for DP under cudagraph mode'
   date: '2026-01-12'
   decision: defer
   reason: 'borderline: CUDA graph infra'
@@ -2207,8 +2171,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 16531
-  title: '[AMD] Fix aiter page-size handling, DeepSeek MLA tuple inputs, and HiCache/FA3
-    decode-backend override'
+  title: '[AMD] Fix aiter page-size handling, DeepSeek MLA tuple inputs, and HiCache/FA3 decode-backend override'
   date: '2026-01-06'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -2232,8 +2195,7 @@ prs:
   reason: 'matched: cutlass'
   files_changed: []
 - number: 16335
-  title: '[diffusion] Fix RuntimeError in SageAttention3 on Nvidia Blackwell with
-    Qwen-Image'
+  title: '[diffusion] Fix RuntimeError in SageAttention3 on Nvidia Blackwell with Qwen-Image'
   date: '2026-01-03'
   decision: include
   reason: 'matched: blackwell'
@@ -2263,8 +2225,7 @@ prs:
   reason: 'matched: moe'
   files_changed: []
 - number: 16225
-  title: '[diffusion]: align sglang diffusion AMD pyproject_other.toml diffusion dependency
-    with pyproject.toml'
+  title: '[diffusion]: align sglang diffusion AMD pyproject_other.toml diffusion dependency with pyproject.toml'
   date: '2025-12-31'
   decision: defer
   reason: 'borderline: dependency work'
@@ -2396,8 +2357,7 @@ prs:
   reason: 'matched: moe'
   files_changed: []
 - number: 15842
-  title: '[diffusion] refactor: centralize hardware platform detection and streamline
-    environment variable management'
+  title: '[diffusion] refactor: centralize hardware platform detection and streamline environment variable management'
   date: '2025-12-25'
   decision: defer
   reason: 'borderline: config only'
@@ -2637,8 +2597,7 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 15314
-  title: '[Hotfix] Fix required enable_mamba_track argument for Flashinfer autotune
-    path'
+  title: '[Hotfix] Fix required enable_mamba_track argument for Flashinfer autotune path'
   date: '2025-12-17'
   decision: defer
   reason: 'borderline: tuning/autotuner infra'
@@ -2716,8 +2675,7 @@ prs:
   reason: 'matched: flashinfer'
   files_changed: []
 - number: 15127
-  title: 'fix(attention): Prevent trtllm_mha auto-selection with eagle3 speculative
-    decoding'
+  title: 'fix(attention): Prevent trtllm_mha auto-selection with eagle3 speculative decoding'
   date: '2025-12-14'
   decision: include
   reason: 'matched: blackwell'
@@ -2753,8 +2711,7 @@ prs:
   reason: 'borderline: dispatch/selector (Python-only likely)'
   files_changed: []
 - number: 15027
-  title: '[PP Prefill][NIXL] Fix PP mode transfer completion tracking to wait for
-    all ranks'
+  title: '[PP Prefill][NIXL] Fix PP mode transfer completion tracking to wait for all ranks'
   date: '2025-12-13'
   decision: include
   reason: 'matched: nvfp4'
@@ -2790,8 +2747,7 @@ prs:
   reason: 'borderline: dispatch/selector (Python-only likely)'
   files_changed: []
 - number: 14959
-  title: enable flashinfer-jit-cache in image build and ci install to speed up model
-    launch
+  title: enable flashinfer-jit-cache in image build and ci install to speed up model launch
   date: '2025-12-12'
   decision: defer
   reason: 'borderline: CI/CD adjacent'
@@ -2863,8 +2819,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 14781
-  title: '[Performance] optimize NSA backend metadata computation for multi-step speculative
-    decoding'
+  title: '[Performance] optimize NSA backend metadata computation for multi-step speculative decoding'
   date: '2025-12-10'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -2906,8 +2861,7 @@ prs:
   reason: 'matched: moe'
   files_changed: []
 - number: 14717
-  title: '[diffusion] kernel fusion: gated residual layernorm scale shift and layernorm
-    scale shift kernel fusion for Qwen-Image, WAN and HunyuanVideo'
+  title: '[diffusion] kernel fusion: gated residual layernorm scale shift and layernorm scale shift kernel fusion for Qwen-Image, WAN and HunyuanVideo'
   date: '2025-12-09'
   decision: include
   reason: 'matched: cutlass'
@@ -2973,8 +2927,7 @@ prs:
   reason: 'matched: sm100'
   files_changed: []
 - number: 14467
-  title: Check KV4 compatibility with attention backends and add KV4 support to the
-    attention_backend doc
+  title: Check KV4 compatibility with attention backends and add KV4 support to the attention_backend doc
   date: '2025-12-05'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -3208,8 +3161,7 @@ prs:
   reason: 'matched: nvfp4'
   files_changed: []
 - number: 13959
-  title: '[DeepSeek v3.2] opt Context Parallelism: support fused moe, multi batch
-    and fp8 kvcache'
+  title: '[DeepSeek v3.2] opt Context Parallelism: support fused moe, multi batch and fp8 kvcache'
   date: '2025-11-26'
   decision: include
   reason: 'matched: mla'
@@ -3359,8 +3311,7 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 13740
-  title: Fix  IMA with flashinfer  + spec + topk & Add radix attention test cases
-    for eagle
+  title: Fix  IMA with flashinfer  + spec + topk & Add radix attention test cases for eagle
   date: '2025-11-21'
   decision: defer
   reason: 'borderline: benchmark/test-adjacent'
@@ -3384,8 +3335,7 @@ prs:
   reason: 'matched: sm100'
   files_changed: []
 - number: 13617
-  title: '[ROCM] Optimized deepseek-r1 fp8 model with + triton_gemm_a8w8 + batch_gemm_a8w8
-    + fused set_mla_kv_buffer kernel'
+  title: '[ROCM] Optimized deepseek-r1 fp8 model with + triton_gemm_a8w8 + batch_gemm_a8w8 + fused set_mla_kv_buffer kernel'
   date: '2025-11-20'
   decision: include
   reason: 'matched: mla'
@@ -3535,8 +3485,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 13151
-  title: 'Support internvl on Blackwell (which doesn''t support fa3): add `SingletonCache`
-    support to Vision{Sdpa|Triton|Ascend}Attention'
+  title: 'Support internvl on Blackwell (which doesn''t support fa3): add `SingletonCache` support to Vision{Sdpa|Triton|Ascend}Attention'
   date: '2025-11-12'
   decision: include
   reason: 'matched: blackwell'
@@ -3638,15 +3587,13 @@ prs:
   reason: 'borderline: build infra'
   files_changed: []
 - number: 12788
-  title: '[DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200
-    (SM100)'
+  title: '[DeepSeek-V3.2][NSA] Enable MHA Pathway for Short Sequence Prefill on B200 (SM100)'
   date: '2025-11-06'
   decision: include
   reason: 'matched: blackwell'
   files_changed: []
 - number: 12787
-  title: '[Nvidia] Add trtllm mnnvl allreduce with unified flashinfer allreduce fusion
-    api'
+  title: '[Nvidia] Add trtllm mnnvl allreduce with unified flashinfer allreduce fusion api'
   date: '2025-11-06'
   decision: defer
   reason: 'borderline: pure bindings'
@@ -3664,8 +3611,7 @@ prs:
   reason: 'matched: nvfp4'
   files_changed: []
 - number: 12724
-  title: '[fix] Only enable flashinfer all reduce fusion by default for single-node
-    servers'
+  title: '[fix] Only enable flashinfer all reduce fusion by default for single-node servers'
   date: '2025-11-06'
   decision: include
   reason: 'matched: flashinfer'
@@ -3749,8 +3695,7 @@ prs:
   reason: 'matched: flashinfer'
   files_changed: []
 - number: 12497
-  title: '[Fix] Remove assertion for padding for NVFP4 weight scales to fix GLM 4.5
-    NVFP4'
+  title: '[Fix] Remove assertion for padding for NVFP4 weight scales to fix GLM 4.5 NVFP4'
   date: '2025-11-01'
   decision: defer
   reason: 'borderline: refactor/cleanup'
@@ -3924,8 +3869,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 12000
-  title: '[1/2] deepseek deterministic: support deterministic inference for deepseek
-    arch models on a single GPU'
+  title: '[1/2] deepseek deterministic: support deterministic inference for deepseek arch models on a single GPU'
   date: '2025-10-23'
   decision: include
   reason: 'matched: blackwell'
@@ -4003,8 +3947,7 @@ prs:
   reason: 'borderline: refactor/cleanup'
   files_changed: []
 - number: 11816
-  title: use flashinfer_trtllm moe runner backend to gain around 10% perf on b200
-    fp8 dpsk
+  title: use flashinfer_trtllm moe runner backend to gain around 10% perf on b200 fp8 dpsk
   date: '2025-10-19'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -4124,8 +4067,7 @@ prs:
   reason: 'borderline: config only'
   files_changed: []
 - number: 11517
-  title: 'docker: add CUDA13 support in dockerfile and update GDRCopy/NVSHMEM for
-    blackwell support'
+  title: 'docker: add CUDA13 support in dockerfile and update GDRCopy/NVSHMEM for blackwell support'
   date: '2025-10-12'
   decision: defer
   reason: 'borderline: build infra'
@@ -4269,8 +4211,7 @@ prs:
   reason: 'borderline: config only'
   files_changed: []
 - number: 10858
-  title: '[Intel GPU] fix import error to run DeepSeek-V2-Lite model with BF16 on
-    XPU'
+  title: '[Intel GPU] fix import error to run DeepSeek-V2-Lite model with BF16 on XPU'
   date: '2025-09-24'
   decision: defer
   reason: 'borderline: dependency work'
@@ -4612,8 +4553,7 @@ prs:
   reason: 'matched: nvfp4'
   files_changed: []
 - number: 9559
-  title: Update CUTLASS 4.2 & Enable K-Major Scale Factor for SM90 FP8 Blockwise Group
-    GEMM
+  title: Update CUTLASS 4.2 & Enable K-Major Scale Factor for SM90 FP8 Blockwise Group GEMM
   date: '2025-08-24'
   decision: include
   reason: 'matched: cutlass'
@@ -4703,8 +4643,7 @@ prs:
   reason: 'borderline: config only'
   files_changed: []
 - number: 9200
-  title: '[NVIDA] [1/N] Nvfp4 Masked Gemm: Add quant op for the flashinfer grouped
-    gemm'
+  title: '[NVIDA] [1/N] Nvfp4 Masked Gemm: Add quant op for the flashinfer grouped gemm'
   date: '2025-08-14'
   decision: include
   reason: 'matched: sm100'
@@ -4734,15 +4673,13 @@ prs:
   reason: 'matched: blackwell'
   files_changed: []
 - number: 9004
-  title: Add enable_flashinfer_mxfp4_bf16_moe for higher precision and slower moe
-    backend
+  title: Add enable_flashinfer_mxfp4_bf16_moe for higher precision and slower moe backend
   date: '2025-08-09'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
   files_changed: []
 - number: 8955
-  title: '[NVIDIA] Fix missing `get_col_major_tma_aligned_tensor` for Blackwell deepgemm
-    in EpMoE'
+  title: '[NVIDIA] Fix missing `get_col_major_tma_aligned_tensor` for Blackwell deepgemm in EpMoE'
   date: '2025-08-08'
   decision: include
   reason: 'matched: blackwell'
@@ -4814,8 +4751,7 @@ prs:
   reason: 'borderline: config only'
   files_changed: []
 - number: 8766
-  title: Fix mismatch between padded_scales shape and reshape dimensions in modelopt
-    quantization
+  title: Fix mismatch between padded_scales shape and reshape dimensions in modelopt quantization
   date: '2025-08-04'
   decision: include
   reason: 'matched: nvfp4'
@@ -5007,8 +4943,7 @@ prs:
   reason: 'matched: blackwell'
   files_changed: []
 - number: 7562
-  title: 'Fix incomplete tool call capture issue in streaming response of DeepSeek-V3
-    when enable MTP '
+  title: 'Fix incomplete tool call capture issue in streaming response of DeepSeek-V3 when enable MTP '
   date: '2025-06-26'
   decision: include
   reason: 'matched: deepgemm'
@@ -5290,8 +5225,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 7184
-  title: '[fix] fix cutlass_mla_backend with cuda_graph and add sm_scale for sgl-kernel
-    cutlass_mla'
+  title: '[fix] fix cutlass_mla_backend with cuda_graph and add sm_scale for sgl-kernel cutlass_mla'
   date: '2025-06-14'
   decision: defer
   reason: 'borderline: dispatch/selector (Python-only likely)'
@@ -5603,8 +5537,7 @@ prs:
   reason: 'borderline: benchmark/test-adjacent'
   files_changed: []
 - number: 6887
-  title: '[CUTLASS-FP4-MOE]  Introduce CutlassMoEParams class for easy initialization
-    of Cutlass Grouped Gems Metadata'
+  title: '[CUTLASS-FP4-MOE]  Introduce CutlassMoEParams class for easy initialization of Cutlass Grouped Gems Metadata'
   date: '2025-06-05'
   decision: exclude
   reason: non-kernel change
@@ -5712,8 +5645,7 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 6771
-  title: '[CPU] support the case where num_attention_heads or intermediate_size is
-    not divisible by the TP size'
+  title: '[CPU] support the case where num_attention_heads or intermediate_size is not divisible by the TP size'
   date: '2025-05-30'
   decision: include
   reason: 'matched: moe'
@@ -5731,8 +5663,7 @@ prs:
   reason: 'matched: moe'
   files_changed: []
 - number: 6736
-  title: Set `num_fused_shared_experts` as `num_shared_experts` when shared_experts
-    fusion is not disabled
+  title: Set `num_fused_shared_experts` as `num_shared_experts` when shared_experts fusion is not disabled
   date: '2025-05-29'
   decision: include
   reason: 'matched: moe'
@@ -5756,8 +5687,7 @@ prs:
   reason: 'matched: moe'
   files_changed: []
 - number: 6641
-  title: '[CPU] [BF16] Call fused_experts_cpu, weight_packed_linear and bmm_cpu kernel
-    in DeepSeek model'
+  title: '[CPU] [BF16] Call fused_experts_cpu, weight_packed_linear and bmm_cpu kernel in DeepSeek model'
   date: '2025-05-27'
   decision: include
   reason: 'matched: mla'
@@ -5895,8 +5825,7 @@ prs:
   reason: 'matched: moe'
   files_changed: []
 - number: 6265
-  title: '[fix][RL] Fix DeepSeekV3ForCausalLM.post_load_weights for multiple update
-    weight'
+  title: '[fix][RL] Fix DeepSeekV3ForCausalLM.post_load_weights for multiple update weight'
   date: '2025-05-13'
   decision: include
   reason: 'matched: deepgemm'
@@ -6010,8 +5939,7 @@ prs:
   reason: 'borderline: dispatch/selector (Python-only likely)'
   files_changed: []
 - number: 6016
-  title: 'KV‑Cache (MHA, MLA): add missing start_layer / end_layer fields to MHATokenToKVPoolHost
-    and MLATokenToKVPoolHost'
+  title: 'KV‑Cache (MHA, MLA): add missing start_layer / end_layer fields to MHATokenToKVPoolHost and MLATokenToKVPoolHost'
   date: '2025-05-05'
   decision: include
   reason: 'matched: mla'
@@ -6149,8 +6077,7 @@ prs:
   reason: 'matched: deepgemm'
   files_changed: []
 - number: 5740
-  title: update triton 3.2.0 h200 fused moe triton config and add warning about triton
-    fused_moe_kernel performance degradation due to different Triton versions.
+  title: update triton 3.2.0 h200 fused moe triton config and add warning about triton fused_moe_kernel performance degradation due to different Triton versions.
   date: '2025-04-25'
   decision: defer
   reason: 'borderline: config only'
@@ -6174,8 +6101,7 @@ prs:
   reason: non-kernel change
   files_changed: []
 - number: 5716
-  title: 'perf: update H20 fused_moe_triton kernel config to get higher throughput
-    during prefilling'
+  title: 'perf: update H20 fused_moe_triton kernel config to get higher throughput during prefilling'
   date: '2025-04-24'
   decision: defer
   reason: 'borderline: config only'
@@ -6667,8 +6593,7 @@ prs:
   reason: 'matched: mla'
   files_changed: []
 - number: 4760
-  title: Add unit test on page_size > 1 and mla and  integration test for Flash Attention
-    3
+  title: Add unit test on page_size > 1 and mla and  integration test for Flash Attention 3
   date: '2025-03-25'
   decision: exclude
   reason: non-kernel change
