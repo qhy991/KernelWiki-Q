@@ -17,16 +17,31 @@
 ## via their `version_sensitive: <id>` pointer. The validator (task5) enforces
 ## that every per-page pointer resolves here AND every entry's `applies_to`
 ## paths exist + carry the matching pointer.
-##
-## This registry is intentionally empty in Round 2. Wiki/reference rewrites
-## (task11, task12, task13) populate it in Round 3 — at minimum:
-##   - vs-triton-3.6-blackwell-tcgen05  (covers wiki/languages/triton-blackwell.md,
-##                                        references/primer.md::Triton row,
-##                                        references/examples.md::Example 7,
-##                                        data/inclusion-policy.yaml::triton.description)
-## Additional entries will be added by task12 for CUTLASS minor-version
-## reconciliation across wiki/hardware/clc.md, wiki/languages/cute-dsl.md,
-## wiki/techniques/persistent-kernels.md, wiki/techniques/warp-specialization.md,
-## wiki/techniques/epilogue-fusion.md, and wiki/hardware/tmem.md per DEC-4.
 
-claims: []
+claims:
+  - id: vs-triton-3.6-blackwell-tcgen05
+    tool: triton
+    claim_valid_for: ">=3.6"
+    last_verified_release: "3.6.0"
+    last_verified_at: 2026-04-27
+    applies_to:
+      - wiki/languages/triton-blackwell.md
+      - references/primer.md
+      - references/examples.md
+      - data/inclusion-policy.yaml::triton.description
+    source_ids:
+      - doc-triton-3.6-blackwell
+      - pr-sglang-21019
+      - pr-sglang-5390
+      - pr-sglang-21595
+      - pr-pytorch-175826
+    notes: |
+      Tracks the claim that Triton 3.6+ has native Blackwell (SM100) lowering
+      paths through tcgen05.mma + TMEM (descriptor/TMA + warp_specialize on
+      tl.dot, plus Gluon multi-CTA + 2CTA on tcgen05_mma_scaled), replacing
+      the obsolete 3.5-era "no tcgen05 / no TMEM" framing. Supporting evidence:
+      data/triton-3.6-evidence.md memo plus the official release notes
+      (doc-triton-3.6-blackwell). Primary downstream upstream-code anchor:
+      pr-sglang-21019 (Triton kernel landed for SM100 after Triton 3.6.0
+      release date 2026-01-21). Caveat anchors: pr-sglang-5390, pr-sglang-21595,
+      pr-pytorch-175826 (ecosystem context).

@@ -621,6 +621,118 @@ def validate_ledger(ledger_path):
     return errors
 
 
+## AC-2 hybrid-registry presence check (DEC-1). Pages in scope that carry a
+## per-page `version_sensitive: <id>` pointer must resolve to a claim in
+## `data/version-claims.yaml`; reverse direction is also enforced —
+## every registry entry's `applies_to` paths must exist.
+##
+## Scope is exactly: wiki/**/*.md, references/primer.md, references/examples.md,
+## and parsed YAML scalars data/inclusion-policy.yaml::{cute-dsl,triton}.description.
+def validate_version_claims_registry(all_source_ids):
+    """Return list of error strings for AC-2 hybrid-registry consistency."""
+    errors = []
+    claims_path = DATA_DIR / "version-claims.yaml"
+    if not claims_path.is_file():
+        return ["data/version-claims.yaml: missing (DEC-1 hybrid registry stub required)"]
+    try:
+        data = yaml.safe_load(claims_path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as e:
+        return [f"data/version-claims.yaml: invalid YAML ({e})"]
+    claims = (data or {}).get("claims") or []
+
+    # Build registry-id -> applies_to mapping for reverse-direction check.
+    claim_by_id = {}
+    for i, claim in enumerate(claims):
+        if not isinstance(claim, dict):
+            errors.append(f"data/version-claims.yaml::claims[{i}]: must be a mapping")
+            continue
+        cid = claim.get("id")
+        if not cid:
+            errors.append(f"data/version-claims.yaml::claims[{i}]: missing id")
+            continue
+        claim_by_id[cid] = claim
+        # source_ids resolution
+        for sid in claim.get("source_ids", []) or []:
+            if sid not in all_source_ids:
+                errors.append(f"data/version-claims.yaml::{cid}: source_id '{sid}' does not resolve")
+        # applies_to existence (split on "::" for YAML JSON-pointer form)
+        for applies in claim.get("applies_to", []) or []:
+            file_part = applies.split("::", 1)[0]
+            if not (REPO_ROOT / file_part).exists():
+                errors.append(f"data/version-claims.yaml::{cid}: applies_to '{applies}' (file '{file_part}') does not exist")
+
+    # Forward direction: every page in scope with a per-page pointer must
+    # resolve to a registry entry. Pages without a pointer are not flagged
+    # here — flag-on-missing-pointer is the job of the AC-2 surface check
+    # below (parsed YAML scalar detection).
+    in_scope = []
+    if WIKI_DIR.exists():
+        in_scope.extend(sorted(WIKI_DIR.rglob("*.md")))
+    for ref in (REPO_ROOT / "references" / "primer.md", REPO_ROOT / "references" / "examples.md"):
+        if ref.is_file():
+            in_scope.append(ref)
+    for md_file in in_scope:
+        fm = extract_frontmatter(md_file)
+        if not fm or not isinstance(fm, dict):
+            continue
+        vs = fm.get("version_sensitive")
+        if vs is None:
+            continue
+        # vs may be a dict {id: ...} or a string id
+        ptr = vs.get("id") if isinstance(vs, dict) else vs
+        if not ptr:
+            errors.append(f"{md_file.relative_to(REPO_ROOT)}: version_sensitive block has no id")
+            continue
+        if ptr not in claim_by_id:
+            errors.append(f"{md_file.relative_to(REPO_ROOT)}: version_sensitive id '{ptr}' does not resolve to data/version-claims.yaml")
+
+    return errors
+
+
+## AC-11 inclusion-policy YAML scalar guard. The Triton lane's `description`
+## scalar must NOT contain the obsolete "no direct tcgen05/TMEM access"
+## phrase. Validated by parsing the YAML data, never by reading comments.
+def validate_inclusion_policy_scalars():
+    errors = []
+    ip_path = DATA_DIR / "inclusion-policy.yaml"
+    if not ip_path.is_file():
+        return errors
+    try:
+        data = yaml.safe_load(ip_path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as e:
+        return [f"data/inclusion-policy.yaml: invalid YAML ({e})"]
+    triton_desc = (data or {}).get("triton", {}).get("description", "") or ""
+    if "no direct tcgen05/tmem access" in triton_desc.lower():
+        errors.append(
+            "data/inclusion-policy.yaml::triton.description: still contains "
+            "obsolete substring 'no direct tcgen05/TMEM access' (AC-11)"
+        )
+    return errors
+
+
+## AC-9 supersession check. plan-phase{2,3}.md must begin (within first 3 lines)
+## with a "> Superseded by ..." marker per DEC-7. Advisory-level (warning),
+## but emitted as a validator error so CI can catch regressions.
+def validate_plan_supersession():
+    errors = []
+    for plan_path in sorted(REPO_ROOT.glob("plan-phase*.md")):
+        if plan_path.name == "plan-phase4.md":
+            # Current-round plan should NOT be marked superseded.
+            head = plan_path.read_text(encoding="utf-8").splitlines()[:3]
+            if any(re.search(r"^>\s*Superseded by", line, re.IGNORECASE) for line in head):
+                errors.append(f"{plan_path.name}: current-round plan must not carry a supersession header")
+            continue
+        head = plan_path.read_text(encoding="utf-8").splitlines()[:3]
+        if not any(re.search(r"^>\s*Superseded by", line, re.IGNORECASE) for line in head):
+            errors.append(f"{plan_path.name}: missing supersession header in first 3 lines (AC-9, DEC-7 per-file mode)")
+    # AC-9 negative test: references/supersession.md must NOT exist (DEC-7
+    # picked exactly one mechanism, the per-file header).
+    supersession_index = REPO_ROOT / "references" / "supersession.md"
+    if supersession_index.exists():
+        errors.append("references/supersession.md: must not exist (DEC-7 chose per-file header mechanism, not the index)")
+    return errors
+
+
 def sha256_of_file(path):
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -939,6 +1051,15 @@ def main():
         for ledger_file in sorted(CANDIDATES_DIR.glob("*.yaml")):
             ledger_count += 1
             all_errors.extend(validate_ledger(ledger_file))
+
+    # AC-2 hybrid version-claim registry consistency.
+    all_errors.extend(validate_version_claims_registry(all_source_ids))
+
+    # AC-11 inclusion-policy YAML scalar guard.
+    all_errors.extend(validate_inclusion_policy_scalars())
+
+    # AC-9 supersession header check.
+    all_errors.extend(validate_plan_supersession())
 
     print(f"Validated {file_count} files ({len(all_source_ids)} source IDs collected)")
     if bundle_count or orphans:

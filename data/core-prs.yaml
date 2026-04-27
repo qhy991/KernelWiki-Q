@@ -8,8 +8,8 @@ sources:
 - cute-dsl-tutorial
 - triton-in-policy
 - allowlist
-total_captured: 52
-checksum_sha256: 17cb949c6e3ef042cb6a590b4cce34670a5ae03a1a09318d8894b26f2ed1a9eb
+total_captured: 55
+checksum_sha256: 60b9f3f5d5c1372e20aa15ed7a07e7747e7d1b8fd9e99531b40a23eeb7610917
 prs:
 - id: pr-cutlass-2139
   source_of_inclusion: wiki-graph-closure
@@ -65,12 +65,14 @@ prs:
   source_of_inclusion: triton-in-policy
 - id: pr-pytorch-171129
   source_of_inclusion: triton-in-policy
+- id: pr-pytorch-175826
+  source_of_inclusion: wiki-graph-closure
 - id: pr-pytorch-176495
   source_of_inclusion: triton-in-policy
 - id: pr-sglang-20910
   source_of_inclusion: triton-in-policy
 - id: pr-sglang-21019
-  source_of_inclusion: triton-in-policy
+  source_of_inclusion: wiki-graph-closure
 - id: pr-sglang-21203
   source_of_inclusion: cute-dsl-tutorial
 - id: pr-sglang-21239
@@ -79,12 +81,16 @@ prs:
   source_of_inclusion: triton-in-policy
 - id: pr-sglang-21339
   source_of_inclusion: cute-dsl-tutorial
+- id: pr-sglang-21595
+  source_of_inclusion: wiki-graph-closure
 - id: pr-sglang-21780
   source_of_inclusion: triton-in-policy
 - id: pr-sglang-22079
   source_of_inclusion: triton-in-policy
 - id: pr-sglang-22323
   source_of_inclusion: triton-in-policy
+- id: pr-sglang-5390
+  source_of_inclusion: wiki-graph-closure
 - id: pr-vllm-16032
   source_of_inclusion: wiki-graph-closure
 - id: pr-vllm-22738

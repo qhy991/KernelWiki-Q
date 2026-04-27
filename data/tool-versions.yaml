@@ -23,7 +23,8 @@ tools:
         channel: stable
         release_notes_url: "https://github.com/triton-lang/triton/releases/tag/v3.6.0"
         evidence_source_ids:
-          - doc-triton-3.6-blackwell  # to be created in task10
+          - doc-triton-3.6-blackwell
+          - pr-sglang-21019
         notes: |
           First Triton release with native Blackwell tcgen05 + TMEM lowering
           infrastructure. Strongest user-visible Blackwell paths: descriptor/TMA
@@ -108,6 +109,9 @@ tools:
       - name: "12.8"
         released_at: "needs-verification"
         channel: stable
+        evidence_source_ids:
+          - doc-cuda-13
+          - pr-pytorch-150705
         notes: |
           First CUDA toolkit with full Blackwell/sm100 support. Required for
           PyTorch's vec128 vectorized loads (pr-pytorch-150705). Exact

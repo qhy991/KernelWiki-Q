@@ -62,10 +62,21 @@ cute-dsl:
 
 triton:
   description: |
-    Triton is a scoped Blackwell lane. On SM100, Triton lacks direct
-    tcgen05/TMEM access, so pure-Triton kernels rarely reach peak. We
-    capture Triton PRs only in three sub-scopes that remain genuinely
-    useful on Blackwell.
+    Triton is a scoped Blackwell lane. As of Triton 3.6 (released
+    2026-01-21), Triton has native SM100 lowering through tcgen05 + TMEM
+    via descriptor/TMA + warp_specialize, tl.dot_scaled, and Gluon
+    multi-CTA / 2CTA, but production peak-performance leadership for
+    compute-bound matmul/attention on Blackwell still favors hand-written
+    CuTe-DSL / CUTLASS / FA-4 / TRT-LLM kernels for many workloads
+    (downstream evidence: pr-sglang-5390 measured CUTLASS tcgen05_mla
+    ~27% faster than the Triton MLA decode baseline; pr-sglang-21595
+    moved Blackwell datacenter multimodal attention default away from
+    triton_attn). We therefore capture Triton PRs in three sub-scopes
+    that remain genuinely useful on Blackwell rather than mirroring the
+    full CuTe-DSL lane.
+
+    See data/version-claims.yaml::vs-triton-3.6-blackwell-tcgen05 for the
+    version-sensitive claim record this rationale references.
 
   capture_criteria:
     # PR must satisfy at least one of these sub-scopes

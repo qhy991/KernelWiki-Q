@@ -104,7 +104,7 @@ python3 scripts/get_page.py" contest-gpumode-p1
 
 **Navigation path**:
 1. `wiki/kernels/gated-delta-net.md` — conceptual + code
-2. `wiki/languages/triton-blackwell.md` — Triton limitations on SM100 (no tcgen05/TMEM direct access)
+2. `wiki/languages/triton-blackwell.md` — current Triton 3.6+ Blackwell lowering surfaces (tcgen05 + TMEM via descriptor/TMA + warp_specialize, `tl.dot_scaled`, Gluon multi-CTA); pre-3.6 historical context preserved in a clearly-marked subsection
 3. Source PRs: `pr-vllm-*` for gated_delta, FlashInfer GDN kernels
 
 **Command**:

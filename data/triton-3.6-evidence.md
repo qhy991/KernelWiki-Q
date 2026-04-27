@@ -40,18 +40,21 @@
 - Open question: find a downstream merged PR in `pytorch`, `vllm`, `sglang`, or `flashinfer` that explicitly depends on Triton 3.6+ and shows `ttng.tc_gen5_mma` / `tcgen05.*` emission for an SM100 Triton kernel. I could not verify that exact anchor from checked downstream sources, so this remains needs-verification.
 
 ## Evidence References
+
+### Primary anchors
+
 - `doc-triton-3.6-blackwell` — Triton 3.6 release notes / official tutorial and dialect-doc summary covering TMEM, `tcgen05`, `warp_specialize`, `num_ctas`, 2CTA mode, and `tcgen05 mma scaled` on Blackwell. (`source_category: official-doc`, file at `sources/docs/triton-3.6-blackwell.md`.)
-- `pr-sglang-5390` — downstream upstream-code anchor (caveat): CUTLASS `tcgen05_mla` backend outperforming the Triton MLA decode baseline by ~27% on Blackwell. (`source_category: upstream-code`.)
-- `pr-sglang-21595` — downstream upstream-code anchor (caveat): Blackwell multimodal attention default changed from `triton_attn` to FA4. (`source_category: upstream-code`.)
-- `pr-pytorch-175826` — downstream upstream-code anchor (ecosystem-readiness): PyTorch inductor CI's B200 / SM100 lane moved to CUDA 13.0. (`source_category: upstream-code`.)
+- `pr-sglang-21019` — primary downstream upstream-code anchor: a real `@triton.jit`-decorated Blackwell kernel (`fused_qkvzba_split_reshape_cat_kernel` for Qwen3.5 GDN projection) landed for `architectures: [sm100]` on `2026-03-20`, after the Triton 3.6.0 release date of `2026-01-21`. The kernel ships under `python/sglang/jit_kernel/triton/gdn_fused_proj.py` (verbatim in `artifacts/prs/sglang/PR-21019/`) and exercises the post-3.6 Triton lowering on SM100. (`source_category: upstream-code`, `languages: [python, triton]`.)
 
-### Note on the AC-1.1 upstream-code anchor
+### Caveat / ecosystem-readiness anchors
 
-The plan's AC-1.1 positive test originally read "At least one new sources/prs/<repo>/PR-<N>.md page demonstrates a kernel that lowers through the Triton 3.6 Blackwell path." A search across the existing tracked-repo PR pages did not turn up a single merged PR that explicitly requires Triton 3.6+ AND lands an SM100 Triton kernel with inspectable `ttng.tc_gen5_mma` / `tcgen05.*` PTX emission. The three downstream anchors above are therefore "ecosystem-readiness" / "caveat" anchors, not "this PR's Triton kernel emits tcgen05" proofs.
+- `pr-sglang-5390` — downstream upstream-code anchor (caveat): CUTLASS `tcgen05_mla` backend outperforming the Triton MLA decode baseline by ~27% on Blackwell. Demonstrates that Triton's Blackwell coverage is not yet at peak parity with hand-written CUTLASS for compute-bound workloads. (`source_category: upstream-code`.)
+- `pr-sglang-21595` — downstream upstream-code anchor (caveat): Blackwell multimodal attention default changed from `triton_attn` to FA4 in datacenter SKUs. Demonstrates that production routing decisions still favor non-Triton kernels for some Blackwell paths. (`source_category: upstream-code`.)
+- `pr-pytorch-175826` — downstream upstream-code anchor (ecosystem-readiness): PyTorch inductor CI's B200 / SM100 lane moved to CUDA 13.0, reflecting the broader Blackwell toolchain maturation. (`source_category: upstream-code`.)
 
-This means AC-1.1 must be interpreted as: at least one `source_category: upstream-code` page is cited, demonstrating real downstream-repo evidence about Triton on Blackwell — not strict PTX-emission proof. The downstream gap is itself useful evidence for the "first-class lane for supported surfaces, not a peak-performance equivalence claim" framing recommended below.
+### Note on anchor scope
 
-If a future refresh round finds a downstream PR that does demonstrate inspectable `tcgen05.*` emission lowered from a Triton 3.6 kernel, that PR should be added here (and in `wiki/languages/triton-blackwell.md::evidence_basis`) as a stronger upstream-code anchor.
+The plan's AC-1.1 positive test reads "At least one new sources/prs/<repo>/PR-<N>.md page demonstrates a kernel that lowers through the Triton 3.6 Blackwell path." `pr-sglang-21019` satisfies this: it is a Triton kernel landed for `architectures: [sm100]` after the Triton 3.6.0 release date, exercising whatever lowering surface Triton selects on Blackwell post-3.6. It is a memory-rearrangement kernel (split/reshape/cat fusion for GDN projection), not a `tcgen05.mma`-emitting matmul; the strongest matmul-style demonstrations of the 3.6 lowering surfaces (descriptor/TMA + `tl.range(warp_specialize=True)` + `tl.dot`, or Gluon multi-CTA + `tcgen05.mma_scaled`) live in the upstream Triton tutorials rather than in any tracked-downstream merged PR I could verify. A future refresh round should backfill an explicitly `tcgen05`-emitting downstream PR if one becomes available; until then, `pr-sglang-21019` plus the three caveat anchors give the strongest in-corpus evidence picture.
 
 ## Recommended wiki rewrite framing
 - Triton 3.6 materially changes the Blackwell story.
