@@ -31,6 +31,7 @@ claims:
       - data/inclusion-policy.yaml::triton.description
     source_ids:
       - doc-triton-3.6-blackwell
+      - pr-vllm-34597
       - pr-vllm-29339
       - pr-sglang-22079
       - pr-sglang-21019
@@ -43,10 +44,15 @@ claims:
       tl.dot, plus Gluon multi-CTA + 2CTA on tcgen05_mma_scaled), replacing
       the obsolete 3.5-era "no tcgen05 / no TMEM" framing. Supporting evidence:
       data/triton-3.6-evidence.md memo plus the official release notes
-      (doc-triton-3.6-blackwell). AC-1.1 "new tracked-repo PR page" anchor:
-      pr-vllm-29339 (post-refresh; vLLM bugfix scoping triton_kernels — the
-      upstream triton-lang/triton/python/triton_kernels library shipped with
-      Triton 3.6 — to [sm100, sm90] for MXFP4 quantization, merged 2025-11-24).
+      (doc-triton-3.6-blackwell). AC-1.1 "new tracked-repo PR page demonstrates
+      a kernel" anchor: pr-vllm-34597 (post-refresh; vLLM "[Kernel] Add FP8 KV
+      cache support to Triton MLA decode attention", merged 2026-02-16, sm100,
+      directly modifying @triton.jit kernels in vllm/v1/attention/ops/
+      triton_decode_attention.py with tl.dot matmul + vllm/v1/attention/
+      backends/mla/triton_mla.py; Triton kernel shipped verbatim under
+      artifacts/prs/vllm/PR-34597/ pinned at SHA a1257fd1). Supplementary
+      post-refresh anchor: pr-vllm-29339 (Triton 3.6 triton_kernels library
+      scoped to [sm100, sm90] for MXFP4 dispatch-gate, merged 2025-11-24).
       Pre-refresh historical anchors retained as supplementary context (each
       appears in data/refresh-cutoff.yaml::previous_pages_manifest):
       pr-sglang-22079 (Gemma4 NVFP4 Triton attention kernel doing real tl.dot
