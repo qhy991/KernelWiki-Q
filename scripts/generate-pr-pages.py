@@ -16,6 +16,7 @@ import sys
 import time
 import urllib.request
 import yaml
+from datetime import date
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).parent.parent
@@ -189,7 +190,7 @@ def auto_tag(title, files):
     return sorted(tags), sorted(hw_features), sorted(kernel_types), sorted(techniques), sorted(languages)
 
 
-def generate_page(repo, pr_data, files, inclusion_reason):
+def generate_page(repo, pr_data, files, inclusion_reason, captured_at):
     """Generate markdown page content for a PR."""
     repo_slug = repo.split("/")[1]
     number = pr_data["number"]
@@ -239,7 +240,7 @@ def generate_page(repo, pr_data, files, inclusion_reason):
         "hardware_features": hw_features if hw_features else [],
         "kernel_types": kernel_types if kernel_types else [],
         "languages": languages if languages else ["cuda-cpp"],
-        "captured_at": "2026-04-17",
+        "captured_at": captured_at,
         "status": "merged",
         "merge_sha": merge_sha,
         "inclusion_reason": inclusion_reason,
@@ -264,7 +265,7 @@ def generate_page(repo, pr_data, files, inclusion_reason):
     return content
 
 
-def process_ledger(ledger_path, max_pages=None):
+def process_ledger(ledger_path, max_pages=None, captured_at=None):
     """Process a candidate ledger and generate PR pages."""
     with open(ledger_path, encoding="utf-8") as f:
         ledger = yaml.safe_load(f)
@@ -303,7 +304,14 @@ def process_ledger(ledger_path, max_pages=None):
             if num not in existing:
                 included.append(c)
 
+    if captured_at is None:
+        captured_at = date.today().isoformat()
+    else:
+        # Smoke check: must parse as ISO YYYY-MM-DD
+        date.fromisoformat(captured_at)
+
     print(f"\n{repo}: {len(included)} new PRs to process ({len(existing)} already exist)")
+    print(f"  captured_at = {captured_at}")
     if max_pages:
         print(f"  Target: stop after generating {max_pages} pages")
 
@@ -331,7 +339,7 @@ def process_ledger(ledger_path, max_pages=None):
             continue
 
         inclusion_reason = reason if is_kernel else "deferred-semantic"
-        content = generate_page(repo, pr_data, files, inclusion_reason)
+        content = generate_page(repo, pr_data, files, inclusion_reason, captured_at)
 
         outpath = outdir / f"PR-{number}.md"
         outpath.write_text(content, encoding="utf-8")
@@ -351,19 +359,24 @@ def process_ledger(ledger_path, max_pages=None):
 def main():
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     max_pages = None
+    captured_at = None
     for a in sys.argv[1:]:
         if a.startswith("--max="):
             max_pages = int(a.split("=")[1])
+        elif a.startswith("--captured-at="):
+            captured_at = a.split("=", 1)[1]
+            date.fromisoformat(captured_at)  # smoke check
 
     if "--all" in sys.argv:
         ledger_dir = REPO_ROOT / "candidates"
         for ledger_file in sorted(ledger_dir.glob("*.yaml")):
-            process_ledger(ledger_file, max_pages)
+            process_ledger(ledger_file, max_pages, captured_at)
     elif args:
-        process_ledger(args[0], max_pages)
+        process_ledger(args[0], max_pages, captured_at)
     else:
-        print("Usage: python3 scripts/generate-pr-pages.py candidates/cutlass.yaml [--max=N]")
-        print("       python3 scripts/generate-pr-pages.py --all [--max=N]")
+        print("Usage: python3 scripts/generate-pr-pages.py candidates/cutlass.yaml [--max=N] [--captured-at=YYYY-MM-DD]")
+        print("       python3 scripts/generate-pr-pages.py --all [--max=N] [--captured-at=YYYY-MM-DD]")
+        print("       (default captured_at = today's date)")
 
 
 if __name__ == "__main__":

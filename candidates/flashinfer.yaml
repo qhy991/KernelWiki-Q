@@ -1,4 +1,23 @@
 repo: flashinfer-ai/flashinfer
+searched_at: '2026-04-17'
+keywords_used:
+- blackwell
+- sm100
+- sm_100
+- cutlass
+- deepgemm
+- fp8
+- nvfp4
+- mla
+- attention
+- moe
+- fmha
+- sdpa
+- tcgen05
+total_candidates: 1011
+included: 642
+excluded: 188
+deferred: 181
 prs:
 - number: 714
   title: 'perf: fix the iteration bound of SWA in FA2 prefill template'
@@ -7,8 +26,7 @@ prs:
   reason: FA2/FA3 kernel
   files_changed: []
 - number: 718
-  title: 'bugfix: FusedAddRMSNorm kernels might require more than 48KB shared memory
-    when d is large.'
+  title: 'bugfix: FusedAddRMSNorm kernels might require more than 48KB shared memory when d is large.'
   date: '2025-01-06'
   decision: include
   reason: RMSNorm kernel
@@ -98,8 +116,7 @@ prs:
   reason: Prefill attention
   files_changed: []
 - number: 774
-  title: 'bugfix: Ensure Loop Termination by Enforcing IEEE-754 Compliance in Sampling
-    Kernels'
+  title: 'bugfix: Ensure Loop Termination by Enforcing IEEE-754 Compliance in Sampling Kernels'
   date: '2025-02-01'
   decision: include
   reason: Sampling kernel
@@ -525,8 +542,7 @@ prs:
   reason: Blackwell keyword
   files_changed: []
 - number: 1028
-  title: 'bugfix: fix custom mask not be reseted after convert custom mask into causal
-    or non-causal'
+  title: 'bugfix: fix custom mask not be reseted after convert custom mask into causal or non-causal'
   date: '2025-04-21'
   decision: include
   reason: Custom mask bugfix (kernel behavior)
@@ -748,15 +764,13 @@ prs:
   reason: FA2/FA3 kernel
   files_changed: []
 - number: 1146
-  title: 'misc: remove sync between persistent runners and use packed_causal_kv_end
-    for SM90Plan'
+  title: 'misc: remove sync between persistent runners and use packed_causal_kv_end for SM90Plan'
   date: '2025-06-16'
   decision: exclude
   reason: 'Non-kernel change: ^misc[:/\s]'
   files_changed: []
 - number: 1148
-  title: '[fix] fix precision errors when applying causal mask on Qwen-2.5 series
-    models'
+  title: '[fix] fix precision errors when applying causal mask on Qwen-2.5 series models'
   date: '2025-06-16'
   decision: defer
   reason: No strong signal for include or exclude
@@ -828,8 +842,7 @@ prs:
   reason: FP4 kernel
   files_changed: []
 - number: 1177
-  title: '[feat] support block sparse attention w/ variable block sizes and head-wise
-    sparse patterns'
+  title: '[feat] support block sparse attention w/ variable block sizes and head-wise sparse patterns'
   date: '2025-06-27'
   decision: include
   reason: Block sparse attention
@@ -1159,8 +1172,7 @@ prs:
   reason: TRT-LLM kernel integration
   files_changed: []
 - number: 1290
-  title: '[fix] fix integer overflow in FA2 customized_mask & add buffer overflow
-    warning.'
+  title: '[fix] fix integer overflow in FA2 customized_mask & add buffer overflow warning.'
   date: '2025-07-24'
   decision: include
   reason: FA2/FA3 kernel
@@ -1214,8 +1226,7 @@ prs:
   reason: TRT-LLM kernel integration
   files_changed: []
 - number: 1303
-  title: 'bugfix: ensure graph is captured and executed on the same stream to avoid
-    rep…'
+  title: 'bugfix: ensure graph is captured and executed on the same stream to avoid rep…'
   date: '2025-07-23'
   decision: defer
   reason: No strong signal for include or exclude
@@ -1509,8 +1520,7 @@ prs:
   reason: Batch prefill attention
   files_changed: []
 - number: 1389
-  title: 'GPT-OSS Support: Add Blackwell MoE mxfp4 implementation from TRTLLM and
-    Attention Sink'
+  title: 'GPT-OSS Support: Add Blackwell MoE mxfp4 implementation from TRTLLM and Attention Sink'
   date: '2025-08-05'
   decision: include
   reason: Blackwell keyword
@@ -1534,8 +1544,7 @@ prs:
   reason: AOT build infrastructure
   files_changed: []
 - number: 1396
-  title: 'gpt-oss: Add MXFP8 x MXFP4 CUTLASS MOE for SM100 and BF16 x MXFP4 CUTLASS
-    for SM90 + SwigluBias Activation'
+  title: 'gpt-oss: Add MXFP8 x MXFP4 CUTLASS MOE for SM100 and BF16 x MXFP4 CUTLASS for SM90 + SwigluBias Activation'
   date: '2025-08-19'
   decision: include
   reason: SM100 keyword
@@ -1787,8 +1796,7 @@ prs:
   reason: 'Matches exclude pattern: remove.*outdated.*formatting'
   files_changed: []
 - number: 1483
-  title: 'perf: add fast path to TopPRenormProbKernel for top_p >= 1.0, significantly
-    boosting SGLang workloads'
+  title: 'perf: add fast path to TopPRenormProbKernel for top_p >= 1.0, significantly boosting SGLang workloads'
   date: '2025-08-14'
   decision: include
   reason: Top-k/top-p renorm kernel
@@ -2070,8 +2078,7 @@ prs:
   reason: Persistent kernel
   files_changed: []
 - number: 1565
-  title: 'fix: separate out fp4 lib into sm90 and sm100 versions, add oob checking
-    in fused moe'
+  title: 'fix: separate out fp4 lib into sm90 and sm100 versions, add oob checking in fused moe'
   date: '2025-08-24'
   decision: include
   reason: SM100 keyword
@@ -2113,8 +2120,7 @@ prs:
   reason: TRT-LLM kernel integration
   files_changed: []
 - number: 1578
-  title: 'feat: Support for inferring out_dtype from out.dtype for TRTLLM attention
-    kernel'
+  title: 'feat: Support for inferring out_dtype from out.dtype for TRTLLM attention kernel'
   date: '2025-08-26'
   decision: include
   reason: TRT-LLM kernel integration
@@ -2132,8 +2138,7 @@ prs:
   reason: TORCH_CHECK/TORCH_WARN macro arg fix
   files_changed: []
 - number: 1584
-  title: 'fix: semaphoress must be at the fixed range in workspace buffer on trtllm_gen
-    attention'
+  title: 'fix: semaphoress must be at the fixed range in workspace buffer on trtllm_gen attention'
   date: '2025-08-26'
   decision: include
   reason: TRT-LLM kernel integration
@@ -2241,8 +2246,7 @@ prs:
   reason: FP4 kernel
   files_changed: []
 - number: 1614
-  title: 'bugfix: fix merge_attention_state in BatchAttention w/ gqa-group-size in
-    Qwen family'
+  title: 'bugfix: fix merge_attention_state in BatchAttention w/ gqa-group-size in Qwen family'
   date: '2025-09-02'
   decision: include
   reason: Batch attention kernel
@@ -2266,8 +2270,7 @@ prs:
   reason: Benchmark infrastructure
   files_changed: []
 - number: 1627
-  title: 'bugfix: fix multi-gpu/node unit-test: skip when there aren''t enough GPUs
-    in test_trtllm_mnnvl_allreduce'
+  title: 'bugfix: fix multi-gpu/node unit-test: skip when there aren''t enough GPUs in test_trtllm_mnnvl_allreduce'
   date: '2025-09-03'
   decision: include
   reason: TRT-LLM kernel integration
@@ -2339,8 +2342,7 @@ prs:
   reason: 'Matches exclude pattern: ^chore[:/\s]'
   files_changed: []
 - number: 1652
-  title: 'fix: add _check_tensor_params to check correct sampling parameters and dtype
-    validation in decode.py'
+  title: 'fix: add _check_tensor_params to check correct sampling parameters and dtype validation in decode.py'
   date: '2025-09-26'
   decision: include
   reason: Sampling kernel
@@ -2358,8 +2360,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 1661
-  title: 'perf&bugfix: skip kv-tile computation out of sliding window in FA2; fix
-    __syncthreads in mergestate'
+  title: 'perf&bugfix: skip kv-tile computation out of sliding window in FA2; fix __syncthreads in mergestate'
   date: '2025-09-11'
   decision: include
   reason: Sliding window attention
@@ -2371,8 +2372,7 @@ prs:
   reason: Benchmark infrastructure
   files_changed: []
 - number: 1664
-  title: 'feat: Support s_qo < s_kv for prefill in flashinfer_benchmark.py and benchmark
-    minor updates'
+  title: 'feat: Support s_qo < s_kv for prefill in flashinfer_benchmark.py and benchmark minor updates'
   date: '2025-09-10'
   decision: defer
   reason: Benchmark infrastructure
@@ -2516,8 +2516,7 @@ prs:
   reason: 'Matches exclude pattern: ^ci[:/\s]'
   files_changed: []
 - number: 1706
-  title: 'feat: Benchmark mm_fp4 mxfp4 support and gemm autotune support.  Restore
-    mm_fp4 API behavior'
+  title: 'feat: Benchmark mm_fp4 mxfp4 support and gemm autotune support.  Restore mm_fp4 API behavior'
   date: '2025-09-17'
   decision: include
   reason: MXFP4 kernel
@@ -2631,8 +2630,7 @@ prs:
   reason: CUDA 13.0 keyword
   files_changed: []
 - number: 1742
-  title: 'fix: CI containers install nvidia-cudnn-cu12 vs. nvidia-cudnn-cu13 based
-    on CUDA Version'
+  title: 'fix: CI containers install nvidia-cudnn-cu12 vs. nvidia-cudnn-cu13 based on CUDA Version'
   date: '2025-09-20'
   decision: include
   reason: CUDA 13 (Blackwell) keyword
@@ -2668,8 +2666,7 @@ prs:
   reason: SM103 (Blackwell) keyword
   files_changed: []
 - number: 1755
-  title: Fix tests/test_trtllm_gen_attention.py::test_trtllm_batch_prefill, ::test_trtllm_batch_decode
-    mismatch error
+  title: Fix tests/test_trtllm_gen_attention.py::test_trtllm_batch_prefill, ::test_trtllm_batch_decode mismatch error
   date: '2025-09-24'
   decision: include
   reason: TRT-LLM kernel integration
@@ -2747,8 +2744,7 @@ prs:
   reason: SM120 (RTX Blackwell) keyword
   files_changed: []
 - number: 1771
-  title: 'Waive / disable test_mla_decode_kernel.py::test_mla_decode_kernel for not
-    sm80 '
+  title: 'Waive / disable test_mla_decode_kernel.py::test_mla_decode_kernel for not sm80 '
   date: '2025-09-25'
   decision: include
   reason: SM120 (RTX Blackwell) keyword
@@ -3000,8 +2996,7 @@ prs:
   reason: 'Matches exclude pattern: ^ci[:/\s]'
   files_changed: []
 - number: 1872
-  title: 'ci/cd: add nightly build and CI for `flashinfer-python`, `flashinfer-jit-cache`,
-    `flashinfer-cubin`'
+  title: 'ci/cd: add nightly build and CI for `flashinfer-python`, `flashinfer-jit-cache`, `flashinfer-cubin`'
   date: '2025-10-08'
   decision: exclude
   reason: 'Matches exclude pattern: ^ci[:/\s]'
@@ -3067,8 +3062,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 1897
-  title: 'tests: Add batch size 1 cases to test_trtllm_gen_attention.py that fail,
-    marked xfail'
+  title: 'tests: Add batch size 1 cases to test_trtllm_gen_attention.py that fail, marked xfail'
   date: '2025-10-09'
   decision: defer
   reason: TRT-LLM test/CI (may contain kernel test changes)
@@ -3152,8 +3146,7 @@ prs:
   reason: 'Matches exclude pattern: ^ci[:/\s]'
   files_changed: []
 - number: 1944
-  title: 'chore: use flashinfer-bot account to create auto pull requests in `release-ci-docker`
-    workflow'
+  title: 'chore: use flashinfer-bot account to create auto pull requests in `release-ci-docker` workflow'
   date: '2025-10-18'
   decision: exclude
   reason: 'Matches exclude pattern: ^chore[:/\s]'
@@ -3171,8 +3164,7 @@ prs:
   reason: 'Matches exclude pattern: ^chore[:/\s]'
   files_changed: []
 - number: 1948
-  title: 'Fix #1641: Use `/usr/local/cuda` as default `CUDA_HOME` if possible, like
-    `torch.utils.cpp_extension.CUDA_HOME`'
+  title: 'Fix #1641: Use `/usr/local/cuda` as default `CUDA_HOME` if possible, like `torch.utils.cpp_extension.CUDA_HOME`'
   date: '2025-10-20'
   decision: defer
   reason: No strong signal for include or exclude
@@ -3190,8 +3182,7 @@ prs:
   reason: 'Non-kernel change: ^unittest[:/\s]'
   files_changed: []
 - number: 1951
-  title: 'bugfix: fix failed unittest `test_green_ctx` and `test_jit_example` on spark
-    (sm_121)'
+  title: 'bugfix: fix failed unittest `test_green_ctx` and `test_jit_example` on spark (sm_121)'
   date: '2025-11-05'
   decision: include
   reason: Spark (SM121) keyword
@@ -3215,8 +3206,7 @@ prs:
   reason: Fused MoE kernel
   files_changed: []
 - number: 1959
-  title: 'fix: Add cutlass as an mm_fp4 backend in compute capability 12.0 in benchmark
-    code'
+  title: 'fix: Add cutlass as an mm_fp4 backend in compute capability 12.0 in benchmark code'
   date: '2025-10-21'
   decision: include
   reason: CUTLASS kernel work
@@ -3348,8 +3338,7 @@ prs:
   reason: Head dim attention
   files_changed: []
 - number: 2001
-  title: 'feat: add xqa backend and completes NHD/HND coverage for trtllm-gen/xqa
-    backend'
+  title: 'feat: add xqa backend and completes NHD/HND coverage for trtllm-gen/xqa backend'
   date: '2025-11-02'
   decision: include
   reason: XQA attention backend
@@ -3421,8 +3410,7 @@ prs:
   reason: CUTLASS kernel work
   files_changed: []
 - number: 2025
-  title: 'perf: Speed up fp4 quantization for small batch with swizzling for cutlass
-    MoE'
+  title: 'perf: Speed up fp4 quantization for small batch with swizzling for cutlass MoE'
   date: '2025-11-05'
   decision: include
   reason: CUTLASS kernel work
@@ -3440,8 +3428,7 @@ prs:
   reason: Spark (SM121) keyword
   files_changed: []
 - number: 2029
-  title: 'feat: suitable_auto_backends to prune auto backends, bmm_fp8 refactor, heuristic_func
-    intake'
+  title: 'feat: suitable_auto_backends to prune auto backends, bmm_fp8 refactor, heuristic_func intake'
   date: '2025-11-07'
   decision: include
   reason: FP8 matmul
@@ -3471,8 +3458,7 @@ prs:
   reason: FP8 kernel
   files_changed: []
 - number: 2037
-  title: 'feat: Add flashinfer.rope.rope_quantize_fp8_append_paged_kv_cache (fused
-    RoPE + Q + KV cache, supports MLA/GQA/MHA) '
+  title: 'feat: Add flashinfer.rope.rope_quantize_fp8_append_paged_kv_cache (fused RoPE + Q + KV cache, supports MLA/GQA/MHA) '
   date: '2025-11-18'
   decision: include
   reason: MLA kernel
@@ -3916,8 +3902,7 @@ prs:
   reason: Sparse MLA kernel
   files_changed: []
 - number: 2140
-  title: Use global TuningConfig, to fix memory leak caused by AutoTuner LRU cache
-    and dynamic lambda TuningConfig
+  title: Use global TuningConfig, to fix memory leak caused by AutoTuner LRU cache and dynamic lambda TuningConfig
   date: '2025-11-25'
   decision: defer
   reason: Autotuner infrastructure
@@ -4181,8 +4166,7 @@ prs:
   reason: Support checks for kernels
   files_changed: []
 - number: 2215
-  title: 'feat: further optimize top-k and add fused top-k page construction kernels
-    for DSA'
+  title: 'feat: further optimize top-k and add fused top-k page construction kernels for DSA'
   date: '2025-12-19'
   decision: include
   reason: Top-k kernel
@@ -4242,8 +4226,7 @@ prs:
   reason: TRT-LLM kernel integration
   files_changed: []
 - number: 2235
-  title: 'refactor: pull trtllm-gen batch-gemm/gemm headers from artifactory; update
-    tma descriptor shape init'
+  title: 'refactor: pull trtllm-gen batch-gemm/gemm headers from artifactory; update tma descriptor shape init'
   date: '2026-03-02'
   decision: include
   reason: TRT-LLM kernel integration
@@ -4291,8 +4274,7 @@ prs:
   reason: FP8 kernel
   files_changed: []
 - number: 2244
-  title: Remove cudaStreamSynchronize from gemm_groupwise_sm120.cuh for CUDA graph
-    compatibility
+  title: Remove cudaStreamSynchronize from gemm_groupwise_sm120.cuh for CUDA graph compatibility
   date: '2025-12-20'
   decision: include
   reason: SM120 (RTX Blackwell) keyword
@@ -4340,15 +4322,13 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2260
-  title: 'fix: Add global scale support and optional output allocation for RMSNorm+FP4Quant
-    fusion kernels'
+  title: 'fix: Add global scale support and optional output allocation for RMSNorm+FP4Quant fusion kernels'
   date: '2026-01-01'
   decision: include
   reason: CuTe-DSL kernel work
   files_changed: []
 - number: 2261
-  title: Fix CUTLASS FP8 gemm correctness issue on SM120/SM121 for shapes where N
-    is not divisible by ScaleGranularityN.
+  title: Fix CUTLASS FP8 gemm correctness issue on SM120/SM121 for shapes where N is not divisible by ScaleGranularityN.
   date: '2025-12-24'
   decision: include
   reason: SM120 (RTX Blackwell) keyword
@@ -4360,8 +4340,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2265
-  title: '[TRTLLM-Gen Fmha] add optimized trtllm-gen decode kernels for high throughput
-    + speculative decoding'
+  title: '[TRTLLM-Gen Fmha] add optimized trtllm-gen decode kernels for high throughput + speculative decoding'
   date: '2026-01-07'
   decision: include
   reason: FMHA kernel
@@ -4403,8 +4382,7 @@ prs:
   reason: TGV GEMM kernel
   files_changed: []
 - number: 2279
-  title: '[WIP] Refactor: simplify torch -> cute-dsl boilerplate and enable tvm-ffi
-    for cute-dsl kernels'
+  title: '[WIP] Refactor: simplify torch -> cute-dsl boilerplate and enable tvm-ffi for cute-dsl kernels'
   date: '2026-01-06'
   decision: include
   reason: CuTe-DSL kernel work
@@ -4434,8 +4412,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2298
-  title: Restructure README with updated features, GPU support table, and clearer
-    organization
+  title: Restructure README with updated features, GPU support table, and clearer organization
   date: '2026-01-13'
   decision: exclude
   reason: 'Matches exclude pattern: restructure readme'
@@ -4495,8 +4472,7 @@ prs:
   reason: Router GEMM kernel
   files_changed: []
 - number: 2325
-  title: 'bugfix: fix multi-cta top-k implementation when k value is different for
-    different row'
+  title: 'bugfix: fix multi-cta top-k implementation when k value is different for different row'
   date: '2026-01-13'
   decision: include
   reason: Top-k kernel
@@ -4508,15 +4484,13 @@ prs:
   reason: 'Non-kernel change: github.*action'
   files_changed: []
 - number: 2327
-  title: '[perf] Improve gemm_fp8_nt_groupwise (cutlass backend) by 10-40% for batch
-    sizes <= 32'
+  title: '[perf] Improve gemm_fp8_nt_groupwise (cutlass backend) by 10-40% for batch sizes <= 32'
   date: '2026-01-14'
   decision: include
   reason: CUTLASS kernel work
   files_changed: []
 - number: 2328
-  title: 'fix: guard batchWarpReduceSum with ENABLE_FP8 to fix compilation without
-    FP8'
+  title: 'fix: guard batchWarpReduceSum with ENABLE_FP8 to fix compilation without FP8'
   date: '2026-01-13'
   decision: include
   reason: FP8 kernel
@@ -4774,8 +4748,7 @@ prs:
   reason: Thor (SM110) keyword
   files_changed: []
 - number: 2451
-  title: 'Revert "feat: Support Fused MoE non gated Relu2 NVFP4 & FP8 and support
-    Nemotron"'
+  title: 'Revert "feat: Support Fused MoE non gated Relu2 NVFP4 & FP8 and support Nemotron"'
   date: '2026-02-01'
   decision: exclude
   reason: Revert PR
@@ -4805,8 +4778,7 @@ prs:
   reason: SM120 (RTX Blackwell) keyword
   files_changed: []
 - number: 2462
-  title: 'feat: Support Fused MoE non gated Relu2 NVFP4 & FP8 and support Nemotron,
-    fixed'
+  title: 'feat: Support Fused MoE non gated Relu2 NVFP4 & FP8 and support Nemotron, fixed'
   date: '2026-02-04'
   decision: include
   reason: FP8 kernel
@@ -4854,8 +4826,7 @@ prs:
   reason: MLA kernel
   files_changed: []
 - number: 2481
-  title: 'fix: Rename tests/mamba/test_utils.py to tests/mamba/utils.py to fix CI
-    test discovery'
+  title: 'fix: Rename tests/mamba/test_utils.py to tests/mamba/utils.py to fix CI test discovery'
   date: '2026-02-04'
   decision: include
   reason: Blackwell keyword
@@ -4867,8 +4838,7 @@ prs:
   reason: Sampling kernel
   files_changed: []
 - number: 2489
-  title: '[bugfix]Correct chunk_end calculation in multi-CTA collaboration when max_len
-    > length'
+  title: '[bugfix]Correct chunk_end calculation in multi-CTA collaboration when max_len > length'
   date: '2026-02-20'
   decision: defer
   reason: No strong signal for include or exclude
@@ -4892,8 +4862,7 @@ prs:
   reason: 'Matches exclude pattern: ^ci[:/\s]'
   files_changed: []
 - number: 2503
-  title: 'refactor: Port upstream CUTLASS fixes and refactor grouped_gemm_nt_masked
-    GEMM module location'
+  title: 'refactor: Port upstream CUTLASS fixes and refactor grouped_gemm_nt_masked GEMM module location'
   date: '2026-02-06'
   decision: include
   reason: Blackwell keyword
@@ -5001,8 +4970,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2536
-  title: fallback to fa2 (instead of fa3) for unsupported configuration (bf16 Q, Fp8
-    KV)
+  title: fallback to fa2 (instead of fa3) for unsupported configuration (bf16 Q, Fp8 KV)
   date: '2026-02-12'
   decision: include
   reason: FA2/FA3 kernel
@@ -5122,8 +5090,7 @@ prs:
   reason: 'Matches exclude pattern: ^ci[:/\s]'
   files_changed: []
 - number: 2591
-  title: 'Mamba SSU: better automatic kernel selection + algorithm selection optionally
-    exposed to the user.'
+  title: 'Mamba SSU: better automatic kernel selection + algorithm selection optionally exposed to the user.'
   date: '2026-02-22'
   decision: include
   reason: Mamba SSM kernel
@@ -5147,8 +5114,7 @@ prs:
   reason: Delta rule kernel
   files_changed: []
 - number: 2602
-  title: 'fix: get tensors by const ref to not rely on deleted move constructor for
-    `TensorView`'
+  title: 'fix: get tensors by const ref to not rely on deleted move constructor for `TensorView`'
   date: '2026-02-22'
   decision: defer
   reason: No strong signal for include or exclude
@@ -5190,8 +5156,7 @@ prs:
   reason: GDN (gated delta net) kernel
   files_changed: []
 - number: 2619
-  title: 'feat: add pool+indices support to gated_delta_rule_decode_pretranspose (bf16
-    path) '
+  title: 'feat: add pool+indices support to gated_delta_rule_decode_pretranspose (bf16 path) '
   date: '2026-03-04'
   decision: include
   reason: Gated delta rule kernel
@@ -5305,8 +5270,7 @@ prs:
   reason: FP8 kernel
   files_changed: []
 - number: 2667
-  title: 'perf: Update trtllm-gen batched GEMM kernels - faster, more NVFP4 tile dims,
-    MXFP8 with relu2 act'
+  title: 'perf: Update trtllm-gen batched GEMM kernels - faster, more NVFP4 tile dims, MXFP8 with relu2 act'
   date: '2026-03-03'
   decision: include
   reason: NVFP4 kernel
@@ -5342,8 +5306,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2679
-  title: 'feat(gdn): add BF16 state kernel with MTP support beyond T>4 with intermediate
-    caching.'
+  title: 'feat(gdn): add BF16 state kernel with MTP support beyond T>4 with intermediate caching.'
   date: '2026-04-02'
   decision: include
   reason: CuTe-DSL kernel work
@@ -5415,8 +5378,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2716
-  title: 'fix(jit): GEMM kernels produce NaN under concurrency — missing GDC flags
-    cause PDL synchronization barriers to compile as no-ops'
+  title: 'fix(jit): GEMM kernels produce NaN under concurrency — missing GDC flags cause PDL synchronization barriers to compile as no-ops'
   date: '2026-03-09'
   decision: include
   reason: SM100 keyword
@@ -5452,8 +5414,7 @@ prs:
   reason: Gated delta rule kernel
   files_changed: []
 - number: 2737
-  title: 'Revert "fix(jit): GEMM kernels produce NaN under concurrency — missing GDC
-    flags cause PDL synchronization barriers to compile as no-ops"'
+  title: 'Revert "fix(jit): GEMM kernels produce NaN under concurrency — missing GDC flags cause PDL synchronization barriers to compile as no-ops"'
   date: '2026-03-12'
   decision: exclude
   reason: Revert PR
@@ -5585,8 +5546,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2792
-  title: 'feat: Support padding tokens with seqlen=0 for rope+quant+kv cache update
-    fusion kernel'
+  title: 'feat: Support padding tokens with seqlen=0 for rope+quant+kv cache update fusion kernel'
   date: '2026-04-09'
   decision: include
   reason: KV cache kernel
@@ -5598,15 +5558,13 @@ prs:
   reason: Spark (SM121) keyword
   files_changed: []
 - number: 2801
-  title: '[fix] bugfix 1419: Add batch size shape validation in decode and prefill
-    run() APIs'
+  title: '[fix] bugfix 1419: Add batch size shape validation in decode and prefill run() APIs'
   date: '2026-03-23'
   decision: defer
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2802
-  title: '[fix] Bugfix 1367: fix VariableBlockSparseAttention buffer overflow by dynamically
-    resizing kv_lens_buffer'
+  title: '[fix] Bugfix 1367: fix VariableBlockSparseAttention buffer overflow by dynamically resizing kv_lens_buffer'
   date: '2026-03-19'
   decision: include
   reason: Block sparse attention
@@ -5642,8 +5600,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2821
-  title: 'fix: Autotuner _find_nearest_profile non-power-of-2 num_tokens, create launchers
-    for all supported tileN in trtllm fused MoE'
+  title: 'fix: Autotuner _find_nearest_profile non-power-of-2 num_tokens, create launchers for all supported tileN in trtllm fused MoE'
   date: '2026-03-20'
   decision: include
   reason: Fused MoE kernel
@@ -5709,8 +5666,7 @@ prs:
   reason: Block-scale kernel
   files_changed: []
 - number: 2853
-  title: 'fix: int32 overflow in `trtllm_fp4_block_scale_moe` causing "Unsupported
-    hidden state scale shape" for EP32+ configs'
+  title: 'fix: int32 overflow in `trtllm_fp4_block_scale_moe` causing "Unsupported hidden state scale shape" for EP32+ configs'
   date: '2026-03-24'
   decision: include
   reason: Block-scale kernel
@@ -5722,15 +5678,13 @@ prs:
   reason: 'Matches exclude pattern: update docker ci tags'
   files_changed: []
 - number: 2855
-  title: '[fix] bugfix 1044: Auto-inject well-known JIT additional tensor buffers
-    in prefill and decode run() APIs'
+  title: '[fix] bugfix 1044: Auto-inject well-known JIT additional tensor buffers in prefill and decode run() APIs'
   date: '2026-04-10'
   decision: defer
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2857
-  title: '[fix] bugfix 541: Make single_prefill/decode compatible with torch.compile
-    CUDA graphs'
+  title: '[fix] bugfix 541: Make single_prefill/decode compatible with torch.compile CUDA graphs'
   date: '2026-04-10'
   decision: defer
   reason: CUDA graph support
@@ -5772,8 +5726,7 @@ prs:
   reason: 'Matches exclude pattern: add.*codeowner'
   files_changed: []
 - number: 2876
-  title: '[fix] bugfix 2856: Fix pre-allocated out shape check in trtllm_batch_decode_with_kv_cache_mla
-    for q_len_per_req > 1'
+  title: '[fix] bugfix 2856: Fix pre-allocated out shape check in trtllm_batch_decode_with_kv_cache_mla for q_len_per_req > 1'
   date: '2026-03-31'
   decision: include
   reason: TRT-LLM kernel integration
@@ -5791,8 +5744,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2898
-  title: 'fix: snap weight_scale_vec_size to handle block_scale_interleave padding
-    for SM120'
+  title: 'fix: snap weight_scale_vec_size to handle block_scale_interleave padding for SM120'
   date: '2026-04-05'
   decision: include
   reason: SM120 (RTX Blackwell) keyword
@@ -5828,8 +5780,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2913
-  title: '[NVIDIA] fix(jit): enable GDC for CUTLASS fused MoE PDL — prevent random
-    crashes on SM12x'
+  title: '[NVIDIA] fix(jit): enable GDC for CUTLASS fused MoE PDL — prevent random crashes on SM12x'
   date: '2026-04-01'
   decision: include
   reason: SM100 keyword
@@ -5895,8 +5846,7 @@ prs:
   reason: MoE auto-tuning
   files_changed: []
 - number: 2945
-  title: 'fix: use float instead of double in sampling binary search to avoid FP64
-    bottleneck on SM103'
+  title: 'fix: use float instead of double in sampling binary search to avoid FP64 bottleneck on SM103'
   date: '2026-04-04'
   decision: include
   reason: SM103 (Blackwell) keyword
@@ -5956,8 +5906,7 @@ prs:
   reason: No strong signal for include or exclude
   files_changed: []
 - number: 2982
-  title: 'feat(comm): add MOE Finalize/Reduction patterns to unified allreduce_fusion
-    API'
+  title: 'feat(comm): add MOE Finalize/Reduction patterns to unified allreduce_fusion API'
   date: '2026-04-13'
   decision: include
   reason: MoE allreduce kernel
@@ -6011,15 +5960,13 @@ prs:
   reason: SM120 (RTX Blackwell) keyword
   files_changed: []
 - number: 3007
-  title: 'fix: use sym_int64 for strides in rmsnorm CuTe DSL kernels to prevent int32
-    overflow'
+  title: 'fix: use sym_int64 for strides in rmsnorm CuTe DSL kernels to prevent int32 overflow'
   date: '2026-04-08'
   decision: include
   reason: CuTe-DSL kernel work
   files_changed: []
 - number: 3008
-  title: 'feat: add PDL support to rmsnorm_fp4quant and add_rmsnorm_fp4quant CuTe
-    DSL kernels'
+  title: 'feat: add PDL support to rmsnorm_fp4quant and add_rmsnorm_fp4quant CuTe DSL kernels'
   date: '2026-04-08'
   decision: include
   reason: CuTe-DSL kernel work
@@ -6079,8 +6026,7 @@ prs:
   reason: SM120 (RTX Blackwell) keyword
   files_changed: []
 - number: 3032
-  title: 'fused_moe: pre-filter SM89 tactics with zero occupancy on SM120 Blackwell
-    (fix review feedback on #2764)'
+  title: 'fused_moe: pre-filter SM89 tactics with zero occupancy on SM120 Blackwell (fix review feedback on #2764)'
   date: '2026-04-14'
   decision: include
   reason: Blackwell keyword
@@ -6139,7 +6085,3 @@ prs:
   decision: exclude
   reason: Revert PR
   files_changed: []
-total_candidates: 1011
-included: 642
-excluded: 188
-deferred: 181
