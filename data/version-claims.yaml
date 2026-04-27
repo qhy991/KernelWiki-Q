@@ -43,6 +43,12 @@ claims:
       the obsolete 3.5-era "no tcgen05 / no TMEM" framing. Supporting evidence:
       data/triton-3.6-evidence.md memo plus the official release notes
       (doc-triton-3.6-blackwell). Primary downstream upstream-code anchor:
-      pr-sglang-21019 (Triton kernel landed for SM100 after Triton 3.6.0
-      release date 2026-01-21). Caveat anchors: pr-sglang-5390, pr-sglang-21595,
-      pr-pytorch-175826 (ecosystem context).
+      pr-sglang-22079 (Gemma4 NVFP4 Triton attention kernel doing real tl.dot
+      matmul on [sm100, sm90], merged 2026-04-03 after Triton 3.6.0 release
+      date 2026-01-21). Secondary anchor: pr-sglang-21019 (memory-rearrangement
+      Triton kernel on SM100, merged 2026-03-20, no tl.dot). Caveat anchors:
+      pr-sglang-5390, pr-sglang-21595, pr-pytorch-175826 (ecosystem context).
+      The strongest possible demonstrations of the 3.6 Blackwell-native paths
+      (descriptor/TMA + warp_specialize, tl.dot_scaled, Gluon multi-CTA/2CTA)
+      have NOT been found in any tracked-downstream merged PR locally; future
+      refresh rounds should backfill such an anchor when one becomes available.

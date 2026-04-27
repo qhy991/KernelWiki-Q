@@ -8,8 +8,8 @@ sources:
 - cute-dsl-tutorial
 - triton-in-policy
 - allowlist
-total_captured: 56
-checksum_sha256: d59eb03217289a1a2628ac37e353ff3c4f78a90114cf87aa78fab81e4a93e3c7
+total_captured: 91
+checksum_sha256: 08cb376af75e766396188d63a3bb386ef13bd2985b038acfc088744de7191d3e
 prs:
 - id: pr-cutlass-2139
   source_of_inclusion: wiki-graph-closure
@@ -49,12 +49,82 @@ prs:
   source_of_inclusion: triton-in-policy
 - id: pr-flashinfer-1117
   source_of_inclusion: wiki-graph-closure
+- id: pr-flashinfer-1331
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1481
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1488
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1498
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1509
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1521
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1608
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1677
+  source_of_inclusion: cute-dsl-tutorial
 - id: pr-flashinfer-1695
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1764
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-1812
   source_of_inclusion: cute-dsl-tutorial
 - id: pr-flashinfer-1850
   source_of_inclusion: wiki-graph-closure
+- id: pr-flashinfer-2149
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2171
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2233
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2260
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2279
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2385
+  source_of_inclusion: cute-dsl-tutorial
 - id: pr-flashinfer-2387
   source_of_inclusion: wiki-graph-closure
+- id: pr-flashinfer-2395
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2398
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2421
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2428
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2444
+  source_of_inclusion: triton-in-policy
+- id: pr-flashinfer-2498
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2503
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2573
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2709
+  source_of_inclusion: triton-in-policy
+- id: pr-flashinfer-2743
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2805
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2811
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2838
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2901
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-2904
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-3008
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-3025
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-3051
+  source_of_inclusion: cute-dsl-tutorial
+- id: pr-flashinfer-3066
+  source_of_inclusion: cute-dsl-tutorial
 - id: pr-flashinfer-982
   source_of_inclusion: triton-in-policy
 - id: pr-flashinfer-983

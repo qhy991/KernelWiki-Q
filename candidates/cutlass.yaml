@@ -23,10 +23,10 @@ keywords_used:
 - tile_scheduler
 - grouped_gemm
 - sub_byte
-total_candidates: 44
+total_candidates: 66
 included: 34
 excluded: 8
-deferred: 2
+deferred: 24
 prs:
 - number: 2033
   title: '[EVT] Add support for Row/Col broadcast PtrArray'
@@ -291,4 +291,136 @@ prs:
   date: '2026-03-25'
   decision: include
   reason: updates Blackwell tutorial kernel code for 4.5-dev compatibility
+  files_changed: []
+- number: 730
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 773
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 828
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 844
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 992
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1189
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1224
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1275
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1302
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1350
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1413
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1526
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1543
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1661
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1713
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1753
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1795
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1796
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1833
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1932
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1993
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3149
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
   files_changed: []

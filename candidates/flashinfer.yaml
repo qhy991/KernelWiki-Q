@@ -14,10 +14,10 @@ keywords_used:
 - fmha
 - sdpa
 - tcgen05
-total_candidates: 1011
+total_candidates: 1042
 included: 642
 excluded: 188
-deferred: 181
+deferred: 212
 prs:
 - number: 714
   title: 'perf: fix the iteration bound of SWA in FA2 prefill template'
@@ -6084,4 +6084,190 @@ prs:
   date: '2026-04-16'
   decision: exclude
   reason: Revert PR
+  files_changed: []
+- number: 1838
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1953
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2414
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2630
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2735
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2762
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2807
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2903
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2931
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2951
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2959
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2998
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3009
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3039
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3050
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3080
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3082
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3084
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3089
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3091
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3092
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3094
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3113
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3115
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3123
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3128
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3132
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3154
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3155
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3156
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3158
+  title: ''
+  date: '2026-04-25'
+  decision: defer
+  reason: from refresh search; needs-triage
   files_changed: []

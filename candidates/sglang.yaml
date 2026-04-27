@@ -11,10 +11,10 @@ keywords_used:
 - flashinfer
 - moe
 - attention
-total_candidates: 1180
+total_candidates: 1254
 included: 684
 excluded: 121
-deferred: 375
+deferred: 449
 prs:
 - number: 22989
   title: '[Ray] Bind scheduler actors to GPU-local NUMA node'
@@ -7095,4 +7095,448 @@ prs:
   date: '2025-01-01'
   decision: include
   reason: 'matched: mla'
+  files_changed: []
+- number: 18111
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 18362
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 18562
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 18823
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 19041
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 19062
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 19201
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 19220
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 19806
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 20758
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 21403
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 21734
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 21940
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22094
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22136
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22218
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22288
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22492
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22493
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22544
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22626
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22643
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22657
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22658
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22664
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22688
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22717
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22774
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22910
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22914
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22925
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22955
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 22998
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23001
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23045
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23065
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23110
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23125
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23139
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23159
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23178
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23185
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23186
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23227
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23281
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23303
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23319
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23382
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23414
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23417
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23454
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23467
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23486
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23493
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23540
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23542
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23620
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23634
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23648
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23671
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23682
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23692
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23699
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23725
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23728
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23730
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23731
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23732
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23734
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23742
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23748
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23776
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23778
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 23787
+  title: ''
+  date: '2026-04-27'
+  decision: defer
+  reason: from refresh search; needs-triage
   files_changed: []

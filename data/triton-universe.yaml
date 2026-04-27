@@ -3,13 +3,39 @@
 
 lane: triton
 generated_by: scripts/compute_core_prs.py
-total: 42
-captured: 21
-skipped: 21
+total: 52
+captured: 23
+skipped: 29
 prs:
 - id: pr-flashinfer-1025
   captured: true
 - id: pr-flashinfer-1039
+  captured: true
+- id: pr-flashinfer-1415
+  captured: false
+  skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
+    fetch_pr_diff.SKIP_GLOBS)
+- id: pr-flashinfer-2111
+  captured: false
+  skipped_reason: Triton PR outside the three in-policy sub-scopes
+- id: pr-flashinfer-2301
+  captured: false
+  skipped_reason: Triton PR outside the three in-policy sub-scopes
+- id: pr-flashinfer-2444
+  captured: true
+- id: pr-flashinfer-2543
+  captured: false
+  skipped_reason: runtime-config-only Triton PR
+- id: pr-flashinfer-2591
+  captured: false
+  skipped_reason: Triton PR outside the three in-policy sub-scopes
+- id: pr-flashinfer-2645
+  captured: false
+  skipped_reason: Triton PR outside the three in-policy sub-scopes
+- id: pr-flashinfer-2700
+  captured: false
+  skipped_reason: Triton PR outside the three in-policy sub-scopes
+- id: pr-flashinfer-2709
   captured: true
 - id: pr-flashinfer-982
   captured: true
@@ -20,6 +46,9 @@ prs:
   skipped_reason: all changed_paths are tests/benchmarks/docs (empty bundle after
     fetch_pr_diff.SKIP_GLOBS)
 - id: pr-pytorch-149993
+  captured: false
+  skipped_reason: Triton PR outside the three in-policy sub-scopes
+- id: pr-pytorch-154121
   captured: false
   skipped_reason: Triton PR outside the three in-policy sub-scopes
 - id: pr-pytorch-157241

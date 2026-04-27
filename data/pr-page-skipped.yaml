@@ -3,3331 +3,507 @@
 ## Byte-stable for identical inputs (regen-deterministic).
 ##
 ## Stages owned by scripts/generate-pr-pages.py:
-##   pre-fetch            -> gh PR fetch returned no data
-##   is-kernel-related    -> file-allowlist check excluded the PR
-##   bootstrap-uncaptured -> backfill state from Round 4 R4-8 for ledger
-##                           include rows that predate the audit-emission
-##                           code path; future rounds reclassify each to
-##                           pre-fetch or is-kernel-related based on actual
-##                           gh API runs.
+##   pre-fetch         -> gh PR fetch returned no data
+##   is-kernel-related -> file-allowlist check excluded the PR
+##
+## DEPRECATED: bootstrap-uncaptured stage was a Round 4 R4-8 transient
+## state for ledger include rows that predated the audit-emission code
+## path. Round 5 R5-2 reclassified FlashInfer (all 167+182 = 349) +
+## cutlass (2) + pytorch (35) entries via real gh API runs.
+## Remaining sglang and vllm bootstrap-uncaptured entries are pending
+## reclassification in future rounds (1455 entries; ~30 min of gh API).
 rows:
 - pr_id: pr-cutlass-2480
   repo: NVIDIA/cutlass
   pr_number: 2480
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-cutlass-2917
   repo: NVIDIA/cutlass
   pr_number: 2917
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-751
   repo: flashinfer-ai/flashinfer
   pr_number: 751
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-783
   repo: flashinfer-ai/flashinfer
   pr_number: 783
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-795
   repo: flashinfer-ai/flashinfer
   pr_number: 795
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-798
   repo: flashinfer-ai/flashinfer
   pr_number: 798
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-808
   repo: flashinfer-ai/flashinfer
   pr_number: 808
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-970
   repo: flashinfer-ai/flashinfer
   pr_number: 970
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-998
   repo: flashinfer-ai/flashinfer
   pr_number: 998
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1028
   repo: flashinfer-ai/flashinfer
   pr_number: 1028
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1157
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1157
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1162
   repo: flashinfer-ai/flashinfer
   pr_number: 1162
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1168
   repo: flashinfer-ai/flashinfer
   pr_number: 1168
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1170
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1170
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1190
   repo: flashinfer-ai/flashinfer
   pr_number: 1190
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1196
   repo: flashinfer-ai/flashinfer
   pr_number: 1196
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1245
   repo: flashinfer-ai/flashinfer
   pr_number: 1245
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1254
   repo: flashinfer-ai/flashinfer
   pr_number: 1254
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1261
   repo: flashinfer-ai/flashinfer
   pr_number: 1261
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1283
   repo: flashinfer-ai/flashinfer
   pr_number: 1283
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1287
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1287
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1288
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1288
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1289
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1289
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1290
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1290
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1291
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1291
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1292
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1292
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1294
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1294
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1296
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1296
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1297
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1297
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1298
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1298
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1302
   repo: flashinfer-ai/flashinfer
   pr_number: 1302
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1305
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1305
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1307
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1307
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1309
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1309
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1310
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1310
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1314
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1314
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1316
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1316
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1317
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1317
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1318
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1318
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1319
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1319
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1320
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1320
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1321
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1321
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1322
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1322
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1324
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1324
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1328
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1328
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1331
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1331
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1333
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1333
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1334
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1334
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1339
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1339
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1344
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1344
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1346
   repo: flashinfer-ai/flashinfer
   pr_number: 1346
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1348
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1348
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1350
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1350
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1355
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1355
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1356
   repo: flashinfer-ai/flashinfer
   pr_number: 1356
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1358
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1358
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1359
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1359
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1360
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1360
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1361
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1361
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1363
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1363
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1365
   repo: flashinfer-ai/flashinfer
   pr_number: 1365
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1371
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1371
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1376
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1376
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1378
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1378
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1384
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1384
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1389
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1389
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1390
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1390
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1396
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1396
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1397
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1397
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1398
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1398
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1399
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1399
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1402
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1402
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1405
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1405
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1410
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1410
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1412
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1412
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1415
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1415
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1416
   repo: flashinfer-ai/flashinfer
   pr_number: 1416
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1423
   repo: flashinfer-ai/flashinfer
   pr_number: 1423
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1427
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1427
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1428
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1428
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1434
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1434
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1435
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1435
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1438
   repo: flashinfer-ai/flashinfer
   pr_number: 1438
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1444
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1444
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1445
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1445
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1446
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1446
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1453
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1453
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1460
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1460
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: excluded by title pattern
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1463
   repo: flashinfer-ai/flashinfer
   pr_number: 1463
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1469
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1469
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1472
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1472
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1473
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1473
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1475
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1475
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1479
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1479
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1480
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1480
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1481
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1481
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1483
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1483
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1484
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1484
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1488
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1488
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1490
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1490
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1491
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1491
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1495
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1495
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1498
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1498
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1500
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1500
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1502
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1502
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1503
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1503
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: excluded by title pattern
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1505
   repo: flashinfer-ai/flashinfer
   pr_number: 1505
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1506
   repo: flashinfer-ai/flashinfer
   pr_number: 1506
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1507
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1507
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1508
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1508
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1509
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1509
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1512
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1512
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1518
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1518
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1521
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1521
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1523
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1523
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1525
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1525
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1530
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1530
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1533
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1533
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1534
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1534
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1535
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1535
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1537
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1537
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1540
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1540
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1545
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1545
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1547
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1547
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1550
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1550
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1559
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1559
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1562
   repo: flashinfer-ai/flashinfer
   pr_number: 1562
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1565
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1565
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1567
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1567
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1571
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1571
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1573
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1573
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1577
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1577
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1578
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1578
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1581
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1581
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1582
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1582
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1584
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1584
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1585
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1585
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1589
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1589
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1590
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1590
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1596
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1596
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1597
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1597
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1599
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1599
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1601
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1601
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1608
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1608
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1609
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1609
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1610
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1610
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1611
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1611
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1614
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1614
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1615
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1615
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1622
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1622
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: excluded by title pattern
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1627
   repo: flashinfer-ai/flashinfer
   pr_number: 1627
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1631
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1631
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1633
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1633
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1635
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1635
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1636
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1636
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1640
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1640
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1643
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1643
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1644
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1644
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1652
   repo: flashinfer-ai/flashinfer
   pr_number: 1652
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1656
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1656
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1661
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1661
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1665
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1665
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1666
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1666
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1667
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1667
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1670
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1670
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1674
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1674
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1675
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1675
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1677
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1677
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1679
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1679
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1682
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1682
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1685
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1685
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1688
   repo: flashinfer-ai/flashinfer
   pr_number: 1688
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1694
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1694
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1696
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1696
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1698
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1698
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1706
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1706
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1707
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1707
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1710
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1710
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: excluded by title pattern
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1715
   repo: flashinfer-ai/flashinfer
   pr_number: 1715
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1716
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1716
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1723
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1723
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1724
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1724
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1725
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1725
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1727
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1727
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1739
   repo: flashinfer-ai/flashinfer
   pr_number: 1739
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: excluded by title pattern
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1742
   repo: flashinfer-ai/flashinfer
   pr_number: 1742
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1745
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1745
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1752
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1752
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1754
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1754
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1755
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1755
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1757
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1757
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1764
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1764
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1766
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1766
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1767
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1767
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1768
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1768
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1769
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1769
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1771
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1771
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1774
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1774
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1809
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1809
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1810
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1810
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1812
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1812
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1817
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1817
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1819
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1819
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1826
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1826
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1829
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1829
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1831
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1831
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1835
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1835
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1841
   repo: flashinfer-ai/flashinfer
   pr_number: 1841
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1862
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1862
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1865
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1865
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1878
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1878
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1882
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1882
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1883
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1883
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1886
   repo: flashinfer-ai/flashinfer
   pr_number: 1886
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1912
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1912
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1924
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1924
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1926
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1926
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1927
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1927
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1942
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1942
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1951
   repo: flashinfer-ai/flashinfer
   pr_number: 1951
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1954
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1954
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1955
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1955
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1959
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1959
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1961
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1961
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1963
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1963
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1969
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1969
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-1972
   repo: flashinfer-ai/flashinfer
   pr_number: 1972
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1973
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1973
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1976
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1976
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1978
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1978
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1979
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1979
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1980
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1980
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1982
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1982
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1994
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1994
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1995
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1995
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-1999
-  repo: flashinfer-ai/flashinfer
-  pr_number: 1999
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2001
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2001
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2002
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2002
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2011
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2011
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2012
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2012
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2014
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2014
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2019
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2019
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2020
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2020
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2025
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2025
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2028
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2028
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2029
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2029
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2030
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2030
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2033
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2033
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2035
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2035
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2037
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2037
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2042
   repo: flashinfer-ai/flashinfer
   pr_number: 2042
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2044
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2044
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2047
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2047
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2048
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2048
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2049
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2049
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2051
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2051
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2052
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2052
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2053
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2053
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2055
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2055
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2056
   repo: flashinfer-ai/flashinfer
   pr_number: 2056
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2058
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2058
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2061
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2061
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2062
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2062
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2063
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2063
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2070
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2070
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2072
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2072
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2074
   repo: flashinfer-ai/flashinfer
   pr_number: 2074
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2075
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2075
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2076
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2076
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2079
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2079
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2081
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2081
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2082
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2082
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2084
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2084
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2086
   repo: flashinfer-ai/flashinfer
   pr_number: 2086
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2088
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2088
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2090
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2090
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2092
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2092
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2095
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2095
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2097
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2097
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2100
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2100
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2102
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2102
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2105
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2105
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2109
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2109
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2110
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2110
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2111
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2111
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2114
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2114
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2117
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2117
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2118
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2118
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2119
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2119
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2125
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2125
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2126
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2126
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: excluded by title pattern
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2127
   repo: flashinfer-ai/flashinfer
   pr_number: 2127
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2129
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2129
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2130
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2130
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2131
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2131
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2134
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2134
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2137
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2137
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2138
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2138
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2142
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2142
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2148
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2148
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2149
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2149
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2157
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2157
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2159
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2159
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2163
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2163
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2165
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2165
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2171
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2171
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2175
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2175
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2181
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2181
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2190
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2190
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2193
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2193
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2194
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2194
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2211
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2211
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2214
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2214
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2215
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2215
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2217
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2217
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2233
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2233
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2234
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2234
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2235
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2235
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2237
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2237
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2239
   repo: flashinfer-ai/flashinfer
   pr_number: 2239
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2241
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2241
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2243
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2243
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2244
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2244
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2245
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2245
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2247
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2247
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2254
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2254
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2255
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2255
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2256
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2256
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2260
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2260
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2261
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2261
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2265
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2265
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2266
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2266
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2268
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2268
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2276
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2276
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2277
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2277
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2279
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2279
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2281
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2281
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2301
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2301
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2302
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2302
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2303
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2303
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2304
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2304
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2308
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2308
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2323
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2323
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2325
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2325
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2327
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2327
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2328
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2328
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2330
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2330
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2334
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2334
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2343
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2343
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2352
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2352
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2362
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2362
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2366
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2366
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2370
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2370
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2376
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2376
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2378
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2378
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2380
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2380
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2385
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2385
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2395
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2395
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2398
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2398
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2404
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2404
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2405
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2405
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2415
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2415
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2416
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2416
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2421
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2421
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2422
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2422
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2428
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2428
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2432
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2432
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2441
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2441
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2443
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2443
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2444
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2444
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2445
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2445
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2446
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2446
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2448
   repo: flashinfer-ai/flashinfer
   pr_number: 2448
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2456
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2456
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2460
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2460
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2462
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2462
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2464
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2464
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2476
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2476
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2477
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2477
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2479
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2479
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2481
   repo: flashinfer-ai/flashinfer
   pr_number: 2481
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2484
   repo: flashinfer-ai/flashinfer
   pr_number: 2484
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2495
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2495
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2498
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2498
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2503
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2503
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2505
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2505
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2509
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2509
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2512
   repo: flashinfer-ai/flashinfer
   pr_number: 2512
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2520
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2520
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2521
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2521
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2525
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2525
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2530
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2530
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2533
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2533
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2536
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2536
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2538
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2538
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2540
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2540
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2543
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2543
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2547
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2547
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2549
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2549
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2559
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2559
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2560
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2560
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2564
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2564
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2573
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2573
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2574
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2574
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2581
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2581
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2585
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2585
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2587
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2587
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2588
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2588
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2591
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2591
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2592
   repo: flashinfer-ai/flashinfer
   pr_number: 2592
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2600
   repo: flashinfer-ai/flashinfer
   pr_number: 2600
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2605
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2605
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2607
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2607
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2610
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2610
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2618
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2618
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2619
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2619
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2627
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2627
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2628
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2628
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2629
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2629
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2631
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2631
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2635
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2635
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2642
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2642
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2644
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2644
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2645
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2645
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2650
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2650
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2653
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2653
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2654
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2654
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2660
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2660
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2661
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2661
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2666
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2666
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2667
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2667
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2670
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2670
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2677
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2677
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2679
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2679
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2696
   repo: flashinfer-ai/flashinfer
   pr_number: 2696
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2699
   repo: flashinfer-ai/flashinfer
   pr_number: 2699
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2700
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2700
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2702
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2702
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2707
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2707
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2709
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2709
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2716
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2716
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2725
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2725
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2727
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2727
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2730
   repo: flashinfer-ai/flashinfer
   pr_number: 2730
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2738
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2738
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2739
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2739
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2740
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2740
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2743
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2743
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2744
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2744
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2750
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2750
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2751
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2751
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2752
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2752
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2757
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2757
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2770
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2770
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2777
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2777
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2780
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2780
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2781
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2781
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: excluded by title pattern
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2783
   repo: flashinfer-ai/flashinfer
   pr_number: 2783
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2792
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2792
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2798
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2798
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2802
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2802
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2805
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2805
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2810
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2810
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2811
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2811
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2821
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2821
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2828
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2828
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2836
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2836
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2838
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2838
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2839
   repo: flashinfer-ai/flashinfer
   pr_number: 2839
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2842
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2842
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2844
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2844
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2853
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2853
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2864
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2864
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2865
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2865
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2867
   repo: flashinfer-ai/flashinfer
   pr_number: 2867
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2872
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2872
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2876
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2876
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2882
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2882
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2898
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2898
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2901
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2901
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2902
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2902
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2904
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2904
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2908
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2908
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2913
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2913
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2916
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2916
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2926
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2926
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2927
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2927
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2928
   repo: flashinfer-ai/flashinfer
   pr_number: 2928
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2940
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2940
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2942
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2942
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2945
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2945
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2954
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2954
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-2956
   repo: flashinfer-ai/flashinfer
   pr_number: 2956
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2960
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2960
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2963
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2963
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2965
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2965
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2966
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2966
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2974
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2974
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2982
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2982
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2984
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2984
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2988
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2988
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2994
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2994
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-2996
-  repo: flashinfer-ai/flashinfer
-  pr_number: 2996
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3001
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3001
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: excluded by title pattern
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-3002
   repo: flashinfer-ai/flashinfer
   pr_number: 3002
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3007
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3007
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3008
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3008
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3014
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3014
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3017
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3017
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-flashinfer-3019
   repo: flashinfer-ai/flashinfer
   pr_number: 3019
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3021
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3021
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3024
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3024
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3025
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3025
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3026
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3026
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3032
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3032
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3051
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3051
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3058
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3058
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-flashinfer-3066
-  repo: flashinfer-ai/flashinfer
-  pr_number: 3066
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-144209
-  repo: pytorch/pytorch
-  pr_number: 144209
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-144335
-  repo: pytorch/pytorch
-  pr_number: 144335
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-144398
-  repo: pytorch/pytorch
-  pr_number: 144398
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-149526
   repo: pytorch/pytorch
   pr_number: 149526
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-149871
-  repo: pytorch/pytorch
-  pr_number: 149871
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-150145
-  repo: pytorch/pytorch
-  pr_number: 150145
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-150389
   repo: pytorch/pytorch
   pr_number: 150389
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-150447
-  repo: pytorch/pytorch
-  pr_number: 150447
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-150448
-  repo: pytorch/pytorch
-  pr_number: 150448
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-152361
   repo: pytorch/pytorch
   pr_number: 152361
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-153304
-  repo: pytorch/pytorch
-  pr_number: 153304
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-153533
   repo: pytorch/pytorch
   pr_number: 153533
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-154053
   repo: pytorch/pytorch
   pr_number: 154053
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-154121
-  repo: pytorch/pytorch
-  pr_number: 154121
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-156728
   repo: pytorch/pytorch
   pr_number: 156728
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-156870
   repo: pytorch/pytorch
   pr_number: 156870
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-157105
   repo: pytorch/pytorch
   pr_number: 157105
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-157308
   repo: pytorch/pytorch
   pr_number: 157308
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-157422
-  repo: pytorch/pytorch
-  pr_number: 157422
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-157515
   repo: pytorch/pytorch
   pr_number: 157515
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-157641
   repo: pytorch/pytorch
   pr_number: 157641
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-157718
   repo: pytorch/pytorch
   pr_number: 157718
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-157754
   repo: pytorch/pytorch
   pr_number: 157754
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-158243
   repo: pytorch/pytorch
   pr_number: 158243
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-162501
-  repo: pytorch/pytorch
-  pr_number: 162501
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-163097
-  repo: pytorch/pytorch
-  pr_number: 163097
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-163265
-  repo: pytorch/pytorch
-  pr_number: 163265
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
-  recorded_at: '2026-04-27'
-- pr_id: pr-pytorch-163380
-  repo: pytorch/pytorch
-  pr_number: 163380
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-163622
   repo: pytorch/pytorch
   pr_number: 163622
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-164941
   repo: pytorch/pytorch
   pr_number: 164941
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-170888
   repo: pytorch/pytorch
   pr_number: 170888
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-171497
   repo: pytorch/pytorch
   pr_number: 171497
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-171720
   repo: pytorch/pytorch
   pr_number: 171720
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-171816
   repo: pytorch/pytorch
   pr_number: 171816
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-pytorch-177142
   repo: pytorch/pytorch
   pr_number: 177142
-  stage: bootstrap-uncaptured
-  reason: ledger include row predates the audit-emission code path; awaiting reclassification via scripts/generate-pr-pages.py in a future round
+  stage: is-kernel-related
+  reason: no kernel signals
   recorded_at: '2026-04-27'
 - pr_id: pr-sglang-2693
   repo: sgl-project/sglang

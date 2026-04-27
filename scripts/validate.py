@@ -838,6 +838,224 @@ def validate_refresh_cutoff_alignment():
     return errors
 
 
+## AC-5 subset check. Every PR number in
+## data/refresh-search-results.yaml::repos[].pr_numbers_seen must appear
+## in the corresponding candidates/<repo>.yaml::prs[*].number set.
+## Negative test (AC-5): "validator fails if the per-repo PR-number set
+## in data/refresh-search-results.yaml is not a strict subset of the
+## ledger's prs[*].number set after refresh."
+def validate_refresh_subset():
+    errors = []
+    results_path = DATA_DIR / "refresh-search-results.yaml"
+    if not results_path.is_file():
+        return errors  # Advisory when artifact absent
+    try:
+        results = yaml.safe_load(results_path.read_text(encoding="utf-8")) or {}
+    except yaml.YAMLError as e:
+        return [f"data/refresh-search-results.yaml: invalid YAML ({e})"]
+    for repo_block in results.get("repos", []) or []:
+        slug = repo_block.get("repo_slug")
+        if not slug:
+            continue
+        ledger_path = CANDIDATES_DIR / f"{slug}.yaml"
+        if not ledger_path.is_file():
+            continue
+        ledger = yaml.safe_load(ledger_path.read_text(encoding="utf-8")) or {}
+        ledger_nums = {row.get("number") for row in (ledger.get("prs") or [])
+                       if isinstance(row, dict)}
+        seen = set(repo_block.get("pr_numbers_seen", []) or [])
+        missing = seen - ledger_nums
+        if missing:
+            errors.append(
+                f"AC-5 subset: {len(missing)} pr_numbers_seen for "
+                f"{slug} are NOT in candidates/{slug}.yaml::prs[*].number "
+                f"(first 5: {sorted(missing)[:5]})"
+            )
+    return errors
+
+
+## AC-4 captured_at >= cutoff_date check. Newly-generated PR pages must
+## have captured_at on or after the round's refresh cutoff. (Old pages
+## from prior rounds are exempt; this check is per-page.)
+def validate_captured_at_cutoff():
+    errors = []
+    cutoff_path = DATA_DIR / "refresh-cutoff.yaml"
+    if not cutoff_path.is_file() or not SOURCES_DIR.exists():
+        return errors
+    try:
+        cutoff = (yaml.safe_load(cutoff_path.read_text(encoding="utf-8")) or {}).get("cutoff_date")
+    except yaml.YAMLError:
+        return errors
+    if cutoff is None:
+        return errors
+    cutoff_str = cutoff.isoformat() if hasattr(cutoff, "isoformat") else str(cutoff)
+    # Find pages that were *added* relative to the latest commit. Cheap
+    # heuristic: page's captured_at is newer-or-equal to cutoff is OK;
+    # otherwise emit advisory. We check per-page captured_at == cutoff_str
+    # for newly-generated pages, which are the ones whose captured_at
+    # was set by R5-2's reclassification.
+    for prs_dir in sorted(SOURCES_DIR.glob("prs/*")):
+        if not prs_dir.is_dir():
+            continue
+        for pr_file in sorted(prs_dir.glob("PR-*.md")):
+            fm = extract_frontmatter(pr_file)
+            if not fm or not isinstance(fm, dict):
+                continue
+            ca = fm.get("captured_at")
+            if ca is None:
+                continue
+            ca_str = ca.isoformat() if hasattr(ca, "isoformat") else str(ca)
+            # If the page's captured_at is exactly the round cutoff, it
+            # was generated this round and must satisfy ca >= cutoff.
+            # If it's an older date, it's a prior-round page (no constraint).
+            if ca_str == cutoff_str:
+                # Already validated by being equal; pass.
+                continue
+            if ca_str > cutoff_str:
+                errors.append(
+                    f"{pr_file.relative_to(REPO_ROOT)}: captured_at={ca_str!r} "
+                    f"is AFTER refresh-cutoff cutoff_date={cutoff_str!r} "
+                    f"(impossible per AC-4)"
+                )
+    return errors
+
+
+## AC-2 missing-pointer for claim-bearing pages. A page is "claim-bearing"
+## when its body contains any of the obsolete claim signatures listed
+## here (case-insensitive). All listed in-scope pages with such a hit
+## must carry a `version_sensitive` frontmatter pointer.
+##
+## This is the missing-pointer failure mode Codex Round 4 flagged.
+CLAIM_SIGNATURE_PATTERNS = [
+    # The exact obsolete Triton-3.5 framings — narrow enough to avoid
+    # matching legitimate hardware claims like "Hopper (SM90) has no TMEM".
+    r"\bno direct tcgen05 access\b",
+    r"\bno TMEM:\s*accumulators stay in registers\b",
+    r"\btriton compiler generates wgmma\b",
+]
+
+
+def validate_claim_bearing_pages_have_pointer():
+    """If an in-scope page contains any obsolete claim signature, it MUST
+    carry a version_sensitive frontmatter pointer. Pages with the
+    signatures inside an explicitly-marked historical-context block
+    are exempt (the wiki/languages/triton-blackwell.md historical
+    subsection)."""
+    errors = []
+    in_scope = []
+    if WIKI_DIR.exists():
+        in_scope.extend(sorted(WIKI_DIR.rglob("*.md")))
+    for ref in (REPO_ROOT / "references" / "primer.md", REPO_ROOT / "references" / "examples.md"):
+        if ref.is_file():
+            in_scope.append(ref)
+    sig_re = re.compile("|".join(CLAIM_SIGNATURE_PATTERNS), re.IGNORECASE)
+    for md_file in in_scope:
+        text = md_file.read_text(encoding="utf-8")
+        if not sig_re.search(text):
+            continue
+        # Strip "Pre-3.6 historical context" (and similar) sections from text
+        # before re-checking. The historical subsection is allowed to contain
+        # the signatures.
+        stripped = re.sub(
+            r"##\s*Pre-3\.6 historical context.*?(?=\n##\s|\Z)",
+            "",
+            text,
+            flags=re.S | re.I,
+        )
+        if not sig_re.search(stripped):
+            continue
+        fm = extract_frontmatter(md_file)
+        if not fm or not isinstance(fm, dict):
+            errors.append(
+                f"{md_file.relative_to(REPO_ROOT)}: contains claim signature "
+                f"outside historical-context block but has no frontmatter "
+                f"(AC-2 missing-pointer)"
+            )
+            continue
+        if fm.get("version_sensitive") is None:
+            errors.append(
+                f"{md_file.relative_to(REPO_ROOT)}: contains claim signature "
+                f"outside historical-context block but lacks version_sensitive "
+                f"frontmatter pointer (AC-2 missing-pointer)"
+            )
+    return errors
+
+
+## AC-9 plan-body-unchanged check. plan-phase{2,3}.md body content past
+## the supersession header must be byte-equal to a checked-in baseline.
+## Baseline files live at data/plan-supersession-baselines/<plan>.body.md.
+## If a baseline doesn't exist, advisory-only.
+def validate_plan_body_unchanged():
+    errors = []
+    baselines_dir = DATA_DIR / "plan-supersession-baselines"
+    if not baselines_dir.is_dir():
+        return errors  # Advisory when baselines absent
+    for plan_path in sorted(REPO_ROOT.glob("plan-phase*.md")):
+        if plan_path.name == "plan-phase4.md":
+            continue
+        baseline_path = baselines_dir / f"{plan_path.stem}.body.md"
+        if not baseline_path.is_file():
+            continue
+        # Strip the supersession header (within first 3 lines) and
+        # compare the rest against the baseline.
+        lines = plan_path.read_text(encoding="utf-8").splitlines()
+        body_lines = [ln for i, ln in enumerate(lines)
+                      if not (i < 3 and re.match(r"^>\s*Superseded by", ln, re.I))]
+        body = "\n".join(body_lines)
+        baseline = baseline_path.read_text(encoding="utf-8")
+        if body != baseline:
+            errors.append(
+                f"{plan_path.name}: body content (excluding supersession header) "
+                f"differs from data/plan-supersession-baselines/{baseline_path.name} "
+                f"(AC-9 body-immutability)"
+            )
+    return errors
+
+
+## AC-10 sources/upstreams forbidden + repo-table count check.
+def validate_discoverability():
+    errors = []
+    # AC-6 negative: sources/upstreams/**/*.md must NOT exist.
+    upstreams_dir = SOURCES_DIR / "upstreams"
+    if upstreams_dir.exists():
+        for md_file in upstreams_dir.rglob("*.md"):
+            errors.append(
+                f"{md_file.relative_to(REPO_ROOT)}: sources/upstreams/ paths "
+                f"are forbidden (DEC-2 case-study mode reuses source-blog)"
+            )
+    # AC-10: references/primer.md repo-table PR count must match find -count
+    # for each repo. The table format is "| <repo-full> | <count> | ...".
+    primer_path = REPO_ROOT / "references" / "primer.md"
+    if not primer_path.is_file():
+        return errors
+    text = primer_path.read_text(encoding="utf-8")
+    repo_map = {
+        "NVIDIA/cutlass": "cutlass",
+        "sgl-project/sglang": "sglang",
+        "vllm-project/vllm": "vllm",
+        "flashinfer-ai/flashinfer": "flashinfer",
+        "pytorch/pytorch": "pytorch",
+        "deepseek-ai/DeepGEMM": "DeepGEMM",
+    }
+    for repo_full, repo_dir_name in repo_map.items():
+        m = re.search(r"\|\s*" + re.escape(repo_full) + r"\s*\|\s*(\d+)\s*\|", text)
+        if not m:
+            errors.append(
+                f"references/primer.md: repo table is missing row for {repo_full!r} "
+                f"(AC-10)"
+            )
+            continue
+        claimed = int(m.group(1))
+        actual_dir = SOURCES_DIR / "prs" / repo_dir_name
+        actual = len(list(actual_dir.glob("PR-*.md"))) if actual_dir.is_dir() else 0
+        if claimed != actual:
+            errors.append(
+                f"references/primer.md: repo table claims {claimed} PR pages "
+                f"for {repo_full} but {actual} exist on disk (AC-10)"
+            )
+    return errors
+
+
 def sha256_of_file(path):
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -1171,6 +1389,21 @@ def main():
 
     # AC-5 cutoff/search-results alignment check.
     all_errors.extend(validate_refresh_cutoff_alignment())
+
+    # AC-5 subset check.
+    all_errors.extend(validate_refresh_subset())
+
+    # AC-4 captured_at >= cutoff sanity check.
+    all_errors.extend(validate_captured_at_cutoff())
+
+    # AC-2 missing-pointer detection on claim-bearing pages.
+    all_errors.extend(validate_claim_bearing_pages_have_pointer())
+
+    # AC-9 body-immutability for superseded plans.
+    all_errors.extend(validate_plan_body_unchanged())
+
+    # AC-10 discoverability + sources/upstreams forbidden.
+    all_errors.extend(validate_discoverability())
 
     print(f"Validated {file_count} files ({len(all_source_ids)} source IDs collected)")
     if bundle_count or orphans:

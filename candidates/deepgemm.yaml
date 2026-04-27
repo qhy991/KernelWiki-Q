@@ -11,10 +11,10 @@ keywords_used:
 - fp8
 - moe
 - block_scale
-total_candidates: 7
+total_candidates: 28
 included: 1
 excluded: 5
-deferred: 1
+deferred: 22
 prs:
 - number: 316
   title: Add various optimizations and Mega MoE benchmarks
@@ -57,4 +57,130 @@ prs:
   date: '2026-02-03'
   decision: exclude
   reason: SM100 MQA bugfix superseded by later releases
+  files_changed: []
+- number: 19
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 49
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 68
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 74
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 81
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 95
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 103
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 112
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 113
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 115
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 157
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 158
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 163
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 164
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 169
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 174
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 198
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 203
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 226
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 227
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 233
+  title: ''
+  date: '2026-04-24'
+  decision: defer
+  reason: from refresh search; needs-triage
   files_changed: []

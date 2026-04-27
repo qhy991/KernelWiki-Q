@@ -25,10 +25,10 @@ keywords_used:
 - gemm
 - triton+blackwell
 - fp8+kernel
-total_candidates: 144
+total_candidates: 194
 included: 80
 excluded: 29
-deferred: 35
+deferred: 85
 prs:
 - number: 180470
   title: '[release 2.12] Apply Release only changes to 2.12 branch'
@@ -893,4 +893,304 @@ prs:
   date: '2025-01-05'
   decision: include
   reason: 'matched: inductor'
+  files_changed: []
+- number: 36
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 558
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 903
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1290
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 1935
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2826
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2893
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 2949
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3063
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 3725
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 4151
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 4471
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 5048
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 7597
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 37625
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 39283
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 46408
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 53813
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 60731
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 63836
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 65029
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 81753
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 114309
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 114837
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 115667
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 116518
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 116666
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 119003
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 122139
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 122967
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 128539
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 129499
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 130788
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 130854
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 133595
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 135561
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 135869
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 136536
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 136885
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 138587
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 180600
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 180687
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 180690
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 180691
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 180692
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 180815
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 180903
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 180934
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 181287
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
+  files_changed: []
+- number: 181298
+  title: ''
+  date: '2026-04-26'
+  decision: defer
+  reason: from refresh search; needs-triage
   files_changed: []

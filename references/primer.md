@@ -108,8 +108,8 @@ All page IDs below resolve via `get_page.py <id>`. All paths are relative to the
 | NVIDIA/cutlass | 32 | `candidates/cutlass.yaml` |
 | sgl-project/sglang | 105 | `candidates/sglang.yaml` |
 | vllm-project/vllm | 126 | `candidates/vllm.yaml` |
-| flashinfer-ai/flashinfer | 126 | `candidates/flashinfer.yaml` |
-| pytorch/pytorch | 71 | `candidates/pytorch.yaml` |
+| flashinfer-ai/flashinfer | 583 | `candidates/flashinfer.yaml` |
+| pytorch/pytorch | 85 | `candidates/pytorch.yaml` |
 | deepseek-ai/DeepGEMM | 1 | `candidates/deepgemm.yaml` |
 
 Query by repo: `python3 scripts/query.py --repo <name>`.

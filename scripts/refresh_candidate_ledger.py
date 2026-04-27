@@ -101,17 +101,46 @@ def gh_search_prs(repo_full, keywords, cutoff_date, per_keyword_limit=30,
 
 
 def update_ledger(ledger_path, cutoff_date, search_results):
-    """Update a candidates/<repo>.yaml file to set searched_at == cutoff_date.
-    PR rows from the search are NOT auto-merged into the ledger (that requires
-    decision triage). The script only refreshes the timestamp + records the
-    raw search results in data/refresh-search-results.yaml for audit.
+    """Update a candidates/<repo>.yaml file to set searched_at == cutoff_date
+    AND merge new PR numbers from search_results into the ledger as
+    `decision: defer` rows. Existing rows are not touched.
+
+    AC-5 negative test requires every `pr_numbers_seen` entry to appear in
+    the ledger's `prs[*].number` set after refresh. New entries land as
+    `decision: defer` to make later triage explicit.
     """
     data = yaml.safe_load(ledger_path.read_text(encoding="utf-8"))
     if not isinstance(data, dict):
         return
     data["searched_at"] = cutoff_date.isoformat()
+    existing_nums = {row.get("number") for row in (data.get("prs") or [])
+                     if isinstance(row, dict)}
+    new_rows = []
+    for hit in search_results:
+        num = hit["number"]
+        if num in existing_nums:
+            continue
+        new_rows.append({
+            "number": num,
+            "title": hit.get("title", ""),
+            "date": hit.get("closedAt", ""),
+            "decision": "defer",
+            "reason": "from refresh search; needs-triage",
+            "files_changed": [],
+        })
+    if new_rows:
+        data["prs"] = (data.get("prs") or []) + new_rows
+        # Update top-level summary counts
+        new_inc = sum(1 for r in data["prs"] if str(r.get("decision","")).lower() == "include")
+        new_exc = sum(1 for r in data["prs"] if str(r.get("decision","")).lower() == "exclude")
+        new_def = sum(1 for r in data["prs"] if str(r.get("decision","")).lower() == "defer")
+        data["total_candidates"] = new_inc + new_exc + new_def
+        data["included"] = new_inc
+        data["excluded"] = new_exc
+        data["deferred"] = new_def
     out = yaml.safe_dump(data, sort_keys=False, default_flow_style=False, width=200, allow_unicode=True)
     ledger_path.write_text(out, encoding="utf-8")
+    return len(new_rows)
 
 
 def write_cutoff(cutoff_date):
@@ -185,7 +214,9 @@ def main():
         per_repo[slug] = rows
         print(f"    -> {len(rows)} merged PRs found within cutoff window")
         if not args.dry_run:
-            update_ledger(ledger_path, cutoff_date, rows)
+            added = update_ledger(ledger_path, cutoff_date, rows)
+            if added:
+                print(f"    -> +{added} new defer-rows merged into ledger")
 
     if args.dry_run:
         print("\nDry-run mode; no files written.")
