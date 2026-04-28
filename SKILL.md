@@ -2,12 +2,14 @@
 name: KernelWiki
 description: Use when the user asks about optimizing NVIDIA Blackwell (SM100, B200) or Hopper (SM90, H100) GPU kernels — tcgen05/TMEM/CLC/NVFP4/2-SM cooperative, warp specialization, FlashAttention-4, DeepGEMM, FlashMLA, MoE, grouped GEMM, CuTe-DSL/PTX/Triton on Blackwell, or wants concrete PR references from CUTLASS/SGLang/vLLM/FlashInfer/PyTorch. Do NOT use for generic CUDA Q&A that is not Blackwell/Hopper-specific, host-side framework integration, or distributed systems (DeepEP/EPLB/DualPipe).
 argument-hint: "[natural-language-question] | [--tag foo --type kernel] | [page-id]"
-allowed-tools: "Bash,Read,Grep,Glob"
+allowed-tools: "Bash Read Grep Glob"
 ---
 
 # KernelWiki — Blackwell & Hopper Kernel Optimization Wiki
 
-Query a structured, cross-referenced knowledge base of GPU kernel optimization for NVIDIA Blackwell (SM100) and Hopper (SM90) — 460+ merged PRs, 48 wiki synthesis pages, 7 competitions, 20 blogs, 10 doc summaries.
+> **Knowledge cutoff: 2026-04-27.** All upstream PR data, blog summaries, and version-claim entries reflect upstream state on or before this date (per `data/refresh-cutoff.yaml`). Re-run the refresh tooling to advance the cutoff.
+
+Query a structured, cross-referenced knowledge base of GPU kernel optimization for NVIDIA Blackwell (SM100) and Hopper (SM90) — 2179 merged PRs, 48 wiki synthesis pages, 7 competitions, 20 blogs, 11 doc summaries.
 
 ## When To Use This Skill
 
@@ -71,7 +73,7 @@ Auto-generated under `queries/`:
 - `queries/by-hardware-feature.md` — tcgen05/tmem/clc/tma/nvfp4/etc. → related wiki + PR pages
 - `queries/by-kernel-type.md` — gemm/attention/moe/mla/gated-delta-net → pages
 - `queries/by-language.md` — cute-dsl/cuda-cpp/ptx/triton → guide page + related kernels/sources
-- `queries/by-repo.md` — all 460 PRs across cutlass/sglang/vllm/flashinfer/pytorch
+- `queries/by-repo.md` — all 2179 PRs across cutlass/sglang/vllm/flashinfer/pytorch/DeepGEMM
 
 ### Path 5: Primer, schema, examples
 
@@ -91,14 +93,18 @@ When answering from this KB:
 4. **Include code snippets** from wiki pages when they exist — technique/kernel/language pages are guaranteed `snippet`-reproducibility (validator-enforced).
 5. **Report performance claims with all six fields** — `gpu`, `dtype`, `shape`, `metric`, `value`, `source_id`.
 
-## Knowledge Base Contents (as of 2026-04-17)
+## Knowledge Base Contents (knowledge cutoff: 2026-04-27)
 
-- **545 total markdown pages** — 460 PR references + 48 wiki synthesis + 20 blogs + 10 docs + 7 contests
-- **5 candidate ledgers** in `candidates/` — 3,928 merged PRs classified (include/defer/exclude) Jan 2025 – Apr 2026
+- **2265 total markdown pages** — 2179 PR references + 48 wiki synthesis + 20 blogs + 11 docs + 7 contests
+- **6 candidate ledgers** in `candidates/` — 4,222 merged PRs classified (include/defer/exclude) Jan 2025 – Apr 2026
+- **89 verbatim/extracted/derived asset bundles** in `artifacts/` (PR diffs, kernel files, blog code) — pinned to upstream SHAs via `PROVENANCE.yaml`
 - **6 auto-generated query indices** in `queries/`
 - **Controlled vocabulary** (80+ tags) in `data/tags.yaml`, alias map in `data/aliases.yaml`
-- **Validator** `scripts/validate.py` — 545 files / 0 errors / 1,642 links / 0 broken
+- **Hybrid version-claim registry** — per-page `version_sensitive: <id>` pointers + `data/version-claims.yaml` central registry, validated for bidirectional consistency
+- **Validator** `scripts/validate.py` — 2265 files / 89 bundles / 6 ledgers / 0 errors
 - **Blackwell-first** — SM90 pages only appear when they carry explicit `blackwell_relevance`
+
+The knowledge cutoff date is the last day on which upstream PRs / blog snapshots were refreshed. To advance it: run `scripts/refresh_candidate_ledger.py`, regenerate PR pages, then bump `data/refresh-cutoff.yaml::cutoff_date`.
 
 ## Quality Guarantees
 
