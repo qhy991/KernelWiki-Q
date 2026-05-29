@@ -196,12 +196,8 @@ def should_skip(entry):
     ctx = entry.get("context", {})
     backend = ctx.get("backend", "")
 
-    if backend.lower() in ("metal",):
+    if backend.lower() == "metal":
         return True, "metal backend"
-
-    valid_backends = {"cuda"}
-    if backend.lower() not in valid_backends:
-        return True, f"non-cuda backend: {backend}"
 
     quality = entry.get("quality_flag", "")
     if quality == "low":
@@ -376,7 +372,7 @@ def main():
     if args.scope in ("p1", "all"):
         lib_dir = source_root / "library_experiences"
         if lib_dir.exists():
-            for subdir_name in ("optimization", "implementation", "repair"):
+            for subdir_name in ("optimization", "implementation", "repair", "analysis"):
                 subdir = lib_dir / subdir_name
                 if subdir.exists():
                     loaded = load_experiences_from_dir(subdir)
