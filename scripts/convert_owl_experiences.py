@@ -23,6 +23,20 @@ KERNEL_TYPE_MAP = {
     "ReLU": ["relu"], "relu": ["relu"],
     "RMSNorm": ["rmsnorm"], "rmsnorm": ["rmsnorm"],
     "Conv2d": ["conv2d"], "conv2d": ["conv2d"],
+    "dequant": ["dequantization"], "dequantize": ["dequantization"],
+    "elementwise": ["elementwise"],
+    "activation": ["activation"],
+    "scan": ["scan"],
+    "copy": ["copy"],
+    "rotary": ["rotary-embedding"],
+    "transpose": ["transpose"],
+    "convolution": ["convolution"],
+    "embedding": ["embedding"],
+    "gemv": ["gemv"],
+    "quant": ["quantization"], "quantize": ["quantization"], "quantization": ["quantization"],
+    "sampling": ["sampling"],
+    "allreduce": ["allreduce"],
+    "gather": ["gather-scatter"], "scatter": ["gather-scatter"],
 }
 
 IMPL_FAMILY_MAP = {
@@ -338,8 +352,8 @@ def main():
                        help="Path to KernelOwl knowledge/ directory")
     parser.add_argument("--output", required=True,
                        help="Path to KernelWiki sources/experiences/ directory")
-    parser.add_argument("--scope", choices=["p0", "p1", "all"], default="all",
-                       help="Conversion scope: p0 (curated_datasets), p1 (library_experiences CUDA), all")
+    parser.add_argument("--scope", choices=["p0", "p1", "p2", "all"], default="all",
+                       help="Conversion scope: p0 (curated), p1 (library), p2 (kerneldataset), all")
     parser.add_argument("--dry-run", action="store_true",
                        help="Show what would be converted without writing files")
     args = parser.parse_args()
@@ -378,6 +392,14 @@ def main():
                     loaded = load_experiences_from_dir(subdir)
                     print(f"Loaded {len(loaded)} entries from library_experiences/{subdir_name}/")
                     entries.extend(loaded)
+
+    if args.scope in ("p2", "all"):
+        for kd_name in ("kerneldataset_imports", "kerneldataset_llm_v2", "kerneldataset_llm"):
+            kd_dir = source_root / kd_name
+            if kd_dir.exists():
+                loaded = load_experiences_from_dir(kd_dir)
+                print(f"Loaded {len(loaded)} entries from {kd_name}/")
+                entries.extend(loaded)
 
     seen_ids = set()
     converted = 0

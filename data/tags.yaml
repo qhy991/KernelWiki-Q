@@ -80,6 +80,18 @@ kernel_types:
   - relu
   - rmsnorm
   - conv2d
+  - dequantization
+  - elementwise
+  - activation
+  - scan
+  - copy
+  - rotary-embedding
+  - transpose
+  - convolution
+  - embedding
+  - sampling
+  - allreduce
+  - gather-scatter
 
 languages:
   - cuda-cpp
