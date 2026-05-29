@@ -111,7 +111,7 @@ performance_claims:
 
 ## Scope Rules
 
-- **Blackwell-first**: SM100 content is primary. SM90 only with explicit `blackwell_relevance`.
+- **Blackwell-first**: SM100 content is primary. SM90/SM89/SM80 supported for cross-architecture experience data.
 - **Kernel-only**: No distributed system topics (DeepEP, DualPipe, EPLB excluded).
 - **English canonical**: All content in English.
 - **First-class DSLs**: CuTe DSL, CUDA C++, PTX, Triton. Others mentioned but no dedicated pages.

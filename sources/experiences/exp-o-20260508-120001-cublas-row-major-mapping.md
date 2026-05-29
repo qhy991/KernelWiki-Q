@@ -1,6 +1,6 @@
 ---
 id: exp-o-20260508-120001-cublas-row-major-mapping
-title: exp-o-20260508-120001-cublas-row-major-mapping
+title: SOL-ExecBench defines GEMM as C[M,N] = A[M,K] @ B[N,K].T with row-major inputs
 experience_type: optimization
 source_category: agent-experiment
 architectures:
@@ -19,6 +19,10 @@ techniques:
 - fine-grained-quantization
 impl_family: cublas
 ---
+
+## Challenge
+
+SOL-ExecBench defines GEMM as C[M,N] = A[M,K] @ B[N,K].T with row-major inputs. cuBLAS expects column-major layout. Incorrect parameter mapping is a primary source of correctness failures.
 
 ## Key Lessons
 

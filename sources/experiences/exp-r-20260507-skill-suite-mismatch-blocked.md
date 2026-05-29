@@ -28,6 +28,11 @@ R2 tasks across the batch hit a skill/suite mismatch blocker: the action policy 
 - `The session_memory contains 'Loaded skill guide for kerneleval-baseline-loop' but the action policy uses sol-execbench-solution-loop`
 - `This creates a contradiction in the skill layer`
 
+## Challenge
+
+All R2 tasks in the batch show the same blocker: 'Skill 'sol-execbench-solution-loop' is incompatible with the current structured task contract. Skill is declared for suites ['sol_execbench'], but current task is bound to suite `kerneleval`.' This error appears in the last_step_error field and prevents R2 from making progress.
+
+
 ## Solution
 
 The skill loaded in session memory (kerneleval-baseline-loop) must match the skill used by the action policy. When R2 starts, if the action policy loads a sol_execbench skill instead of kerneleval skill, the task cannot proceed.

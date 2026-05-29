@@ -77,6 +77,24 @@ sm90:
   - H800
   - "SM90"
 
+sm89:
+  - "Ada Lovelace"
+  - ada
+  - "RTX 4090"
+  - "RTX 4080"
+  - L40
+  - L40S
+  - "SM89"
+
+sm80:
+  - Ampere
+  - ampere
+  - A100
+  - A800
+  - A30
+  - A6000
+  - "SM80"
+
 # Kernel types
 moe:
   - MoE

@@ -23,6 +23,11 @@ DPS mode main.cpp creates contiguous copy of output C, writes to copy, but fails
 - `correctness 检查失败：C 全为零或未修改`
 - `copy-back 条件判断不正确`
 
+## Challenge
+
+DPS=true 模式下，main.cpp 对输出 tensor C 调用 `.contiguous()` 创建了 C_c 拷贝，然后将 C_c.data_ptr() 传给 kernel。Kernel 写入 C_c 的内存，但 C_c 是独立的 tensor，修改不会反映到原始的 C。之后的 copy-back 逻辑 `if (!C.is_contiguous()) C.copy_(C_c)` 也有问题：当 C 本身就是 contiguous 时，这个分支不会执行，导致输出永远为 0。
+
+
 ## Solution
 
 DPS=true 模式下，SOL-ExecBench 框架保证传入的输出 C 已经是 contiguous 且预分配好的。直接对 C.data_ptr() 操作即可，不需要创建拷贝。不要对输出 tensor 调用 `.contiguous()`。

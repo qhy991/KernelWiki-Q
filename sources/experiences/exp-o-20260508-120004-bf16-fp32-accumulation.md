@@ -1,6 +1,6 @@
 ---
 id: exp-o-20260508-120004-bf16-fp32-accumulation
-title: exp-o-20260508-120004-bf16-fp32-accumulation
+title: Which compute type should be used for BF16 GEMM — CUDA_R_16BF or CUDA_R_32F?
 experience_type: optimization
 source_category: agent-experiment
 architectures:
@@ -16,6 +16,10 @@ confidence: inferred
 reproducibility: concept
 impl_family: cublas
 ---
+
+## Challenge
+
+Which compute type should be used for BF16 GEMM — CUDA_R_16BF or CUDA_R_32F?
 
 ## Key Lessons
 

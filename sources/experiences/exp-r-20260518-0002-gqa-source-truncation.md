@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GQA paged decode: source code truncation causes syntax errors after sol_execbench_update_sources
-
 ## Key Lessons
 
 - Always verify source content integrity after sol_execbench_update_sources — read back function signatures and kernel launch calls

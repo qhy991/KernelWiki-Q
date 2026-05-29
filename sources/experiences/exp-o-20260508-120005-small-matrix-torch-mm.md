@@ -1,6 +1,6 @@
 ---
 id: exp-o-20260508-120005-small-matrix-torch-mm
-title: exp-o-20260508-120005-small-matrix-torch-mm
+title: Small matrix GEMM (m<=50 or n<=256) has 15.8% pass rate with cuBLAS
 experience_type: optimization
 source_category: agent-experiment
 architectures:
@@ -19,6 +19,10 @@ techniques:
 - fine-grained-quantization
 impl_family: pytorch
 ---
+
+## Challenge
+
+Small matrix GEMM (m<=50 or n<=256) has 15.8% pass rate with cuBLAS. Row/column-major parameter mapping errors are especially common for small dimensions. Is there a simpler alternative?
 
 ## Key Lessons
 

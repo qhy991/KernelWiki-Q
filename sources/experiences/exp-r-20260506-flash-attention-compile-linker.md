@@ -26,6 +26,11 @@ LLM generates kernel code with conflicting __global__ and extern C wrapper using
 - `Kernel source contains conflicting linkage: __global__ and extern C wrapper with same function name`
 - `nvcc compilation succeeds but linking with the test harness fails`
 
+## Challenge
+
+Generated kernel code contains both __global__ void flash_attn_kernel(...) and extern C wrapper with same function name. The linker cannot resolve because the CUDA kernel symbol and the host wrapper symbol conflict. Observed in FA_09 and multiple other FA tasks.
+
+
 ## Solution
 
 Use distinct names for the CUDA kernel and the C-linkage wrapper. The kernel should be __global__ with a descriptive name (e.g., flash_attn_cuda_kernel), and the exported function should be a host-callable wrapper in extern C that launches the kernel.

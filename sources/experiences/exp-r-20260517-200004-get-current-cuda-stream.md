@@ -17,8 +17,6 @@ reproducibility: concept
 impl_family: custom_cuda
 ---
 
-getCurrentCUDAStream is not a member of at::cuda
-
 ## Key Lessons
 
 - Prefer getting the CUDA stream inside kernel.cu, not main.cpp — this keeps main.cpp CUDA-free and avoids API version issues.

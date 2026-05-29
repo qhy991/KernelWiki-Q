@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GQA paged decode: wrong CUDA stream API (c10 vs at) and missing cuda_runtime.h
-
 ## Key Lessons
 
 - Use at::cuda::getCurrentCUDAStream() — the public PyTorch CUDA API

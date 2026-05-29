@@ -17,8 +17,6 @@ reproducibility: concept
 impl_family: custom_cuda
 ---
 
-SOL-ExecBench workflow: solution.json is canonical, not loose files
-
 ## Key Lessons
 
 - SOL-ExecBench sources live in solution.json['sources'] as [{"path": "...", "content": "..."}, ...], not as loose files on disk.

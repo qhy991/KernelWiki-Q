@@ -17,7 +17,10 @@ reproducibility: concept
 impl_family: custom_cuda
 ---
 
-SOL-ExecBench cuda_cpp solution.json and source file template
+## Challenge
+
+Creating a correct solution.json with cuda_cpp language specification and valid source file structure.
+
 
 ## Solution
 

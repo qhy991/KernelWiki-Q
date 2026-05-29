@@ -17,8 +17,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-DPS signature mismatch - non-void run() vs void run() with trailing output parameters
-
 ## Key Lessons
 
 - DPS=true requires void run(*inputs, *outputs) with output tensors as trailing parameters mutated in-place

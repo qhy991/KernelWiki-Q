@@ -25,6 +25,11 @@ SOL-ExecBench sandbox_execute always fails with 'attempt_dir not bound' even aft
 - `错误信息: 'Canonical verification requires an active attempt_dir. Bind the current assignment before running or recording verification.'`
 - `反复重试同一命令均失败，步数耗尽`
 
+## Challenge
+
+LLM 生成的代码通过了 sol_execbench_update_sources 的 static_gate 检查，但运行 sandbox_execute 执行 sol-execbench 验证时，始终报 'Canonical verification requires an active attempt_dir. Bind the current assignment before running or recording verification.'。这不是代码问题，而是框架编排层面的 bug：task binding 没有在验证前正确传递到 sandbox_execute 环境。
+
+
 ## Solution
 
 这是框架编排层的 bug，不是 LLM 可以通过修改代码解决的问题。需要在调度层修复 attempt_dir 的绑定传递。

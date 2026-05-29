@@ -26,6 +26,11 @@ Defining a function named 'run()' in kernel.cu conflicts with main.cpp's framewo
 - `Error appears when linking kernel.o and main.o together`
 - `kernel.cu defines a function with same name as one in main.cpp`
 
+## Challenge
+
+SOL-ExecBench links kernel.cu and main.cpp into a single binary. If kernel.cu defines a function named 'run()' (a common generic name), it collides with main.cpp's framework-provided run() function at link time, producing 'multiple definition of `run(...)` errors.
+
+
 ## Solution
 
 Use a unique, descriptive function name in kernel.cu that matches the declaration in kernel.h. Standard naming patterns for SOL-ExecBench:

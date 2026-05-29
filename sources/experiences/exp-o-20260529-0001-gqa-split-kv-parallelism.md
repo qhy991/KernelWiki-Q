@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GQA paged decode: split-KV parallelism is mandatory for competitive performance
-
 ## Challenge
 
 A single-warp (32 threads) GQA kernel that sequentially iterates over all KV tokens hangs on large workloads (batch=64, 55K+ pages). The kernel compiles and produces correct results on tiny inputs, but the O(seq_len) per-thread work makes it 10-100x slower than the FlashInfer reference baseline.

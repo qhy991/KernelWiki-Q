@@ -1,6 +1,7 @@
 ---
 id: exp-o-20260508-160201-benchmark-timing-hygiene
-title: exp-o-20260508-160201-benchmark-timing-hygiene
+title: Speedup values are unstable or suspiciously high due to inconsistent benchmark
+  t
 experience_type: optimization
 source_category: agent-experiment
 architectures:
@@ -16,6 +17,10 @@ confidence: inferred
 reproducibility: concept
 impl_family: all
 ---
+
+## Challenge
+
+Speedup values are unstable or suspiciously high due to inconsistent benchmark timing protocol.
 
 ## Key Lessons
 

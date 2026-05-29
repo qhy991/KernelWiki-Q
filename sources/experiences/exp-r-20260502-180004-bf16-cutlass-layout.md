@@ -26,6 +26,11 @@ CUTLASS GEMM layout mismatch: definition B shape is [N,K] row-major (B.T stored)
 - `NMSE 远超容差阈值`
 - `CUTLASS Gemm 使用 LayoutInputB = ColumnMajor 但 B 实际存储为 RowMajor [N,K]`
 
+## Challenge
+
+SOL-ExecBench 的 BF16 GEMM 定义为 C = A @ B.T，其中 A=[M,K] row-major, B=[N,K] row-major（已经是 B.T 的物理存储）。LLM 生成的 CUTLASS 代码将 B 声明为 ColumnMajor layout，导致 CUTLASS 按列优先解读 B 的内存，实际计算变成了 A @ B（而非 A @ B.T），结果完全错误。
+
+
 ## Solution
 
 SOL-ExecBench GEMM 定义中 B shape 为 [N,K] row-major，物理存储就是 row-major。要计算 C = A @ B.T，CUTLASS 的 layout 应该都设为 RowMajor，因为 A[M,K] row-major 和 B[N,K] row-major 在 CUTLASS RowMajor 下自动处理 A * B^T（B 的 leading dim 为 K，CUTLASS 会自动转置）。

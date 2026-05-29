@@ -20,6 +20,10 @@ techniques:
 impl_family: cublaslt
 ---
 
+## Challenge
+
+Calling cublasLtMatmulSearch() results in 'identifier is undefined' errors. cuBLASLt API requires complex descriptor setup and is error-prone.
+
 ## Key Lessons
 
 - Never use cublasLt for SOL-ExecBench GEMM — use cublasGemmEx instead.

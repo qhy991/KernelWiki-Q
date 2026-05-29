@@ -27,6 +27,11 @@ When cuBLAS cublasGemmEx achieves speedup > 0.99x, the cublasGemmEx path is exha
 - `But with proper config (8 candidates, per-M cache, FAST_16F) → 0.9999x achievable`
 - `Wasted time comes from wrong cublasLt configuration, not from choosing cublasLt`
 
+## Challenge
+
+After achieving 0.995x speedup with cublasGemmEx, further rounds using cublasLt with 1 heuristic candidate and no per-M caching failed to improve. However, a parallel experiment showed that cublasLt with CUBLAS_COMPUTE_32F_FAST_16F + 8 heuristic candidates + per-M algo caching reached 0.9999x. The key is NOT to stop optimizing, but to use the right cublasLt configuration.
+
+
 ## Solution
 
 Decision rule for GEMM optimization when cublasGemmEx speedup >= 0.99x:

@@ -17,8 +17,6 @@ confidence: experimental
 reproducibility: concept
 ---
 
-Agent retries sol-execbench verification 30+ times after timeout without modifying kernel
-
 ## Key Lessons
 
 - 2 consecutive sol-execbench timeouts = kernel hangs, not infrastructure issue. STOP retrying and FIX the kernel.

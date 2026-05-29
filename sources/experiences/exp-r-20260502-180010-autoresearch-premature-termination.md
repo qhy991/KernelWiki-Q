@@ -27,6 +27,11 @@ AutoResearch session terminates immediately after bootstrap skeleton is written,
 - `session_state_v2.status=running 但实际已停止`
 - `experience_pipeline: captured=0, triaged=0`
 
+## Challenge
+
+AutoResearch 会话 autoresearch_20260430_210217_eeaf814d 在创建后仅存活 2 秒（21:02:17 → 21:02:19）就结束了。session_state_v2.json 显示 status=running 但 rounds_completed=0，session_messages.jsonl 为空（0 行），没有任何 LLM 交互发生。骨架 solution.json 被预写好但内容全是 TODO 占位符，没有实际 kernel 实现。experience_pipeline 显示 captured=0, triaged=0, reviewed=0。
+
+
 ## Solution
 
 这是一个 AutoResearch 会话初始化/调度层面的问题，不是 kernel 实现问题。会话在调度阶段就被异常终止了，LLM agent 从未获得执行机会。

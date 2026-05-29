@@ -79,6 +79,10 @@ def infer_architecture(entry):
         return ["sm100"]
     if "sm120" in text or "sm_120" in text:
         return ["sm120"]
+    if "sm89" in text or "sm_89" in text or "4090" in text or "ada" in text or "l40" in text:
+        return ["sm89"]
+    if "sm80" in text or "sm_80" in text or "a100" in text or "a800" in text or "ampere" in text:
+        return ["sm80"]
     return ["sm90"]
 
 

@@ -25,6 +25,11 @@ Proven cublasLt configuration for FP16 GEMM that achieved 0.9999x speedup vs PyT
 - `cublasLt with 1 heuristic candidate matches but doesn't beat GemmEx`
 - `Need per-workload optimization since M is variable (15 to 8192)`
 
+## Challenge
+
+FP16 GEMM (C=A@B.T, A[M,K], B[N,K], C[M,N], N=K=4096, M variable) optimization against PyTorch torch.matmul baseline. cuBLAS cublasGemmEx reaches ~0.995x but cublasLt with naive config (1 candidate) gives same or worse results. Need the right cublasLt configuration to close the gap.
+
+
 ## Solution
 
 Reference implementation (verified 0.9999x on A800 80GB PCIe):

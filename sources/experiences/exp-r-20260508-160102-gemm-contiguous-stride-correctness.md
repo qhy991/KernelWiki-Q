@@ -1,6 +1,6 @@
 ---
 id: exp-r-20260508-160102-gemm-contiguous-stride-correctness
-title: exp-r-20260508-160102-gemm-contiguous-stride-correctness
+title: Correctness failures occur when non-contiguous tensors are passed to GEMM kernel
 experience_type: repair
 source_category: agent-experiment
 architectures:
@@ -19,6 +19,10 @@ techniques:
 - fine-grained-quantization
 impl_family: cublas,torch
 ---
+
+## Challenge
+
+Correctness failures occur when non-contiguous tensors are passed to GEMM kernels that assume contiguous row-major buffers.
 
 ## Key Lessons
 

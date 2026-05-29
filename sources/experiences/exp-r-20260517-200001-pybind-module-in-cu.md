@@ -20,8 +20,6 @@ techniques:
 impl_family: custom_cuda
 ---
 
-PYBIND11_MODULE placed in .cu file instead of .cpp wrapper
-
 ## Key Lessons
 
 - PYBIND11_MODULE(TORCH_EXTENSION_NAME, m) must be in a .cpp file, never in a .cu file.

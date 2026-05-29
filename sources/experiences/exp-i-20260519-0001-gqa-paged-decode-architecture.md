@@ -17,8 +17,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GQA paged decode attention: architecture, kernel design, and correct run() signature
-
 ## Challenge
 
 Implement a GQA paged decode attention kernel for FlashInfer-Bench from the TODO template. The kernel must compile with nvcc/g++, pass correctness validation, and produce correct output tensors.

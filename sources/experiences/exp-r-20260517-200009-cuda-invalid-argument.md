@@ -20,8 +20,6 @@ techniques:
 impl_family: custom_cuda
 ---
 
-CUDA invalid argument error in kernel launch
-
 ## Key Lessons
 
 - Guard against zero grid dimensions: if (grid == 0) grid = 1; or if (N == 0) return; early exit.

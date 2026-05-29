@@ -24,7 +24,10 @@ techniques:
 impl_family: custom_cuda
 ---
 
-INT8 GEMM kernel implementation template for SOL-ExecBench
+## Challenge
+
+Implementing INT8 GEMM with correct WMMA API usage, proper tile alignment, correct accumulator types, and valid quantization logic.
+
 
 ## Solution
 

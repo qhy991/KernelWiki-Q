@@ -29,6 +29,11 @@ INT8 GEMM cuBLAS cublasGemmEx correctness failure: row-major to column-major map
 - `max_absolute_error 极大`
 - `cuBLAS 返回 CUBLAS_STATUS_SUCCESS 但结果错误`
 
+## Challenge
+
+SOL-ExecBench PI-int8 GEMM 任务的 reference 实现是 C = A @ B.T，其中 A[M,K] int8, B[N,K] int8, C[M,N] int32。多个实验使用 cuBLAS cublasGemmEx 实现了 INT8 GEMM，编译通过但 correctness 检查失败。根本原因是 row-major (PyTorch) 到 column-major (cuBLAS) 的映射不正确。cuBLAS 按列主序计算 C_col = alpha * op(A_col) * op(B_col) + beta * C_col，而问题定义是 row-major 的 C_row = A_row @ B_row.T。LLM 经常直接传入 A、B 指针但混淆了 m/n/k 参数和 transa/transb 标志。
+
+
 ## Solution
 
 SOL-ExecBench INT8 GEMM 定义为 C[M,N] = A[M,K] @ B.T[N,K]，其中所有 tensor 都是 row-major。正确映射到 cuBLAS column-major 的方法是利用等式 C_row^T = B_row * A_row^T，因此 cuBLAS 参数为：m=N, n=M, k=K, op(A)=CUBLAS_OP_N (B[N,K]), op(B)=CUBLAS_OP_N (A[M,K]), lda=K, ldb=K, ldc=N。但 C 是 row-major[M,N]，传给 cuBLAS 时当作 col-major[N,M]，所以 C 的内存布局实际匹配。

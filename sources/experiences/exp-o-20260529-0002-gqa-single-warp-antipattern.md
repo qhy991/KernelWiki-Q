@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GQA paged decode: single-warp (32 threads) kernel is a fatal anti-pattern
-
 ## Challenge
 
 Agent wrote a GQA kernel with blockDim=32 (one warp) that sequentially iterates all KV tokens per query head. The kernel loops: for each page in [kv_indptr[b], kv_indptr[b+1]): load K, compute QK dot product, track online softmax max/sum, accumulate V. With 55K pages per batch and head_dim=128, a single thread performs ~7 million FMA operations — far exceeding the 600s sol-execbench timeout.

@@ -21,7 +21,9 @@ techniques:
 - vectorized-loads
 ---
 
-Diagnose naive CUDA kernel characteristics when speedup << 0.1x
+## Challenge
+
+When a CUDA kernel passes compilation and correctness but achieves speedup < 0.1x, the issue is ALWAYS structural (memory hierarchy ignored), not algorithmic. Specific code patterns are diagnostic.
 
 ## Key Lessons
 

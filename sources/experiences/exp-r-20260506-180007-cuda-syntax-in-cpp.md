@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-CUDA syntax (__global__, <<<>>>) used in .cpp files compiled by g++/clang++
-
 ## Key Lessons
 
 - CUDA keywords (__global__, __device__, __shared__, blockIdx, threadIdx, <<<>>>) only work in .cu files compiled by nvcc

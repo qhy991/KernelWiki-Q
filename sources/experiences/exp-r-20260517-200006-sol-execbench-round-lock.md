@@ -17,8 +17,6 @@ reproducibility: concept
 impl_family: custom_cuda
 ---
 
-SOL-ExecBench round lock and skill contract mismatch errors
-
 ## Key Lessons
 
 - Round lock error = orchestrator has moved on. Call finish(success=false). Do NOT retry, inspect, or recover.

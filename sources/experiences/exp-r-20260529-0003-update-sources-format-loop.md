@@ -17,8 +17,6 @@ confidence: experimental
 reproducibility: concept
 ---
 
-Agent wastes 40+ steps calling sol_execbench_update_sources with wrong sources format
-
 ## Key Lessons
 
 - sol_execbench_update_sources(sources=...) expects flat dict {path: content}, NOT array [{path, content}]

@@ -28,6 +28,11 @@ cuBLAS row-major GEMM transpose logic error: wrong transa/transb and m/n/k mappi
 - `max_relative_error > 90 (completely wrong matrix)`
 - `transa/transb set incorrectly for row-major data`
 
+## Challenge
+
+SOL-ExecBench GEMM defines C = A @ B.T, A=[M,K] row-major, B=[N,K] row-major. LLM confuses row-major to column-major mapping when calling cublasGemmEx, producing INCORRECT_NUMERICAL results (max_error=99.4).
+
+
 ## Solution
 
 Use the UNIVERSAL swap mapping for cublasGemmEx (verified 34/34 benchmarks for both INT8 and BF16):

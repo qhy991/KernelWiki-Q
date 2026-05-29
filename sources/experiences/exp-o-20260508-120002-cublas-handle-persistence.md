@@ -1,6 +1,6 @@
 ---
 id: exp-o-20260508-120002-cublas-handle-persistence
-title: exp-o-20260508-120002-cublas-handle-persistence
+title: Creating and destroying cuBLAS handle on every call introduces 50-100ms overhead
 experience_type: optimization
 source_category: agent-experiment
 architectures:
@@ -19,6 +19,10 @@ techniques:
 - fine-grained-quantization
 impl_family: cublas
 ---
+
+## Challenge
+
+Creating and destroying cuBLAS handle on every call introduces 50-100ms overhead per invocation, severely degrading benchmark performance.
 
 ## Key Lessons
 

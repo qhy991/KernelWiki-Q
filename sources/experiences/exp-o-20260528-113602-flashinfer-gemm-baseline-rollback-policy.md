@@ -16,7 +16,9 @@ confidence: inferred
 reproducibility: concept
 ---
 
-Use verified cuBLAS baseline as rollback anchor for unstable WMMA rounds
+## Challenge
+
+Custom WMMA branches repeatedly regressed or failed while a cuBLAS round achieved near-baseline speedup and verified pass.
 
 ## Key Lessons
 

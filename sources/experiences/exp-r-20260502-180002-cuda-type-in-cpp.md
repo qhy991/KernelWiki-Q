@@ -24,6 +24,11 @@ SOL-ExecBench static gate rejects main.cpp containing CUDA-only constructs like 
 - `sol_execbench_update_sources 返回 static_gate_error`
 - `错误信息: `main.cpp` contains CUDA-only construct `__nv_bfloat16`. `.cpp` wrapper files are compiled by the host compiler`
 
+## Challenge
+
+LLM 在 main.cpp 中使用了 `__nv_bfloat16` 等 CUDA 内建类型。SOL-ExecBench 的 main.cpp 由 host compiler (g++/clang++) 编译，不识别这些 CUDA-only 构造。static_gate 阶段直接拦截。
+
+
 ## Solution
 
 将所有 CUDA-only 类型和计算移到 .cu 文件中。main.cpp 只使用 torch::Tensor、标准 C++ 类型和 void* 指针。bf16 数据通过 `torch::Tensor` 的 `data_ptr()` 以 `void*` 传递给 .cu 中的 launcher 函数。

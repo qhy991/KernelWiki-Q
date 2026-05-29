@@ -22,7 +22,10 @@ techniques:
 impl_family: custom_cuda
 ---
 
-BF16 GEMM kernel implementation template for SOL-ExecBench
+## Challenge
+
+Implementing BF16 GEMM with correct vectorized memory access, warp-level reduction, and proper handling of BF16's limited range to avoid numerical issues.
+
 
 ## Solution
 

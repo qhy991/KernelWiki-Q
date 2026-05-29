@@ -1,6 +1,6 @@
 ---
 id: exp-r-20260508-180001-cublas-lda-ldb-correctness
-title: exp-r-20260508-180001-cublas-lda-ldb-correctness
+title: cuBLAS GEMM correctness fails silently when lda/ldb use row-major leading dimens
 experience_type: repair
 source_category: agent-experiment
 architectures:
@@ -19,6 +19,10 @@ techniques:
 - fine-grained-quantization
 impl_family: cublas
 ---
+
+## Challenge
+
+cuBLAS GEMM correctness fails silently when lda/ldb use row-major leading dimensions (M, N) instead of column-major leading dimensions (K). No compilation error — the result is simply wrong.
 
 ## Key Lessons
 

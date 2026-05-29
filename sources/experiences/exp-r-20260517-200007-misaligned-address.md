@@ -22,8 +22,6 @@ techniques:
 impl_family: custom_cuda
 ---
 
-CUDA misaligned address runtime error in BF16/INT8 kernels
-
 ## Key Lessons
 
 - Vectorized loads (uint2/uint4/float4) require alignment: sizeof(type) bytes. Check with reinterpret_cast<uintptr_t>(ptr) % sizeof(type) == 0.

@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-C++ PyTorch API named parameter error in CUDA kernels
-
 ## Key Lessons
 
 - C++ PyTorch API uses positional arguments only; Python-style named parameters like dim= are not valid C++

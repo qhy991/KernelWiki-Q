@@ -1,6 +1,7 @@
 ---
 id: exp-r-20260508-160104-cuda-linker-symbol-errors
-title: exp-r-20260508-160104-cuda-linker-symbol-errors
+title: Build fails at link stage due to unresolved CUDA/cuBLAS/PyTorch symbols after
+  so
 experience_type: repair
 source_category: agent-experiment
 architectures:
@@ -16,6 +17,10 @@ confidence: inferred
 reproducibility: snippet
 impl_family: cublas,cutlass,torch
 ---
+
+## Challenge
+
+Build fails at link stage due to unresolved CUDA/cuBLAS/PyTorch symbols after source compiles successfully.
 
 ## Key Lessons
 

@@ -17,8 +17,6 @@ confidence: experimental
 reproducibility: concept
 ---
 
-GQA paged decode: incorrect base-2 LSE formula causes systematic ~20% numerical error
-
 ## Key Lessons
 
 - For base-2 LSE in online softmax: lse = m_val / ln(2) + log2f(d_val), NOT (m_val + logf(d_val)) / ln(2) — the latter invites misinterpretation

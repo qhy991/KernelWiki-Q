@@ -24,7 +24,9 @@ techniques:
 - vectorized-loads
 ---
 
-Minimum structural requirements for handwritten CUDA GEMM to achieve >0.5x speedup
+## Challenge
+
+If a custom CUDA GEMM kernel must be written (library path unavailable), what are the minimum structural requirements to reach even 50% of cuBLAS performance?
 
 ## Key Lessons
 

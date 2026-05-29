@@ -17,8 +17,6 @@ reproducibility: concept
 impl_family: custom_cuda
 ---
 
-kernel.h uses cudaStream_t but does not include cuda_runtime.h
-
 ## Key Lessons
 
 - Every header file must be self-contained: include everything needed for its own declarations.

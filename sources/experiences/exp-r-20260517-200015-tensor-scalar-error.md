@@ -20,8 +20,6 @@ techniques:
 impl_family: custom_cuda
 ---
 
-Tensor with N elements cannot be converted to Scalar
-
 ## Key Lessons
 
 - Use tensor.size(0), tensor.size(1) etc. to get tensor dimensions in C++/CUDA code.

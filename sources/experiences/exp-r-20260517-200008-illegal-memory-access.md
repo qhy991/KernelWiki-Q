@@ -20,8 +20,6 @@ techniques:
 impl_family: custom_cuda
 ---
 
-CUDA illegal memory access in GEMM/attention kernels
-
 ## Key Lessons
 
 - Every CUDA kernel must start with a bounds check: if (tid >= N) return; for 1D, check both dims for 2D.

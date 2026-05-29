@@ -17,8 +17,6 @@ reproducibility: concept
 impl_family: custom_cuda
 ---
 
-CUDA BF16 type in .cpp wrapper causes host compiler error
-
 ## Key Lessons
 
 - main.cpp must be pure host C++: only torch::Tensor, pybind11, and standard C++ types. No CUDA-specific types.

@@ -25,6 +25,11 @@ cuBLASLt handle created/destroyed per kernel call causing extreme performance de
 - `latency_ms 远大于 reference_latency_ms`
 - `每次 kernel launch 延迟在 1.5ms ~ 3.5ms（基准仅 0.05ms）`
 
+## Challenge
+
+LLM 在每次 gemm_launch 调用中都执行 cublasLtCreate + cublasLtDestroy + cudaMalloc + cudaFree。对于 SOL-ExecBench 的小矩阵 GEMM（如 M=10），cuBLASLt handle 的创建/销毁开销远大于实际计算时间，导致 speedup 仅 0.017x（比基准慢约 60 倍）。
+
+
 ## Solution
 
 方案1（推荐）：使用 cuBLASLt 的 batched API 或在 main.cpp 中用 static/thread_local 变量复用 handle。

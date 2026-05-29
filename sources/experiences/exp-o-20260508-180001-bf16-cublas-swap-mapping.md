@@ -1,6 +1,7 @@
 ---
 id: exp-o-20260508-180001-bf16-cublas-swap-mapping
-title: exp-o-20260508-180001-bf16-cublas-swap-mapping
+title: 'Gemm optimization: BF16 and INT8 use the EXACT SAME swap mapping: m=N, n=M,
+  A_p'
 experience_type: optimization
 source_category: agent-experiment
 architectures:

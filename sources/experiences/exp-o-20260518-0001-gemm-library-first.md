@@ -17,7 +17,9 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GEMM/MatMul tasks: always prefer library path (cuBLAS/CUTLASS) over handwritten CUDA kernels
+## Challenge
+
+Handwritten naive CUDA GEMM kernel achieved only 0.007x speedup vs torch.matmul (cuBLAS). The defining characteristic of GEMM/MatMul/Linear tasks is that hand-written CUDA kernels CANNOT compete with cuBLAS for standard matrix multiply.
 
 ## Key Lessons
 

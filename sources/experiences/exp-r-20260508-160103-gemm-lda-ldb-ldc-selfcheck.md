@@ -1,6 +1,6 @@
 ---
 id: exp-r-20260508-160103-gemm-lda-ldb-ldc-selfcheck
-title: exp-r-20260508-160103-gemm-lda-ldb-ldc-selfcheck
+title: Wrong lda/ldb/ldc or m/n/k assignment leads to incorrect output despite successf
 experience_type: repair
 source_category: agent-experiment
 architectures:
@@ -19,6 +19,10 @@ techniques:
 - fine-grained-quantization
 impl_family: cublas
 ---
+
+## Challenge
+
+Wrong lda/ldb/ldc or m/n/k assignment leads to incorrect output despite successful compilation.
 
 ## Key Lessons
 

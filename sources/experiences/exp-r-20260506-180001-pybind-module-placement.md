@@ -17,8 +17,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-PYBIND11_MODULE must be in .cpp file compiled by g++/clang++, not in .cu file compiled by nvcc
-
 ## Key Lessons
 
 - PYBIND11_MODULE must always be in a .cpp file, never in a .cu file

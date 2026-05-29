@@ -28,6 +28,11 @@ Experiments FA_10, FA_18, FA_01 encountered verification dead loops where the sa
 - `Session status: completed_with_gaps`
 - `experience_pipeline: all zeros (captured=0, triaged=0, published=0)`
 
+## Challenge
+
+During autoresearch rounds, the verification pipeline enters a blocked state where it repeatedly executes the same verification step with identical input and gets the same failure result. The agent does not change its approach after repeated failures, leading to step budget exhaustion with no useful progress. Observed in FA_10 (1 attempt, 9 min), FA_18 (1 attempt, 21 min), FA_01 (1 attempt, 5 min).
+
+
 ## Solution
 
 Implement detection and recovery for verification dead loops

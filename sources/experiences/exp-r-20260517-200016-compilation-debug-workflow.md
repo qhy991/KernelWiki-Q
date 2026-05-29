@@ -17,8 +17,6 @@ reproducibility: concept
 impl_family: custom_cuda
 ---
 
-SOL-ExecBench compilation failure debugging workflow
-
 ## Key Lessons
 
 - After ninja build failure, FIRST action: read compilation_failure_report.json in attempt_dir.

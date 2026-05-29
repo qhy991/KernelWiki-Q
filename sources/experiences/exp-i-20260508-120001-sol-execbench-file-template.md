@@ -1,6 +1,7 @@
 ---
 id: exp-i-20260508-120001-sol-execbench-file-template
-title: exp-i-20260508-120001-sol-execbench-file-template
+title: How to structure CUDA C++ solution files for SOL-ExecBench GEMM problems to
+  avoi
 experience_type: implementation
 source_category: agent-experiment
 architectures:
@@ -19,6 +20,10 @@ techniques:
 - fine-grained-quantization
 impl_family: cublas
 ---
+
+## Challenge
+
+How to structure CUDA C++ solution files for SOL-ExecBench GEMM problems to avoid compilation errors?
 
 ## Key Lessons
 

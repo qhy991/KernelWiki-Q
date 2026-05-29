@@ -27,6 +27,11 @@ LLM generates minimal CUTLASS header stubs (arch.h, bfloat16.h, gemm.h) that com
 - `编译错误: expected a '>' 或 expected a ';'`
 - `solution.json sources 中包含 cutlass/ 子目录`
 
+## Challenge
+
+LLM 尝试在 solution.json 的 sources 中内联生成 CUTLASS 头文件的精简版本（如 cutlass/include/cutlass/arch.h, cutlass/bfloat16.h, cutlass/gemm/device/gemm.h），但这些精简版本缺少关键类型定义（GemmShape, GemmCoord, bfloat16_t 等），导致编译失败。SOL-ExecBench 的 compile_options 已经通过 -I/home/qinhaiyan/cutlass/include 指向本地 CUTLASS 安装，不需要自行生成头文件。
+
+
 ## Solution
 
 不要在 solution.json 的 sources 中自行生成 CUTLASS 头文件。SOL-ExecBench 的 compile_options 已经设置了 -I 指向系统 CUTLASS 安装路径（如 -I/home/qinhaiyan/cutlass/include）。只需在 kernel.cu 中正常 #include <cutlass/...> 即可。

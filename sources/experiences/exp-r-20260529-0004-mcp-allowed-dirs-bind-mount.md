@@ -17,8 +17,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-MCP filesystem server rejects /home/ paths when allowed_dirs only contains /data/ bind-mount spelling
-
 ## Key Lessons
 
 - On bind-mount machines (/home/ <-> /data/), MCP filesystem server needs BOTH path spellings in allowed_dirs — string prefix comparison cannot see through bind mounts

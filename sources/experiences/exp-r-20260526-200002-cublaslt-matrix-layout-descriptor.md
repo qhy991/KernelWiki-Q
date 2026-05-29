@@ -26,6 +26,11 @@ cublasLtMatrixLayoutCreate with incorrect leading dimension (ld) causes massive 
 - `Results are completely wrong, not just slightly off`
 - `cublasLtMatrixLayoutCreate used with ld=rows instead of ld=cols for row-major data`
 
+## Challenge
+
+cublasLtMatrixLayoutCreate() called with wrong leading dimension for row-major tensors. SOL-ExecBench provides row-major tensors (A[M,K], B[N,K], C[M,N]) but cublasLt expects column-major by default. Incorrect ld values cause the library to read memory at wrong strides, producing garbage results with max_relative_error in the thousands.
+
+
 ## Solution
 
 For SOL-ExecBench row-major tensors with C[M,N] = A[M,K] @ B.T[K,N] (B stored as [N,K]):

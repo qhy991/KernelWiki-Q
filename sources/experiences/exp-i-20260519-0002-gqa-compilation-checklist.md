@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GQA paged decode: compilation checklist for CUDA kernels
-
 ## Challenge
 
 Common compilation errors when writing GQA paged decode CUDA kernels for SOL-ExecBench. The build system compiles .cu with nvcc and .cpp with g++, with strict separation of CUDA and host code.

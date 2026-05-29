@@ -17,8 +17,6 @@ reproducibility: concept
 impl_family: custom_cuda
 ---
 
-DPS signature mismatch: run() must be void with output tensors at end
-
 ## Key Lessons
 
 - When destination_passing_style=true in definition.json, run() must be: void run(all_inputs..., all_outputs...).

@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GQA paged decode: minimal compile-able skeleton for new implementations
-
 ## Challenge
 
 When starting from a TODO template, the agent needs a minimal but complete skeleton that compiles and runs. This provides the correct file structure and function signatures for a GQA paged decode kernel.

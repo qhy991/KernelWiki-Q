@@ -20,8 +20,6 @@ techniques:
 impl_family: custom_cuda
 ---
 
-FlashInfer-Bench GQA paged decode kernel compilation errors
-
 ## Key Lessons
 
 - For Float8 (FP8) types: include <cuda_fp8.h>, use __nv_fp8_e4m3fn type, compile with -arch=sm_89.

@@ -16,8 +16,6 @@ confidence: inferred
 reproducibility: concept
 ---
 
-GQA paged decode: __nv_bfloat16 and CUDA types in .cpp files
-
 ## Key Lessons
 
 - Never put __nv_bfloat16, __nv_bfloat162, cudaStream_t, __global__, blockIdx, threadIdx, or <<<>>> in .cpp files

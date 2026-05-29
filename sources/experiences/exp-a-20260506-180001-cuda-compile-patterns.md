@@ -16,7 +16,9 @@ confidence: inferred
 reproducibility: concept
 ---
 
-CUDA compile error patterns from SOL-ExecBench experiments and their resolution
+## Challenge
+
+What CUDA compile errors recur and how should they be resolved systematically?
 
 ## Key Lessons
 

@@ -1,6 +1,6 @@
 ---
 id: exp-o-20260508-120006-problem-size-speedup
-title: exp-o-20260508-120006-problem-size-speedup
+title: What speedup can be expected for different GEMM problem sizes? Setting realistic
 experience_type: optimization
 source_category: agent-experiment
 architectures:
@@ -16,6 +16,10 @@ confidence: inferred
 reproducibility: concept
 impl_family: all
 ---
+
+## Challenge
+
+What speedup can be expected for different GEMM problem sizes? Setting realistic expectations helps avoid wasted optimization steps on problems already near-optimal.
 
 ## Key Lessons
 

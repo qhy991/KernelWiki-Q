@@ -17,6 +17,10 @@ reproducibility: snippet
 impl_family: cublas
 ---
 
+## Challenge
+
+Compiler error: 'getCurrentCUDAStream' is not a member of 'at::cuda' or 'torch::cuda'. This is the #1 most frequent compilation error across 82 autoresearch experiments (6 out of 21 compile failures).
+
 ## Key Lessons
 
 - kernel.cu must never include ATen or torch headers — only CUDA runtime and library headers.

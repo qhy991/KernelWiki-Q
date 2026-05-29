@@ -27,6 +27,11 @@ Using CUBLAS_COMPUTE_16F with cublasLtMatmul causes FP16 intermediate accumulati
 - `Small matrices (N<128) may pass correctness checks while large matrices fail`
 - `cublasLtMatmulDescSetAttribute with CUBLASLT_MATMUL_DESC_COMPUTE_TYPE set to CUBLAS_COMPUTE_16F`
 
+## Challenge
+
+cublasLtMatmul with CUBLAS_COMPUTE_16F performs FP16 intermediate accumulation. For large GEMM matrices (N>=1024), floating-point rounding errors accumulate over K additions, producing max_relative_error=55+ when the benchmark expects error<1e-3. The kernel compiles and runs without errors, but outputs are numerically incorrect.
+
+
 ## Solution
 
 Set compute type to CUBLAS_COMPUTE_32F (FP32 accumulation) regardless of input/output precision. For FP16 GEMM:

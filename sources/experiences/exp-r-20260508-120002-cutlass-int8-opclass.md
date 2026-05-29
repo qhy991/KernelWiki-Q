@@ -1,6 +1,6 @@
 ---
 id: exp-r-20260508-120002-cutlass-int8-opclass
-title: exp-r-20260508-120002-cutlass-int8-opclass
+title: CUTLASS 2.x INT8 GEMM compilation fails with namespace errors or static assertio
 experience_type: repair
 source_category: agent-experiment
 architectures:
@@ -22,6 +22,10 @@ techniques:
 - fine-grained-quantization
 impl_family: cutlass
 ---
+
+## Challenge
+
+CUTLASS 2.x INT8 GEMM compilation fails with namespace errors or static assertions. 5 out of 21 compile failures are CUTLASS configuration issues.
 
 ## Key Lessons
 

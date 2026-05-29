@@ -26,6 +26,11 @@ Using C-style header names like <cstdint.h>, <cstdlib.h>, <cstring.h> in .cu fil
 - `Compilation fails immediately at the include statement`
 - `Only .cu files affected (nvcc compiles as C++)`
 
+## Challenge
+
+nvcc reports 'fatal error: cstdint.h: No such file or directory' when a .cu file uses #include <cstdint.h>. This is a C/C++ naming confusion: C headers use .h suffix (stdlib.h, stdint.h, string.h) while C++ wrappers omit it (cstdlib, cstdint, cstring). The 'c' prefix + no suffix is the C++ convention.
+
+
 ## Solution
 
 Replace C-style header includes with their C++ equivalents:

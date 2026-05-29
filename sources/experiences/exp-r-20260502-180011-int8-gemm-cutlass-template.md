@@ -26,6 +26,11 @@ CUTLASS INT8 GEMM template instantiation fails with incomplete type errors in mm
 - `CUTLASS BF16/FP16 GEMM 编译正常，但 INT8 编译失败`
 - `错误指向 CUTLASS 内部头文件而非用户代码`
 
+## Challenge
+
+使用 CUTLASS 库实现 INT8 GEMM 时，模板实例化阶段编译失败。典型错误：cutlass/gemm/warp/mma_tensor_op_policy.h(58): error: incomplete type is not allowed。此错误在多个 INT8 GEMM 实验中反复出现（m768_n4304_k1152、m768_n1152_k1152 等），但同样的 CUTLASS 模板在 BF16/FP16 GEMM 上工作正常。根本原因是 CUTLASS 的 INT8 Tensor Core 配置（OpMultiplyAdd + int32_t accumulator）对 SM architecture 和 instruction shape 的组合要求更严格，LLM 生成的配置参数经常不兼容。
+
+
 ## Solution
 
 对于 SOL-ExecBench INT8 GEMM 任务，不要将 CUTLASS 作为首选方案。改用 cuBLAS cublasGemmEx 作为第一选择，它能可靠地处理 INT8 Tensor Core 操作。CUTLASS INT8 模板在当前版本（截至 CUTLASS 3.x）对 int8_t + int32_t accumulator 的支持不如 BF16/FP16 成熟。

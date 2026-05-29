@@ -1,6 +1,6 @@
 ---
 id: exp-r-20260508-160101-dps-signature-contract
-title: exp-r-20260508-160101-dps-signature-contract
+title: 'DPS entrypoint contract mismatch causes compile-time or runtime binding failure '
 experience_type: repair
 source_category: agent-experiment
 architectures:
@@ -16,6 +16,10 @@ confidence: inferred
 reproducibility: snippet
 impl_family: all
 ---
+
+## Challenge
+
+DPS entrypoint contract mismatch causes compile-time or runtime binding failure even when kernel logic is correct.
 
 ## Key Lessons
 

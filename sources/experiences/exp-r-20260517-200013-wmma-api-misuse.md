@@ -22,8 +22,6 @@ techniques:
 impl_family: custom_cuda
 ---
 
-WMMA API misuse: tile size, fragment types, and memory layout
-
 ## Key Lessons
 
 - INT8 WMMA accumulator fragment must be int32_t, NOT float. The API enforces this at compile time.
