@@ -72,6 +72,14 @@ kernel_types:
   - linear-attention
   - gated-dual-gemm
   - batched-gemv
+  - layer-norm
+  - softmax
+  - topk
+  - reduction
+  - linear
+  - relu
+  - rmsnorm
+  - conv2d
 
 languages:
   - cuda-cpp
@@ -103,6 +111,7 @@ source_categories:
   - benchmark-blog
   - contest-report
   - community-note
+  - agent-experiment
 
 evidence_types:
   - official-doc

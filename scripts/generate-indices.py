@@ -319,6 +319,41 @@ def generate_by_language(pages):
     return "\n".join(lines) + "\n"
 
 
+def generate_by_experience(pages):
+    lines = [
+        "# Query: By Experience",
+        "",
+        "> Auto-generated. Do not edit manually.",
+        "",
+    ]
+    kt_pages = defaultdict(list)
+    for p in pages:
+        if p.get("source_category") != "agent-experiment":
+            continue
+        for kt in p.get("kernel_types", []):
+            kt_pages[kt].append(p)
+
+    for kt in sorted(kt_pages.keys()):
+        lines.append(f"## {kt}")
+        lines.append("")
+        lines.append("| ID | Title | Type | Architectures | Languages |")
+        lines.append("|----|-------|------|--------------|-----------|")
+        seen = set()
+        for p in kt_pages[kt]:
+            pid = p.get("id", "")
+            if pid in seen:
+                continue
+            seen.add(pid)
+            title = p.get("title", "Untitled")
+            path = qlink(p["_path"])
+            exp_type = p.get("experience_type", "")
+            archs = ", ".join(p.get("architectures", []))
+            langs = ", ".join(p.get("languages", []))
+            lines.append(f"| [{pid}]({path}) | {title} | {exp_type} | {archs} | {langs} |")
+        lines.append("")
+    return "\n".join(lines) + "\n"
+
+
 def main():
     QUERIES_DIR.mkdir(exist_ok=True)
     pages = collect_all_pages()
@@ -331,6 +366,7 @@ def main():
         "by-repo.md": generate_by_repo,
         "by-kernel-type.md": generate_by_kernel_type,
         "by-language.md": generate_by_language,
+        "by-experience.md": generate_by_experience,
     }
 
     for filename, gen_func in generators.items():

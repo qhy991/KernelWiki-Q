@@ -70,6 +70,30 @@ source-blog:
   constraints:
     source_category: [benchmark-blog, community-note]
 
+source-experience:
+  required:
+    - id
+    - title
+    - experience_type
+    - source_category
+    - architectures
+    - tags
+    - kernel_types
+    - languages
+    - captured_at
+  optional:
+    - techniques
+    - hardware_features
+    - confidence
+    - reproducibility
+    - impl_family
+    - speedup
+    - related_tasks
+    - description
+  constraints:
+    source_category: agent-experiment
+    id_prefix: "exp-"
+
 source-contest:
   required:
     - id

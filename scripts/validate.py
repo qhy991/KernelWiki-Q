@@ -84,6 +84,8 @@ def detect_page_type(filepath, fm):
             return "source-blog"
         elif parts[1] == "contests":
             return "source-contest"
+        elif parts[1] == "experiences":
+            return "source-experience"
     elif parts[0] == "wiki":
         t = fm.get("type", "")
         if t:
