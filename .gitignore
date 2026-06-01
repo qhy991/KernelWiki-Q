@@ -1,5 +1,6 @@
 .codex
 .humanize/
 .claude/
+.kernelowl/
 __pycache__/
 *.pyc
