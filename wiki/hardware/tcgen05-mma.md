@@ -11,7 +11,7 @@ evidence_basis:
   - source_id: pr-cutlass-2139
     evidence_type: upstream-code
 related: [hw-tmem, hw-2sm-cooperative, technique-warp-specialization]
-sources: [pr-cutlass-2139, doc-nvidia-tuning-guide, blog-tcgen05-tutorial, blog-colfax-cutlass]
+sources: [pr-cutlass-2139, doc-nvidia-tuning-guide, blog-tcgen05-tutorial, blog-colfax-cutlass, doc-context-hub-tcgen05-migration, doc-context-hub-b-series-checklist]
 aliases: [UMMA, tcgen05, "tensor core gen 05"]
 ---
 

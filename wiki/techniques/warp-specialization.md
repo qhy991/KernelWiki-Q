@@ -22,6 +22,8 @@ sources:
 - doc-nvidia-tuning-guide
 - blog-tcgen05-tutorial
 - blog-colfax-cutlass
+- doc-context-hub-warp-primitives
+- doc-context-hub-occupancy
 blackwell_relevance: Blackwell uses 16-warp single-thread MMA model (vs Hopper's 4-warp
   warp-group); fundamentally different structure.
 artifact_dir: artifacts/kernels/warp-specialization

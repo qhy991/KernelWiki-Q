@@ -6,7 +6,7 @@ tags: [tmem, register-reuse, warp-specialization]
 symptoms: [register-pressure, low-occupancy, register-spilling]
 candidate_techniques: [hw-tmem, technique-warp-specialization, migration-register-to-tmem]
 related: [pattern-compute-bound, hw-tmem]
-sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, pr-vllm-16032]
+sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, pr-vllm-16032, doc-context-hub-occupancy, doc-context-hub-launch-bounds]
 ---
 
 ## Symptom

@@ -6,7 +6,7 @@ from_arch: sm90
 to_arch: sm100
 tags: [tcgen05, wgmma, tmem]
 related: [hw-tcgen05-mma, hw-tmem, technique-warp-specialization]
-sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, blog-colfax-cutlass]
+sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, blog-colfax-cutlass, doc-context-hub-tcgen05-migration, doc-context-hub-b-series-checklist, doc-context-hub-wmma-patterns]
 blackwell_relevance: "Core MMA instruction change. wgmma (warp-group, register accumulators) replaced by tcgen05 (single-thread, TMEM accumulators)."
 confidence: source-reported
 reproducibility: pseudocode

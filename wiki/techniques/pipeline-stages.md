@@ -8,7 +8,7 @@ confidence: source-reported
 reproducibility: snippet
 prerequisites: [hw-tma, hw-tmem]
 related: [technique-warp-specialization, technique-double-buffering, hw-tma]
-sources: [blog-tcgen05-tutorial, blog-modular-blackwell, doc-nvidia-tuning-guide]
+sources: [blog-tcgen05-tutorial, blog-modular-blackwell, doc-nvidia-tuning-guide, doc-context-hub-tensor-core-pipeline, doc-context-hub-async-copy]
 blackwell_relevance: "Same mbarrier pattern on both architectures; Blackwell adds tcgen05 fence requirement between TMA and MMA."
 ---
 

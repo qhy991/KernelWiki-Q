@@ -6,7 +6,7 @@ tags: [pipeline-stages, warp-specialization, tma, tcgen05, mbarrier]
 symptoms: [pipeline-stalls, compute-bound, low-tensor-core-utilization]
 candidate_techniques: [technique-pipeline-stages, technique-warp-specialization, technique-double-buffering, technique-ping-pong-scheduling]
 related: [pattern-compute-bound, pattern-tail-effect]
-sources: [blog-tcgen05-tutorial, blog-flash-attention-4, doc-nvidia-tuning-guide]
+sources: [blog-tcgen05-tutorial, blog-flash-attention-4, doc-nvidia-tuning-guide, doc-context-hub-tensor-core-pipeline, doc-context-hub-nsight-cheatsheet]
 ---
 
 # Pipeline Stalls

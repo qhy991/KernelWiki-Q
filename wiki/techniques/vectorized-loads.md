@@ -8,7 +8,7 @@ confidence: source-reported
 reproducibility: snippet
 prerequisites: []
 related: [kernel-nvfp4-gemv, pattern-memory-bound]
-sources: [blog-yue-nvfp4, blog-amandeep-nvfp4, contest-gpumode-p1]
+sources: [blog-yue-nvfp4, blog-amandeep-nvfp4, contest-gpumode-p1, doc-context-hub-coalescing, doc-context-hub-data-layout, doc-context-hub-cache-behavior]
 blackwell_relevance: "Cache policy PTX qualifiers work on both; B200's 8TB/s bandwidth makes these techniques even more impactful."
 ---
 

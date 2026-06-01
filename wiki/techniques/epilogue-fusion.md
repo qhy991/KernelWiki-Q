@@ -22,6 +22,7 @@ sources:
 - doc-cutlass-blackwell
 - blog-colfax-cutlass
 - pr-vllm-16032
+- doc-context-hub-fused-kernel-patterns
 blackwell_relevance: TMEM-based epilogue fusion is new to Blackwell; Hopper pattern
   provides conceptual foundation.
 artifact_dir: artifacts/kernels/epilogue-fusion

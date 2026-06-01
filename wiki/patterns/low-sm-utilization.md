@@ -6,7 +6,7 @@ tags: [persistent-kernel, clc, tile-scheduling]
 symptoms: [low-sm-utilization, tail-effect, load-imbalance]
 candidate_techniques: [technique-persistent-kernels, technique-tile-scheduling, hw-clc]
 related: [pattern-tail-effect, pattern-compute-bound]
-sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, pr-cutlass-2161]
+sources: [doc-nvidia-tuning-guide, blog-tcgen05-tutorial, pr-cutlass-2161, doc-context-hub-bottleneck-diagnosis, doc-context-hub-nsight-cheatsheet]
 ---
 
 ## Symptom
