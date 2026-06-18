@@ -1,0 +1,202 @@
+#!/usr/bin/env python3
+"""Generate and verify the README corpus statistics block."""
+
+from __future__ import annotations
+
+import argparse
+import re
+from collections import Counter
+from pathlib import Path
+
+import yaml
+
+ROOT = Path(__file__).resolve().parent.parent
+STATS_START = "<!-- KERNELWIKI_STATS_START -->"
+STATS_END = "<!-- KERNELWIKI_STATS_END -->"
+
+
+def load_frontmatter(path: Path) -> dict:
+    text = path.read_text(encoding="utf-8")
+    match = re.match(r"^---\s*\r?\n(.*?)\r?\n---\s*\r?\n", text, re.DOTALL)
+    if not match:
+        return {}
+    data = yaml.safe_load(match.group(1)) or {}
+    return data if isinstance(data, dict) else {}
+
+
+def sorted_dict(counter: Counter) -> dict:
+    return {key: counter[key] for key in sorted(counter)}
+
+
+def collect_stats(root: Path = ROOT) -> dict:
+    source_files = sorted((root / "sources").rglob("*.md")) if (root / "sources").is_dir() else []
+    wiki_files = sorted((root / "wiki").rglob("*.md")) if (root / "wiki").is_dir() else []
+
+    source_page_counts = Counter()
+    wiki_page_counts = Counter()
+    source_category_counts = Counter()
+    confidence_counts = Counter()
+    source_ids = set()
+
+    for path in source_files:
+        rel = path.relative_to(root)
+        if len(rel.parts) >= 2:
+            source_page_counts[rel.parts[1]] += 1
+        fm = load_frontmatter(path)
+        if fm.get("id"):
+            source_ids.add(fm["id"])
+        if fm.get("source_category"):
+            source_category_counts[fm["source_category"]] += 1
+        if fm.get("confidence"):
+            confidence_counts[fm["confidence"]] += 1
+
+    for path in wiki_files:
+        rel = path.relative_to(root)
+        if len(rel.parts) >= 2:
+            wiki_page_counts[rel.parts[1]] += 1
+        fm = load_frontmatter(path)
+        if fm.get("source_category"):
+            source_category_counts[fm["source_category"]] += 1
+        if fm.get("confidence"):
+            confidence_counts[fm["confidence"]] += 1
+
+    asset_mode_counts = Counter()
+    provenance_files = []
+    artifacts_dir = root / "artifacts"
+    if artifacts_dir.is_dir():
+        provenance_files = sorted(artifacts_dir.rglob("PROVENANCE.yaml"))
+        for path in provenance_files:
+            try:
+                data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            except yaml.YAMLError:
+                data = {}
+            mode = data.get("asset_mode")
+            if mode:
+                asset_mode_counts[mode] += 1
+
+    candidate_totals = Counter()
+    candidate_ledger_count = 0
+    candidates_dir = root / "candidates"
+    if candidates_dir.is_dir():
+        for path in sorted(candidates_dir.glob("*.yaml")):
+            candidate_ledger_count += 1
+            try:
+                data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+            except yaml.YAMLError:
+                data = {}
+            for field in ("total_candidates", "included", "excluded", "deferred"):
+                value = data.get(field)
+                if isinstance(value, int):
+                    candidate_totals[field] += value
+            rows = data.get("prs")
+            if "total_candidates" not in data and isinstance(rows, list):
+                candidate_totals["total_candidates"] += len(rows)
+                for row in rows:
+                    if not isinstance(row, dict):
+                        continue
+                    decision = str(row.get("decision", "")).lower()
+                    if decision in {"included", "include"}:
+                        candidate_totals["included"] += 1
+                    elif decision in {"excluded", "exclude"}:
+                        candidate_totals["excluded"] += 1
+                    elif decision in {"deferred", "defer"}:
+                        candidate_totals["deferred"] += 1
+
+    return {
+        "page_count": len(source_files) + len(wiki_files),
+        "source_count": len(source_files),
+        "wiki_count": len(wiki_files),
+        "source_id_count": len(source_ids),
+        "source_page_counts": sorted_dict(source_page_counts),
+        "wiki_page_counts": sorted_dict(wiki_page_counts),
+        "source_category_counts": sorted_dict(source_category_counts),
+        "confidence_counts": sorted_dict(confidence_counts),
+        "asset_bundle_count": len(provenance_files),
+        "asset_mode_counts": sorted_dict(asset_mode_counts),
+        "candidate_ledger_count": candidate_ledger_count,
+        "candidate_totals": {key: candidate_totals[key] for key in ("total_candidates", "included", "excluded", "deferred")},
+    }
+
+
+def fmt_number(value: int) -> str:
+    return f"{value:,}"
+
+
+def fmt_counts(counts: dict) -> str:
+    if not counts:
+        return "none"
+    return ", ".join(f"{key}={fmt_number(value)}" for key, value in counts.items())
+
+
+def render_stats(stats: dict) -> str:
+    return "\n".join([
+        "<!-- Generated by scripts/generate_readme_stats.py. Do not edit this block by hand. -->",
+        f"- Markdown pages: {fmt_number(stats['page_count'])} "
+        f"(sources={fmt_number(stats['source_count'])}, wiki={fmt_number(stats['wiki_count'])})",
+        f"- Source IDs: {fmt_number(stats['source_id_count'])}",
+        f"- Source pages: {fmt_counts(stats['source_page_counts'])}",
+        f"- Wiki pages: {fmt_counts(stats['wiki_page_counts'])}",
+        f"- Source categories: {fmt_counts(stats['source_category_counts'])}",
+        f"- Confidence: {fmt_counts(stats['confidence_counts'])}",
+        f"- Asset bundles: {fmt_number(stats['asset_bundle_count'])} "
+        f"({fmt_counts(stats['asset_mode_counts'])})",
+        f"- Candidate ledgers: {fmt_number(stats['candidate_ledger_count'])} "
+        f"({fmt_counts(stats['candidate_totals'])})",
+    ])
+
+
+def replace_stats_block(readme_text: str, rendered_stats: str) -> str:
+    pattern = re.compile(
+        re.escape(STATS_START) + r"\n.*?\n" + re.escape(STATS_END),
+        re.DOTALL,
+    )
+    replacement = f"{STATS_START}\n{rendered_stats.rstrip()}\n{STATS_END}"
+    updated, count = pattern.subn(replacement, readme_text, count=1)
+    if count != 1:
+        raise ValueError("README statistics markers not found")
+    return updated
+
+
+def upsert_stats_block(readme_text: str, rendered_stats: str) -> str:
+    if STATS_START in readme_text or STATS_END in readme_text:
+        return replace_stats_block(readme_text, rendered_stats)
+
+    heading = "## What's Here"
+    block = f"{STATS_START}\n{rendered_stats.rstrip()}\n{STATS_END}\n"
+    if heading not in readme_text:
+        return readme_text.rstrip() + "\n\n" + block
+
+    return readme_text.replace(heading + "\n\n", heading + "\n\n" + block + "\n", 1)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--root", type=Path, default=ROOT)
+    parser.add_argument("--readme", type=Path, default=None)
+    parser.add_argument("--write", action="store_true", help="Update README.md in place")
+    parser.add_argument("--check", action="store_true", help="Fail if README.md statistics are stale")
+    args = parser.parse_args()
+
+    root = args.root.resolve()
+    readme_path = args.readme or root / "README.md"
+    rendered = render_stats(collect_stats(root))
+
+    if args.write or args.check:
+        text = readme_path.read_text(encoding="utf-8")
+        updated = upsert_stats_block(text, rendered)
+        if args.check:
+            if updated != text:
+                print(f"{readme_path}: README statistics are stale; run scripts/generate_readme_stats.py --write")
+                return 1
+            print(f"{readme_path}: README statistics are current")
+            return 0
+        readme_path.write_text(updated, encoding="utf-8")
+        print(f"Updated {readme_path}")
+        return 0
+
+    print(rendered)
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

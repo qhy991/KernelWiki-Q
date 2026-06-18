@@ -1,0 +1,1417 @@
+schema_version: 1
+generated_by: scripts/export_operator_recipes.py
+default_policy: Only verified/source-reported kernel pages and source experiences
+  are exported to the default operator recipe set.
+default_recipe_count: 14
+default_recipes:
+- recipe_id: recipe-exp-o-20260430-001001-gemm-tile01
+  title: CUTLASS GEMM tile size selection by problem shape
+  source_type: source-experience
+  source_path: sources/experiences/exp-o-20260430-001001-gemm-tile01.md
+  source_ids:
+  - exp-o-20260430-001001-gemm-tile01
+  confidence: source-reported
+  reproducibility: concept
+  architectures:
+  - sm90
+  kernel_types:
+  - gemm
+  languages:
+  - cuda-cpp
+  - cute-dsl
+  techniques: []
+  hardware_features: []
+  tags:
+  - gemm
+- recipe_id: recipe-exp-o-20260430-200001-gemm-cutlass-fallback
+  title: 'SOL-ExecBench BF16 dense GEMM: fallback from CUTLASS to cuBLAS'
+  source_type: source-experience
+  source_path: sources/experiences/exp-o-20260430-200001-gemm-cutlass-fallback.md
+  source_ids:
+  - exp-o-20260430-200001-gemm-cutlass-fallback
+  confidence: source-reported
+  reproducibility: concept
+  architectures:
+  - sm90
+  kernel_types:
+  - gemm
+  languages:
+  - cuda-cpp
+  techniques: []
+  hardware_features: []
+  tags:
+  - gemm
+- recipe_id: recipe-kernel-deepgemm
+  title: "DeepGEMM \u2014 FP8 GEMM with Fine-Grained Scaling"
+  source_type: wiki-kernel
+  source_path: wiki/kernels/deepgemm.md
+  source_ids:
+  - kernel-deepgemm
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm90
+  kernel_types:
+  - gemm
+  - grouped-gemm
+  languages:
+  - cuda-cpp
+  - ptx
+  techniques: []
+  hardware_features: []
+  tags:
+  - gemm
+  - fp8
+  - fine-grained-quantization
+  - block-scale
+  evidence_source_ids:
+  - blog-deepgemm
+  - pr-deepgemm-304
+  - pr-cutlass-2139
+  - pr-vllm-23696
+  performance_claims:
+  - gpu: H800
+    dtype: fp8
+    shape: M=4096, N=4096, K=4096
+    metric: TFLOPS
+    value: 1550
+    utilization: ~90%
+    source_id: blog-deepgemm
+  related:
+  - technique-fine-grained-quantization
+  - hw-tcgen05-mma
+  - hw-nvfp4
+- recipe_id: recipe-kernel-flash-attention-4
+  title: FlashAttention-4
+  source_type: wiki-kernel
+  source_path: wiki/kernels/flash-attention-4.md
+  source_ids:
+  - kernel-flash-attention-4
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  kernel_types:
+  - attention
+  - flash-attention
+  languages:
+  - cute-dsl
+  techniques: []
+  hardware_features: []
+  tags:
+  - attention
+  - flash-attention
+  - tcgen05
+  - tmem
+  - 2sm-cooperative
+  - software-exp
+  evidence_source_ids:
+  - doc-flash-attention-4
+  - blog-flash-attention-4
+  - pr-flashinfer-1850
+  performance_claims:
+  - gpu: B200
+    dtype: bf16
+    shape: seqlen=8192, headdim=128
+    metric: TFLOPS
+    value: 1605
+    utilization: 71%
+    source_id: doc-flash-attention-4
+  related:
+  - technique-warp-specialization
+  - technique-software-exp
+  - hw-tcgen05-mma
+  - hw-tmem
+- recipe_id: recipe-kernel-flashmla
+  title: "FlashMLA \u2014 Multi-head Latent Attention"
+  source_type: wiki-kernel
+  source_path: wiki/kernels/flashmla.md
+  source_ids:
+  - kernel-flashmla
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm90
+  kernel_types:
+  - mla
+  - attention
+  - decode
+  - prefill
+  - sparse-attention
+  languages:
+  - cuda-cpp
+  techniques: []
+  hardware_features: []
+  tags:
+  - mla
+  - attention
+  - decode
+  - prefill
+  - fp8
+  - sparse-attention
+  evidence_source_ids:
+  - blog-flashmla
+  - pr-flashinfer-1117
+  - pr-vllm-39752
+  performance_claims:
+  - gpu: B200
+    dtype: bf16
+    shape: dense prefill, variable seqlen
+    metric: TFLOPS
+    value: 1460
+    utilization: ~65%
+    source_id: blog-flashmla
+  - gpu: B200
+    dtype: fp8
+    shape: sparse prefill
+    metric: TFLOPS
+    value: 1450
+    utilization: ~65%
+    source_id: blog-flashmla
+  related:
+  - hw-tcgen05-mma
+  - hw-tmem
+  - kernel-nsa
+- recipe_id: recipe-kernel-fp8-block-scale-gemm
+  title: FP8 Block-Scale GEMM
+  source_type: wiki-kernel
+  source_path: wiki/kernels/fp8-block-scale-gemm.md
+  source_ids:
+  - kernel-fp8-block-scale-gemm
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm90
+  kernel_types:
+  - gemm
+  languages:
+  - cuda-cpp
+  - cute-dsl
+  techniques: []
+  hardware_features: []
+  tags:
+  - gemm
+  - fp8
+  - block-scale
+  - fine-grained-quantization
+  - tcgen05
+  - wgmma
+  evidence_source_ids:
+  - blog-deepgemm
+  - doc-cutlass-blackwell
+  - doc-cutlass-changelog-sm100
+  performance_claims:
+  - gpu: H800
+    dtype: fp8
+    shape: M=4096, N=4096, K=4096
+    metric: TFLOPS
+    value: 1550
+    utilization: ~90% via CUDA core promotion
+    source_id: blog-deepgemm
+  related:
+  - kernel-deepgemm
+  - kernel-nvfp4-gemm
+  - technique-fine-grained-quantization
+  - hw-tcgen05-mma
+- recipe_id: recipe-kernel-fused-moe
+  title: "Fused MoE \u2014 FP8 Block-Scale Routing + Dual GEMM"
+  source_type: wiki-kernel
+  source_path: wiki/kernels/fused-moe.md
+  source_ids:
+  - kernel-fused-moe
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm100a
+  - sm90
+  kernel_types:
+  - moe
+  - fused-kernel
+  - grouped-gemm
+  - gated-dual-gemm
+  languages:
+  - cuda-cpp
+  - cute-dsl
+  - triton
+  techniques: []
+  hardware_features: []
+  tags:
+  - moe
+  - fused-kernel
+  - fp8
+  - block-scale
+  - kernel-fusion
+  - warp-specialization
+  - grouped-gemm
+  - gated-dual-gemm
+  evidence_source_ids:
+  - contest-flashinfer-track-a
+  - blog-deepgemm
+  - pr-vllm-23696
+  performance_claims:
+  - gpu: B200
+    dtype: fp8
+    shape: topk=8, experts=32, hidden=7168, intermediate=2048, batch=4096
+    metric: TFLOPS
+    value: 1262
+    utilization: ~56%
+    source_id: contest-flashinfer-track-a
+  related:
+  - kernel-grouped-gemm
+  - kernel-deepgemm
+  - technique-fine-grained-quantization
+  - technique-tile-scheduling
+- recipe_id: recipe-kernel-gated-delta-net
+  title: "Gated Delta Net \u2014 Linear Attention"
+  source_type: wiki-kernel
+  source_path: wiki/kernels/gated-delta-net.md
+  source_ids:
+  - kernel-gated-delta-net
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm90
+  kernel_types:
+  - gated-delta-net
+  - linear-attention
+  - decode
+  - prefill
+  - attention
+  languages:
+  - triton
+  - cuda-cpp
+  techniques: []
+  hardware_features: []
+  tags:
+  - gated-delta-net
+  - linear-attention
+  - attention
+  evidence_source_ids:
+  - blog-gated-delta-net
+  - doc-tfla
+  - pr-vllm-37303
+  performance_claims:
+  - gpu: H100
+    dtype: bf16
+    shape: seqlen=8192, qk_dim=4, v_dim=8, d=128
+    metric: speedup
+    value: 10
+    utilization: vs Qwen3-32B at 32K+ context, O(n) linear complexity
+    source_id: blog-gated-delta-net
+  related:
+  - technique-pipeline-stages
+- recipe_id: recipe-kernel-gated-dual-gemm
+  title: Gated Dual GEMM (Gate-Up + SwiGLU Fusion)
+  source_type: wiki-kernel
+  source_path: wiki/kernels/gated-dual-gemm.md
+  source_ids:
+  - kernel-gated-dual-gemm
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm90
+  kernel_types:
+  - gated-dual-gemm
+  - gemm
+  - fused-kernel
+  languages:
+  - cuda-cpp
+  - cute-dsl
+  techniques: []
+  hardware_features: []
+  tags:
+  - gated-dual-gemm
+  - gemm
+  - fused-kernel
+  - kernel-fusion
+  - nvfp4
+  - tmem
+  evidence_source_ids:
+  - contest-gpumode-p3
+  - blog-deepgemm
+  - blog-tflops-gap-fp4-moe
+  - pr-vllm-23696
+  performance_claims:
+  - gpu: B200
+    dtype: nvfp4
+    shape: M=1024 N=2*2048 K=7168 (gate-up MLP)
+    metric: latency_us
+    value: 18.5
+    utilization: compute-bound
+    source_id: contest-gpumode-p3
+  related:
+  - kernel-nvfp4-gemm
+  - kernel-fused-moe
+  - technique-kernel-fusion
+  - technique-epilogue-fusion
+- recipe_id: recipe-kernel-grouped-gemm
+  title: Grouped GEMM for MoE
+  source_type: wiki-kernel
+  source_path: wiki/kernels/grouped-gemm.md
+  source_ids:
+  - kernel-grouped-gemm
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm100a
+  - sm90
+  kernel_types:
+  - grouped-gemm
+  - gemm
+  - moe
+  languages:
+  - cuda-cpp
+  - cute-dsl
+  techniques: []
+  hardware_features: []
+  tags:
+  - grouped-gemm
+  - moe
+  - gemm
+  - fp8
+  - nvfp4
+  - tcgen05
+  - persistent-kernel
+  - tile-scheduling
+  evidence_source_ids:
+  - contest-gpumode-p4
+  - blog-deepgemm
+  - doc-cutlass-blackwell
+  performance_claims:
+  - gpu: B200
+    dtype: nvfp4
+    shape: variable M, shared N=K, 15 groups
+    metric: latency_us
+    value: 11.2
+    utilization: compute-bound
+    source_id: contest-gpumode-p4
+  related:
+  - kernel-fused-moe
+  - kernel-deepgemm
+  - hw-tcgen05-mma
+  - hw-clc
+  - technique-persistent-kernels
+  - technique-tile-scheduling
+- recipe_id: recipe-kernel-nsa
+  title: Native Sparse Attention (NSA)
+  source_type: wiki-kernel
+  source_path: wiki/kernels/nsa.md
+  source_ids:
+  - kernel-nsa
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm90
+  - sm100
+  kernel_types:
+  - sparse-attention
+  - attention
+  languages:
+  - triton
+  techniques: []
+  hardware_features: []
+  tags:
+  - sparse-attention
+  - attention
+  - triton
+  evidence_source_ids:
+  - blog-nsa
+  - blog-flashmla
+  - blog-vllm-deepseek-v3-sparse
+  performance_claims:
+  - gpu: H100
+    dtype: bf16
+    shape: seqlen=65536
+    metric: speedup
+    value: 9.0
+    utilization: vs FlashAttention-2 forward
+    source_id: blog-nsa
+  related:
+  - kernel-flashmla
+  - technique-pipeline-stages
+- recipe_id: recipe-kernel-nvfp4-gemm
+  title: "NVFP4 GEMM \u2014 4-bit Floating Point Matrix Multiply"
+  source_type: wiki-kernel
+  source_path: wiki/kernels/nvfp4-gemm.md
+  source_ids:
+  - kernel-nvfp4-gemm
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm100a
+  kernel_types:
+  - gemm
+  languages:
+  - cuda-cpp
+  - cute-dsl
+  - ptx
+  techniques: []
+  hardware_features: []
+  tags:
+  - gemm
+  - nvfp4
+  - fp4
+  - block-scale
+  - tcgen05
+  - tmem
+  - warp-specialization
+  evidence_source_ids:
+  - contest-gpumode-p2
+  - doc-cutlass-blackwell
+  - pr-cutlass-2139
+  performance_claims:
+  - gpu: B200
+    dtype: nvfp4
+    shape: standard GEMM configs
+    metric: latency_us
+    value: 10.807
+    utilization: near cuBLAS
+    source_id: contest-gpumode-p2
+  related:
+  - hw-nvfp4
+  - hw-tcgen05-mma
+  - hw-tmem
+  - kernel-nvfp4-gemv
+  - technique-warp-specialization
+- recipe_id: recipe-kernel-nvfp4-gemv
+  title: NVFP4 Batched GEMV
+  source_type: wiki-kernel
+  source_path: wiki/kernels/nvfp4-gemv.md
+  source_ids:
+  - kernel-nvfp4-gemv
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm100a
+  kernel_types:
+  - gemv
+  - batched-gemv
+  languages:
+  - cuda-cpp
+  - ptx
+  techniques: []
+  hardware_features: []
+  tags:
+  - gemv
+  - nvfp4
+  - fp4
+  - block-scale
+  - cache-policy
+  - register-budgeting
+  - vectorized-loads
+  evidence_source_ids:
+  - contest-gpumode-p1
+  - blog-yue-nvfp4
+  - blog-amandeep-nvfp4
+  performance_claims:
+  - gpu: B200
+    dtype: nvfp4
+    shape: M=7168, K=16384, L=1
+    metric: latency_us
+    value: 22.4
+    utilization: ~2.6x of SOL (8.6us)
+    source_id: contest-gpumode-p1
+  related:
+  - hw-nvfp4
+  - kernel-nvfp4-gemm
+  - pattern-memory-bound
+- recipe_id: recipe-kernel-sparse-mla
+  title: Sparse MLA (DeepSeek V3.2)
+  source_type: wiki-kernel
+  source_path: wiki/kernels/sparse-mla.md
+  source_ids:
+  - kernel-sparse-mla
+  confidence: source-reported
+  reproducibility: snippet
+  architectures:
+  - sm100
+  - sm90
+  kernel_types:
+  - sparse-attention
+  - mla
+  - attention
+  - decode
+  - prefill
+  languages:
+  - cuda-cpp
+  - cute-dsl
+  techniques: []
+  hardware_features: []
+  tags:
+  - sparse-attention
+  - mla
+  - fp8
+  - attention
+  - decode
+  - prefill
+  evidence_source_ids:
+  - blog-flashmla
+  - blog-vllm-deepseek-v3-sparse
+  - blog-nsa
+  performance_claims:
+  - gpu: B200
+    dtype: fp8
+    shape: sparse prefill, seqlen=32k, topk=2048
+    metric: TFLOPS
+    value: 1450
+    utilization: FP8 sparse compute bound
+    source_id: blog-flashmla
+  related:
+  - kernel-flashmla
+  - kernel-nsa
+  - hw-tcgen05-mma
+candidate_pool:
+  policy: experimental/inferred source experiences are candidates only; promote manually
+    after source evidence review
+  total: 4465
+  by_confidence:
+    experimental: 2692
+    inferred: 1773
+  groups:
+  - confidence: experimental
+    kernel_type: activation
+    count: 203
+    sample_source_ids:
+    - exp-a-kd-20260518-0033
+    - exp-a-kd-20260518-0035
+    - exp-a-kd-20260518-0307
+    - exp-a-kd-20260518-0308
+    - exp-a-kd-20260518-0468
+    - exp-a-kd-20260518-0474
+    - exp-a-kd-20260518-0478
+    - exp-a-kd-20260518-0513
+    - exp-a-kd-20260518-0552
+    - exp-a-kd-20260518-0553
+    - exp-a-kd-20260519-0013-1
+    - exp-a-kd-20260519-0014-1
+    - exp-a-kd-20260519-0015-1
+    - exp-a-kd-20260519-0032-1
+    - exp-a-kd-20260519-0033-1
+    - exp-a-kd-20260519-0034-1
+    - exp-a-kd-20260519-0035-1
+    - exp-a-kd-20260519-0036-1
+    - exp-a-kd-20260519-0037-1
+    - exp-a-kd-20260519-0063-1
+    - exp-a-kd-20260519-0142-1
+    - exp-a-kd-20260519-0143-1
+    - exp-a-kd-20260519-0170-1
+    - exp-a-kd-20260519-0171-1
+    - exp-a-kd-20260519-0305-1
+  - confidence: experimental
+    kernel_type: allreduce
+    count: 1
+    sample_source_ids:
+    - exp-o-kd-20260519-0691-1
+  - confidence: experimental
+    kernel_type: attention
+    count: 245
+    sample_source_ids:
+    - exp-a-kd-20260518-0018
+    - exp-a-kd-20260518-0028
+    - exp-a-kd-20260518-0029
+    - exp-a-kd-20260518-0113
+    - exp-a-kd-20260518-0118
+    - exp-a-kd-20260518-0127
+    - exp-a-kd-20260518-0130
+    - exp-a-kd-20260518-0326
+    - exp-a-kd-20260518-0330
+    - exp-a-kd-20260518-0331
+    - exp-a-kd-20260518-0489
+    - exp-a-kd-20260519-0016-1
+    - exp-a-kd-20260519-0017-1
+    - exp-a-kd-20260519-0018-1
+    - exp-a-kd-20260519-0019-1
+    - exp-a-kd-20260519-0020-1
+    - exp-a-kd-20260519-0023-1
+    - exp-a-kd-20260519-0024-1
+    - exp-a-kd-20260519-0025-1
+    - exp-a-kd-20260519-0026-1
+    - exp-a-kd-20260519-0026-2
+    - exp-a-kd-20260519-0027-1
+    - exp-a-kd-20260519-0028-1
+    - exp-a-kd-20260519-0029-1
+    - exp-a-kd-20260519-0030-1
+  - confidence: experimental
+    kernel_type: convolution
+    count: 22
+    sample_source_ids:
+    - exp-a-kd-20260518-0048
+    - exp-a-kd-20260518-0053
+    - exp-a-kd-20260519-0047-1
+    - exp-a-kd-20260519-0048-1
+    - exp-a-kd-20260519-0052-1
+    - exp-a-kd-20260519-0052-2
+    - exp-a-kd-20260519-0053-1
+    - exp-a-kd-20260519-0053-2
+    - exp-a-kd-20260519-0065-1
+    - exp-a-kd-20260519-0066-1
+    - exp-a-kd-20260519-0067-1
+    - exp-a-kd-20260519-0084-1
+    - exp-a-kd-20260519-2340-1
+    - exp-a-kd-20260519-2341-1
+    - exp-a-kd-20260519-2342-1
+    - exp-o-kd-20260519-0221-1
+    - exp-o-kd-20260519-0221-2
+    - exp-o-kd-20260519-0222-1
+    - exp-o-kd-20260519-0222-2
+    - exp-o-kd-20260519-0225-1
+    - exp-o-kd-20260519-0226-1
+    - exp-o-kd-20260519-0227-1
+  - confidence: experimental
+    kernel_type: copy
+    count: 204
+    sample_source_ids:
+    - exp-a-kd-20260518-0050
+    - exp-a-kd-20260518-0051
+    - exp-a-kd-20260518-0090
+    - exp-a-kd-20260518-0100
+    - exp-a-kd-20260518-0141
+    - exp-a-kd-20260518-0174
+    - exp-a-kd-20260518-0176
+    - exp-a-kd-20260518-0177
+    - exp-a-kd-20260519-0003-1
+    - exp-a-kd-20260519-0011-1
+    - exp-a-kd-20260519-0050-1
+    - exp-a-kd-20260519-0051-1
+    - exp-a-kd-20260519-0054-1
+    - exp-a-kd-20260519-0089-1
+    - exp-a-kd-20260519-0100-1
+    - exp-a-kd-20260519-0103-1
+    - exp-a-kd-20260519-0141-1
+    - exp-a-kd-20260519-0174-1
+    - exp-a-kd-20260519-0176-1
+    - exp-a-kd-20260519-0177-1
+    - exp-a-kd-20260519-0320-1
+    - exp-a-kd-20260519-0321-1
+    - exp-a-kd-20260519-0776-1
+    - exp-a-kd-20260519-0777-1
+    - exp-a-kd-20260519-0779-1
+  - confidence: experimental
+    kernel_type: dequantization
+    count: 181
+    sample_source_ids:
+    - exp-a-kd-20260519-0009-1
+    - exp-a-kd-20260519-0797-1
+    - exp-a-kd-20260519-0812-1
+    - exp-a-kd-20260519-0813-1
+    - exp-a-kd-20260519-0814-1
+    - exp-a-kd-20260519-0814-2
+    - exp-a-kd-20260519-0895-1
+    - exp-a-kd-20260519-0916-1
+    - exp-a-kd-20260519-0967-1
+    - exp-a-kd-20260519-0970-1
+    - exp-a-kd-20260519-0971-1
+    - exp-a-kd-20260519-1006-1
+    - exp-a-kd-20260519-1008-1
+    - exp-a-kd-20260519-1013-1
+    - exp-a-kd-20260519-1043-1
+    - exp-a-kd-20260519-1044-1
+    - exp-a-kd-20260519-1045-1
+    - exp-a-kd-20260519-1046-1
+    - exp-a-kd-20260519-1051-1
+    - exp-a-kd-20260519-1105-1
+    - exp-a-kd-20260519-1106-1
+    - exp-a-kd-20260519-1107-1
+    - exp-a-kd-20260519-1108-1
+    - exp-a-kd-20260519-1113-1
+    - exp-a-kd-20260519-1114-1
+  - confidence: experimental
+    kernel_type: elementwise
+    count: 417
+    sample_source_ids:
+    - exp-a-kd-20260518-0045
+    - exp-a-kd-20260518-0046
+    - exp-a-kd-20260518-0049
+    - exp-a-kd-20260518-0055
+    - exp-a-kd-20260518-0060
+    - exp-a-kd-20260518-0062
+    - exp-a-kd-20260518-0063
+    - exp-a-kd-20260518-0076
+    - exp-a-kd-20260518-0078
+    - exp-a-kd-20260518-0081
+    - exp-a-kd-20260518-0082
+    - exp-a-kd-20260518-0102
+    - exp-a-kd-20260518-0103
+    - exp-a-kd-20260518-0106
+    - exp-a-kd-20260518-0123
+    - exp-a-kd-20260518-0163
+    - exp-a-kd-20260518-0168
+    - exp-a-kd-20260518-0169
+    - exp-a-kd-20260518-0180
+    - exp-a-kd-20260518-0182
+    - exp-a-kd-20260518-0464
+    - exp-a-kd-20260519-0006-1
+    - exp-a-kd-20260519-0045-1
+    - exp-a-kd-20260519-0046-1
+    - exp-a-kd-20260519-0049-1
+  - confidence: experimental
+    kernel_type: embedding
+    count: 12
+    sample_source_ids:
+    - exp-a-kd-20260519-0479-1
+    - exp-a-kd-20260519-0480-1
+    - exp-a-kd-20260519-0481-1
+    - exp-a-kd-20260519-0482-1
+    - exp-a-kd-20260519-0787-1
+    - exp-a-kd-20260519-0788-1
+    - exp-a-kd-20260519-0789-1
+    - exp-o-kd-20260519-0363-1
+    - exp-o-kd-20260519-0364-1
+    - exp-o-kd-20260519-0365-1
+    - exp-o-kd-20260519-0366-1
+    - exp-o-kd-20260519-0604-1
+  - confidence: experimental
+    kernel_type: flash-attention
+    count: 4
+    sample_source_ids:
+    - exp-o-20260507-flash-attention-tensor-core-no-speedup
+    - exp-r-20260507-correctness-vs-performance-passing
+    - exp-r-20260507-skill-suite-mismatch-blocked
+    - exp-r-20260507-verification-dead-loop-r2
+  - confidence: experimental
+    kernel_type: gather-scatter
+    count: 2
+    sample_source_ids:
+    - exp-i-kd-20260519-2396-1
+    - exp-i-kd-20260519-2397-1
+  - confidence: experimental
+    kernel_type: gemm
+    count: 521
+    sample_source_ids:
+    - exp-a-kd-20260518-0080
+    - exp-a-kd-20260518-0091
+    - exp-a-kd-20260518-0092
+    - exp-a-kd-20260518-0104
+    - exp-a-kd-20260518-0108
+    - exp-a-kd-20260518-0137
+    - exp-a-kd-20260518-0140
+    - exp-a-kd-20260518-0153
+    - exp-a-kd-20260518-0164
+    - exp-a-kd-20260518-0165
+    - exp-a-kd-20260518-0167
+    - exp-a-kd-20260518-0172
+    - exp-a-kd-20260518-0332
+    - exp-a-kd-20260518-0524
+    - exp-a-kd-20260518-0529
+    - exp-a-kd-20260518-0542
+    - exp-a-kd-20260518-0543
+    - exp-a-kd-20260519-0002-1
+    - exp-a-kd-20260519-0004-1
+    - exp-a-kd-20260519-0005-1
+    - exp-a-kd-20260519-0010-1
+    - exp-a-kd-20260519-0012-1
+    - exp-a-kd-20260519-0038-1
+    - exp-a-kd-20260519-0039-1
+    - exp-a-kd-20260519-0040-1
+  - confidence: experimental
+    kernel_type: gemv
+    count: 7
+    sample_source_ids:
+    - exp-a-kd-20260519-0540-1
+    - exp-a-kd-20260519-0542-1
+    - exp-a-kd-20260519-0544-1
+    - exp-a-kd-20260519-0581-1
+    - exp-a-kd-20260519-0582-1
+    - exp-a-kd-20260519-0585-1
+    - exp-i-kd-20260519-2448-1
+  - confidence: experimental
+    kernel_type: quantization
+    count: 14
+    sample_source_ids:
+    - exp-a-kd-20260519-0782-1
+    - exp-a-kd-20260519-0816-1
+    - exp-a-kd-20260519-0887-1
+    - exp-a-kd-20260519-0887-2
+    - exp-a-kd-20260519-0887-3
+    - exp-a-kd-20260519-0968-1
+    - exp-a-kd-20260519-0972-1
+    - exp-a-kd-20260519-1720-1
+    - exp-a-kd-20260519-1854-1
+    - exp-o-kd-20260519-0737-1
+    - exp-o-kd-20260519-0738-1
+    - exp-o-kd-20260519-0762-1
+    - exp-o-kd-20260519-1865-1
+    - exp-o-kd-20260519-2028-1
+  - confidence: experimental
+    kernel_type: reduction
+    count: 278
+    sample_source_ids:
+    - exp-a-kd-20260518-0074
+    - exp-a-kd-20260518-0151
+    - exp-a-kd-20260518-0155
+    - exp-a-kd-20260518-0158
+    - exp-a-kd-20260518-0159
+    - exp-a-kd-20260518-0314
+    - exp-a-kd-20260518-0329
+    - exp-a-kd-20260518-0458
+    - exp-a-kd-20260518-0461
+    - exp-a-kd-20260519-0001-1
+    - exp-a-kd-20260519-0022-1
+    - exp-a-kd-20260519-0031-1
+    - exp-a-kd-20260519-0074-1
+    - exp-a-kd-20260519-0085-1
+    - exp-a-kd-20260519-0086-1
+    - exp-a-kd-20260519-0087-1
+    - exp-a-kd-20260519-0088-1
+    - exp-a-kd-20260519-0105-1
+    - exp-a-kd-20260519-0106-1
+    - exp-a-kd-20260519-0151-1
+    - exp-a-kd-20260519-0152-1
+    - exp-a-kd-20260519-0154-1
+    - exp-a-kd-20260519-0155-1
+    - exp-a-kd-20260519-0158-1
+    - exp-a-kd-20260519-0159-1
+  - confidence: experimental
+    kernel_type: rmsnorm
+    count: 136
+    sample_source_ids:
+    - exp-a-kd-20260519-0554-1
+    - exp-a-kd-20260519-0555-1
+    - exp-a-kd-20260519-0889-1
+    - exp-a-kd-20260519-0890-1
+    - exp-a-kd-20260519-0891-1
+    - exp-a-kd-20260519-0892-1
+    - exp-a-kd-20260519-0901-1
+    - exp-a-kd-20260519-0902-1
+    - exp-a-kd-20260519-0903-1
+    - exp-a-kd-20260519-0904-1
+    - exp-a-kd-20260519-0905-1
+    - exp-a-kd-20260519-0953-1
+    - exp-a-kd-20260519-0954-1
+    - exp-a-kd-20260519-0965-1
+    - exp-a-kd-20260519-0966-1
+    - exp-a-kd-20260519-0993-1
+    - exp-a-kd-20260519-1014-1
+    - exp-a-kd-20260519-1015-1
+    - exp-a-kd-20260519-1016-1
+    - exp-a-kd-20260519-1017-1
+    - exp-a-kd-20260519-1021-1
+    - exp-a-kd-20260519-1022-1
+    - exp-a-kd-20260519-1023-1
+    - exp-a-kd-20260519-1024-1
+    - exp-a-kd-20260519-1130-1
+  - confidence: experimental
+    kernel_type: rotary-embedding
+    count: 61
+    sample_source_ids:
+    - exp-a-kd-20260519-0556-1
+    - exp-a-kd-20260519-0557-1
+    - exp-a-kd-20260519-0558-1
+    - exp-a-kd-20260519-0559-1
+    - exp-a-kd-20260519-0560-1
+    - exp-a-kd-20260519-0561-1
+    - exp-a-kd-20260519-0562-1
+    - exp-a-kd-20260519-0563-1
+    - exp-a-kd-20260519-0817-1
+    - exp-a-kd-20260519-0818-1
+    - exp-a-kd-20260519-0819-1
+    - exp-a-kd-20260519-0819-2
+    - exp-a-kd-20260519-0820-1
+    - exp-a-kd-20260519-0943-1
+    - exp-a-kd-20260519-0944-1
+    - exp-a-kd-20260519-0945-1
+    - exp-a-kd-20260519-0946-1
+    - exp-a-kd-20260519-0992-1
+    - exp-a-kd-20260519-1196-1
+    - exp-a-kd-20260519-1197-1
+    - exp-a-kd-20260519-1198-1
+    - exp-a-kd-20260519-1229-1
+    - exp-a-kd-20260519-1332-1
+    - exp-a-kd-20260519-1332-2
+    - exp-a-kd-20260519-1334-1
+  - confidence: experimental
+    kernel_type: sampling
+    count: 1
+    sample_source_ids:
+    - exp-o-kd-20260519-0666-1
+  - confidence: experimental
+    kernel_type: scan
+    count: 108
+    sample_source_ids:
+    - exp-a-kd-20260519-0792-1
+    - exp-a-kd-20260519-0794-1
+    - exp-a-kd-20260519-0839-1
+    - exp-a-kd-20260519-0852-1
+    - exp-a-kd-20260519-0853-1
+    - exp-a-kd-20260519-0854-1
+    - exp-a-kd-20260519-0873-1
+    - exp-a-kd-20260519-0906-1
+    - exp-a-kd-20260519-0912-1
+    - exp-a-kd-20260519-0913-1
+    - exp-a-kd-20260519-0936-1
+    - exp-a-kd-20260519-0949-1
+    - exp-a-kd-20260519-0949-2
+    - exp-a-kd-20260519-0949-3
+    - exp-a-kd-20260519-0950-1
+    - exp-a-kd-20260519-0950-2
+    - exp-a-kd-20260519-0950-3
+    - exp-a-kd-20260519-0955-1
+    - exp-a-kd-20260519-0956-1
+    - exp-a-kd-20260519-0957-1
+    - exp-a-kd-20260519-0958-1
+    - exp-a-kd-20260519-1027-1
+    - exp-a-kd-20260519-1033-1
+    - exp-a-kd-20260519-1034-1
+    - exp-a-kd-20260519-1035-1
+  - confidence: experimental
+    kernel_type: softmax
+    count: 39
+    sample_source_ids:
+    - exp-a-kd-20260518-0135
+    - exp-a-kd-20260519-0007-1
+    - exp-a-kd-20260519-0008-1
+    - exp-a-kd-20260519-0021-1
+    - exp-a-kd-20260519-0111-1
+    - exp-a-kd-20260519-0112-1
+    - exp-a-kd-20260519-0115-1
+    - exp-a-kd-20260519-0116-1
+    - exp-a-kd-20260519-0132-1
+    - exp-a-kd-20260519-0133-1
+    - exp-a-kd-20260519-0135-1
+    - exp-a-kd-20260519-0978-1
+    - exp-a-kd-20260519-0979-1
+    - exp-a-kd-20260519-1069-1
+    - exp-a-kd-20260519-1070-1
+    - exp-a-kd-20260519-1071-1
+    - exp-a-kd-20260519-1071-2
+    - exp-a-kd-20260519-1072-1
+    - exp-a-kd-20260519-1072-2
+    - exp-a-kd-20260519-1250-1
+    - exp-a-kd-20260519-1406-1
+    - exp-a-kd-20260519-1408-1
+    - exp-a-kd-20260519-1454-1
+    - exp-a-kd-20260519-1455-1
+    - exp-a-kd-20260519-1458-1
+  - confidence: experimental
+    kernel_type: topk
+    count: 225
+    sample_source_ids:
+    - exp-a-kd-20260519-0790-1
+    - exp-a-kd-20260519-0808-1
+    - exp-a-kd-20260519-0809-1
+    - exp-a-kd-20260519-0810-1
+    - exp-a-kd-20260519-0811-1
+    - exp-a-kd-20260519-0850-1
+    - exp-a-kd-20260519-0851-1
+    - exp-a-kd-20260519-0866-1
+    - exp-a-kd-20260519-0867-1
+    - exp-a-kd-20260519-0868-1
+    - exp-a-kd-20260519-0907-1
+    - exp-a-kd-20260519-0908-1
+    - exp-a-kd-20260519-0909-1
+    - exp-a-kd-20260519-0923-1
+    - exp-a-kd-20260519-0924-1
+    - exp-a-kd-20260519-0925-1
+    - exp-a-kd-20260519-0926-1
+    - exp-a-kd-20260519-0926-2
+    - exp-a-kd-20260519-0927-1
+    - exp-a-kd-20260519-0928-1
+    - exp-a-kd-20260519-0929-1
+    - exp-a-kd-20260519-0937-1
+    - exp-a-kd-20260519-0938-1
+    - exp-a-kd-20260519-0939-1
+    - exp-a-kd-20260519-0947-1
+  - confidence: experimental
+    kernel_type: transpose
+    count: 15
+    sample_source_ids:
+    - exp-a-kd-20260519-0173-1
+    - exp-a-kd-20260519-0175-1
+    - exp-a-kd-20260519-0594-1
+    - exp-a-kd-20260519-0595-1
+    - exp-a-kd-20260519-1284-1
+    - exp-a-kd-20260519-1419-1
+    - exp-a-kd-20260519-1420-1
+    - exp-a-kd-20260519-1764-1
+    - exp-i-kd-20260519-2398-1
+    - exp-i-kd-20260519-2437-1
+    - exp-o-kd-20260519-0290-1
+    - exp-o-kd-20260519-0454-1
+    - exp-o-kd-20260519-1962-1
+    - exp-o-kd-20260519-2040-1
+    - exp-o-kd-20260519-2286-1
+  - confidence: inferred
+    kernel_type: activation
+    count: 39
+    sample_source_ids:
+    - exp-a-kd-20260518-0013
+    - exp-a-kd-20260518-0014
+    - exp-a-kd-20260518-0032
+    - exp-a-kd-20260518-0034
+    - exp-a-kd-20260518-0036
+    - exp-a-kd-20260518-0052
+    - exp-a-kd-20260518-0064
+    - exp-a-kd-20260518-0199
+    - exp-a-kd-20260518-0201
+    - exp-a-kd-20260518-0286
+    - exp-a-kd-20260518-0520
+    - exp-a-kd-20260518-0521
+    - exp-a-kd-20260518-0522
+    - exp-a-kd-20260518-0571
+    - exp-a-kd-20260518-0573
+    - exp-a-kd-20260518-0691
+    - exp-a-kd-20260518-0692
+    - exp-a-kd-20260518-0703
+    - exp-a-kd-20260518-0824
+    - exp-a-kd-20260518-0961
+    - exp-a-kd-20260518-0962
+    - exp-a-kd-20260518-1210
+    - exp-a-kd-20260518-1500
+    - exp-a-kd-20260518-1501
+    - exp-a-kd-20260518-1502
+  - confidence: inferred
+    kernel_type: attention
+    count: 133
+    sample_source_ids:
+    - exp-a-20260323-152446-0af59b22
+    - exp-a-20260324-115144-17bb4520
+    - exp-a-20260324-140805-8ad7dea8
+    - exp-a-20260324-143036-fbe3d628
+    - exp-a-20260324-145123-aca9ca55
+    - exp-a-20260324-185538-6422a673
+    - exp-a-20260324-192707-89268cbf
+    - exp-a-20260324-193709-1043172f
+    - exp-a-20260324-193752-39489fc9
+    - exp-a-20260324-201052-39489fc9
+    - exp-a-20260325-135700-4b5c6f98
+    - exp-a-20260325-141129-6a0518a8
+    - exp-a-20260325-164413-39849730
+    - exp-a-20260325-185043-1f06c3f2
+    - exp-a-20260326-093418-2491cf4d
+    - exp-a-20260326-100018-b14c6b4a
+    - exp-a-20260328-164241-940e8e92
+    - exp-a-20260328-165558-4757c191
+    - exp-a-20260506-180001-cuda-compile-patterns
+    - exp-a-kd-20260518-0023
+    - exp-a-kd-20260518-0024
+    - exp-a-kd-20260518-0027
+    - exp-a-kd-20260518-0030
+    - exp-a-kd-20260518-0110
+    - exp-a-kd-20260518-0114
+  - confidence: inferred
+    kernel_type: conv2d
+    count: 1
+    sample_source_ids:
+    - exp-r-20260317-124730-314f1971
+  - confidence: inferred
+    kernel_type: convolution
+    count: 1
+    sample_source_ids:
+    - exp-a-kd-20260518-0084
+  - confidence: inferred
+    kernel_type: dequantization
+    count: 301
+    sample_source_ids:
+    - exp-a-kd-20260518-0003
+    - exp-a-kd-20260518-0004
+    - exp-a-kd-20260518-0005
+    - exp-a-kd-20260518-0010
+    - exp-a-kd-20260518-0089
+    - exp-a-kd-20260518-0145
+    - exp-a-kd-20260518-0146
+    - exp-a-kd-20260518-0313
+    - exp-a-kd-20260518-0372
+    - exp-a-kd-20260518-0382
+    - exp-a-kd-20260518-0384
+    - exp-a-kd-20260518-0387
+    - exp-a-kd-20260518-0388
+    - exp-a-kd-20260518-0389
+    - exp-a-kd-20260518-0392
+    - exp-a-kd-20260518-0401
+    - exp-a-kd-20260518-0402
+    - exp-a-kd-20260518-0405
+    - exp-a-kd-20260518-0427
+    - exp-a-kd-20260518-0433
+    - exp-a-kd-20260518-0435
+    - exp-a-kd-20260518-0475
+    - exp-a-kd-20260518-0482
+    - exp-a-kd-20260518-0497
+    - exp-a-kd-20260518-0498
+  - confidence: inferred
+    kernel_type: elementwise
+    count: 58
+    sample_source_ids:
+    - exp-a-kd-20260518-0006
+    - exp-a-kd-20260518-0007
+    - exp-a-kd-20260518-0008
+    - exp-a-kd-20260518-0009
+    - exp-a-kd-20260518-0083
+    - exp-a-kd-20260518-0099
+    - exp-a-kd-20260518-0138
+    - exp-a-kd-20260518-0181
+    - exp-a-kd-20260518-0224
+    - exp-a-kd-20260518-0231
+    - exp-a-kd-20260518-0240
+    - exp-a-kd-20260518-0416
+    - exp-a-kd-20260518-0425
+    - exp-a-kd-20260518-0456
+    - exp-a-kd-20260518-0530
+    - exp-a-kd-20260518-0565
+    - exp-a-kd-20260518-0639
+    - exp-a-kd-20260518-0642
+    - exp-a-kd-20260518-0671
+    - exp-a-kd-20260518-0672
+    - exp-a-kd-20260518-0673
+    - exp-a-kd-20260518-0674
+    - exp-a-kd-20260518-0675
+    - exp-a-kd-20260518-0678
+    - exp-a-kd-20260518-0778
+  - confidence: inferred
+    kernel_type: flash-attention
+    count: 4
+    sample_source_ids:
+    - exp-i-20260506-flash-attention-kernel-eval-contract
+    - exp-o-20260506-flash-attention-tensor-core
+    - exp-r-20260506-flash-attention-compile-linker
+    - exp-r-20260506-verification-dead-loop
+  - confidence: inferred
+    kernel_type: gemm
+    count: 421
+    sample_source_ids:
+    - exp-a-20260325-170222-ee5351e3
+    - exp-a-20260325-172649-39d03bc4
+    - exp-a-20260328-074205-3e7f549b
+    - exp-a-20260526-200006-cublas-gemm-convergence
+    - exp-a-kd-20260518-0002
+    - exp-a-kd-20260518-0012
+    - exp-a-kd-20260518-0039
+    - exp-a-kd-20260518-0040
+    - exp-a-kd-20260518-0043
+    - exp-a-kd-20260518-0044
+    - exp-a-kd-20260518-0067
+    - exp-a-kd-20260518-0094
+    - exp-a-kd-20260518-0097
+    - exp-a-kd-20260518-0107
+    - exp-a-kd-20260518-0109
+    - exp-a-kd-20260518-0117
+    - exp-a-kd-20260518-0126
+    - exp-a-kd-20260518-0128
+    - exp-a-kd-20260518-0129
+    - exp-a-kd-20260518-0136
+    - exp-a-kd-20260518-0144
+    - exp-a-kd-20260518-0147
+    - exp-a-kd-20260518-0148
+    - exp-a-kd-20260518-0149
+    - exp-a-kd-20260518-0150
+  - confidence: inferred
+    kernel_type: layer-norm
+    count: 100
+    sample_source_ids:
+    - exp-a-kd-20260518-0380
+    - exp-a-kd-20260518-0397
+    - exp-a-kd-20260518-0398
+    - exp-a-kd-20260518-0400
+    - exp-a-kd-20260518-0470
+    - exp-a-kd-20260518-0491
+    - exp-a-kd-20260518-0508
+    - exp-a-kd-20260518-0582
+    - exp-a-kd-20260518-0603
+    - exp-a-kd-20260518-0612
+    - exp-a-kd-20260518-0661
+    - exp-a-kd-20260518-0726
+    - exp-a-kd-20260518-0779
+    - exp-a-kd-20260518-0780
+    - exp-a-kd-20260518-0804
+    - exp-a-kd-20260518-0899
+    - exp-a-kd-20260518-0905
+    - exp-a-kd-20260518-0910
+    - exp-a-kd-20260518-0985
+    - exp-a-kd-20260518-1019
+    - exp-a-kd-20260518-1020
+    - exp-a-kd-20260518-1023
+    - exp-a-kd-20260518-1164
+    - exp-a-kd-20260518-1415
+    - exp-i-20260311-231714-fab89c81
+  - confidence: inferred
+    kernel_type: reduction
+    count: 432
+    sample_source_ids:
+    - exp-a-20260324-085331-7e045fdc
+    - exp-a-20260324-091458-7e045fdc
+    - exp-a-20260325-100250-12da447b
+    - exp-a-20260325-144943-f5b0965a
+    - exp-a-kd-20260518-0011
+    - exp-a-kd-20260518-0015
+    - exp-a-kd-20260518-0020
+    - exp-a-kd-20260518-0021
+    - exp-a-kd-20260518-0022
+    - exp-a-kd-20260518-0025
+    - exp-a-kd-20260518-0026
+    - exp-a-kd-20260518-0037
+    - exp-a-kd-20260518-0041
+    - exp-a-kd-20260518-0042
+    - exp-a-kd-20260518-0054
+    - exp-a-kd-20260518-0056
+    - exp-a-kd-20260518-0057
+    - exp-a-kd-20260518-0059
+    - exp-a-kd-20260518-0061
+    - exp-a-kd-20260518-0065
+    - exp-a-kd-20260518-0066
+    - exp-a-kd-20260518-0068
+    - exp-a-kd-20260518-0069
+    - exp-a-kd-20260518-0071
+    - exp-a-kd-20260518-0072
+  - confidence: inferred
+    kernel_type: relu
+    count: 7
+    sample_source_ids:
+    - exp-r-20260318-190221-5cf8738f
+    - exp-r-20260319-203829-bd43b197
+    - exp-r-20260319-205516-69cca6ab
+    - exp-r-20260320-133920-1e02b61f
+    - exp-r-20260320-140144-9cae5ab1
+    - exp-r-20260320-140623-1e02b61f
+    - exp-r-20260320-141730-2f00c745
+  - confidence: inferred
+    kernel_type: rmsnorm
+    count: 1
+    sample_source_ids:
+    - exp-o-20260513-100004-rmsnorm-warp-level-reduction
+  - confidence: inferred
+    kernel_type: rotary-embedding
+    count: 31
+    sample_source_ids:
+    - exp-a-kd-20260518-0328
+    - exp-a-kd-20260518-0364
+    - exp-a-kd-20260518-0365
+    - exp-a-kd-20260518-0366
+    - exp-a-kd-20260518-0369
+    - exp-a-kd-20260518-0422
+    - exp-a-kd-20260518-0452
+    - exp-a-kd-20260518-0453
+    - exp-a-kd-20260518-0454
+    - exp-a-kd-20260518-0532
+    - exp-a-kd-20260518-0534
+    - exp-a-kd-20260518-0613
+    - exp-a-kd-20260518-0792
+    - exp-a-kd-20260518-1088
+    - exp-a-kd-20260518-1405
+    - exp-i-kd-20260518-0004
+    - exp-i-kd-20260518-0027
+    - exp-i-kd-20260518-0030
+    - exp-i-kd-20260518-0046
+    - exp-i-kd-20260518-0047
+    - exp-i-kd-20260518-0048
+    - exp-i-kd-20260518-0049
+    - exp-i-kd-20260518-0051
+    - exp-i-kd-20260518-0052
+    - exp-i-kd-20260518-0060
+  - confidence: inferred
+    kernel_type: scan
+    count: 87
+    sample_source_ids:
+    - exp-a-kd-20260518-0001
+    - exp-a-kd-20260518-0087
+    - exp-a-kd-20260518-0383
+    - exp-a-kd-20260518-0441
+    - exp-a-kd-20260518-0442
+    - exp-a-kd-20260518-0462
+    - exp-a-kd-20260518-0472
+    - exp-a-kd-20260518-0501
+    - exp-a-kd-20260518-0502
+    - exp-a-kd-20260518-0539
+    - exp-a-kd-20260518-0540
+    - exp-a-kd-20260518-0541
+    - exp-a-kd-20260518-0544
+    - exp-a-kd-20260518-0545
+    - exp-a-kd-20260518-0549
+    - exp-a-kd-20260518-0551
+    - exp-a-kd-20260518-0579
+    - exp-a-kd-20260518-0619
+    - exp-a-kd-20260518-0622
+    - exp-a-kd-20260518-0623
+    - exp-a-kd-20260518-0667
+    - exp-a-kd-20260518-0719
+    - exp-a-kd-20260518-0720
+    - exp-a-kd-20260518-0721
+    - exp-a-kd-20260518-0793
+  - confidence: inferred
+    kernel_type: softmax
+    count: 20
+    sample_source_ids:
+    - exp-a-20260325-191646-f77b236f
+    - exp-a-20260326-095034-2fac4e75
+    - exp-a-20260326-103616-7d4a9433
+    - exp-a-20260326-173130-2b19071b
+    - exp-a-kd-20260518-0255
+    - exp-a-kd-20260518-0264
+    - exp-a-kd-20260518-0969
+    - exp-a-kd-20260518-0970
+    - exp-a-kd-20260518-1017
+    - exp-a-kd-20260518-1021
+    - exp-a-kd-20260518-1022
+    - exp-a-kd-20260518-1390
+    - exp-o-kd-20260518-0105
+    - exp-o-kd-20260518-0109
+    - exp-o-kd-20260518-0440
+    - exp-o-kd-20260518-0453
+    - exp-o-kd-20260518-0633
+    - exp-o-kd-20260518-0666
+    - exp-o-kd-20260518-0667
+    - exp-o-kd-20260518-0806
+  - confidence: inferred
+    kernel_type: topk
+    count: 117
+    sample_source_ids:
+    - exp-a-kd-20260518-0448
+    - exp-a-kd-20260518-0449
+    - exp-a-kd-20260518-0459
+    - exp-a-kd-20260518-0460
+    - exp-a-kd-20260518-0512
+    - exp-a-kd-20260518-0514
+    - exp-a-kd-20260518-0516
+    - exp-a-kd-20260518-0527
+    - exp-a-kd-20260518-0528
+    - exp-a-kd-20260518-0536
+    - exp-a-kd-20260518-0550
+    - exp-a-kd-20260518-0564
+    - exp-a-kd-20260518-0576
+    - exp-a-kd-20260518-0614
+    - exp-a-kd-20260518-0618
+    - exp-a-kd-20260518-0631
+    - exp-a-kd-20260518-0648
+    - exp-a-kd-20260518-0653
+    - exp-a-kd-20260518-0654
+    - exp-a-kd-20260518-0656
+    - exp-a-kd-20260518-0657
+    - exp-a-kd-20260518-0662
+    - exp-a-kd-20260518-0688
+    - exp-a-kd-20260518-0689
+    - exp-a-kd-20260518-0750
+  - confidence: inferred
+    kernel_type: transpose
+    count: 24
+    sample_source_ids:
+    - exp-a-kd-20260518-0333
+    - exp-a-kd-20260518-0334
+    - exp-a-kd-20260518-0336
+    - exp-a-kd-20260518-0362
+    - exp-a-kd-20260518-0363
+    - exp-a-kd-20260518-0436
+    - exp-a-kd-20260518-0928
+    - exp-a-kd-20260518-0967
+    - exp-a-kd-20260518-0968
+    - exp-a-kd-20260518-1342
+    - exp-a-kd-20260518-1346
+    - exp-a-kd-20260518-1347
+    - exp-a-kd-20260518-1350
+    - exp-a-kd-20260518-1458
+    - exp-a-kd-20260518-1485
+    - exp-a-kd-20260518-1486
+    - exp-i-kd-20260518-0014
+    - exp-i-kd-20260518-0053
+    - exp-o-kd-20260518-0138
+    - exp-o-kd-20260518-0139
+    - exp-o-kd-20260518-0141
+    - exp-o-kd-20260518-0144
+    - exp-o-kd-20260518-0424
+    - exp-o-kd-20260518-0795

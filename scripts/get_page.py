@@ -130,7 +130,8 @@ def main():
     parser = argparse.ArgumentParser(description="Get a wiki page by id or path")
     parser.add_argument("lookup", help="Page id (e.g. kernel-flash-attention-4) or relative path")
     parser.add_argument("--body-only", action="store_true", help="Print only the body (skip frontmatter)")
-    parser.add_argument("--frontmatter-only", action="store_true", help="Print only the frontmatter as YAML")
+    parser.add_argument("--frontmatter", "--frontmatter-only", dest="frontmatter_only", action="store_true", help="Print only the frontmatter as YAML")
+    parser.add_argument("--field", help="Print just one frontmatter field")
     parser.add_argument("--follow-sources", action="store_true", help="Also print 500-char excerpt from each cited source")
     parser.add_argument("--include-code", action="store_true", help="After the page body, print all files under the page's artifact_dir (Phase 3)")
     args = parser.parse_args()
@@ -142,6 +143,10 @@ def main():
 
     content = page_path.read_text(encoding="utf-8")
     fm, body = split_frontmatter(content)
+
+    if args.field:
+        print(fm.get(args.field, "") if fm else "")
+        return
 
     if args.frontmatter_only:
         if fm:

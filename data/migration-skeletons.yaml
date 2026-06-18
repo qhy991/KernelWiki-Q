@@ -1,0 +1,176 @@
+schema_version: 1
+generated_on: '2026-06-18'
+purpose: >
+  Reusable CUDA-to-target migration skeletons for ROCm-KernelWiki-Q and
+  Ascend-KernelWiki-Q pages. Each skeleton keeps CUDA source evidence separate
+  from target-platform evidence so agents do not mechanically translate CUDA
+  concepts without platform-specific grounding.
+skeletons:
+  - id: migration-skeleton-warp-to-wavefront-aicore
+    title: CUDA warp/block scheduling to ROCm wavefront and Ascend AICore scheduling
+    cuda_source_ids:
+      - doc-context-hub-warp-primitives
+      - technique-warp-specialization
+      - doc-context-hub-thread-block-clusters
+    reusable_for:
+      - reduction
+      - softmax
+      - attention
+      - persistent-kernel
+    target_platforms:
+      rocm:
+        target_source_ids:
+          - hw-wavefront
+          - hw-dpp-cross-lane
+          - kernel-reduction-softmax-rocm
+        mapping_notes:
+          - Map warp-level collectives to wavefront-level DPP/bpermute patterns.
+          - Re-check lane count assumptions; AMD wavefronts are usually 64 lanes.
+          - Re-derive occupancy from VGPR/LDS use instead of copying CUDA block sizes.
+      ascend:
+        target_source_ids:
+          - doc-ascendc-kernel-launch
+          - doc-ascendc-system-variable-apis
+          - doc-ascendc-vector-programming
+          - hw-vector-unit
+        mapping_notes:
+          - Map CUDA thread/block indexing to AscendC block scheduling and system variables.
+          - Separate vector-unit work from cube-unit work when migrating mixed compute kernels.
+          - Avoid assuming warp-synchronous execution; use AscendC pipeline and queue semantics.
+
+  - id: migration-skeleton-shared-memory-to-lds-ub
+    title: CUDA shared memory to ROCm LDS and Ascend UB/L1/L0 memory hierarchy
+    cuda_source_ids:
+      - doc-context-hub-memory-bound-playbook
+      - doc-context-hub-coalescing
+      - technique-swizzling
+    reusable_for:
+      - tiled-gemm
+      - convolution
+      - attention
+      - normalization
+    target_platforms:
+      rocm:
+        target_source_ids:
+          - hw-lds
+          - technique-bank-conflict-padding
+          - doc-hip-programming-guide
+        mapping_notes:
+          - Map shared-memory staging to LDS staging, then redo bank-conflict analysis.
+          - Treat CUDA swizzling as a hypothesis; validate against AMD LDS bank behavior.
+          - Prefer CK tile descriptors when the migration can be expressed as tile layout policy.
+      ascend:
+        target_source_ids:
+          - hw-memory-hierarchy
+          - hw-unified-buffer
+          - doc-ascend-memory-hierarchy
+          - technique-bank-conflict-avoidance
+          - doc-ascendc-tpipe-initbuffer
+        mapping_notes:
+          - Map shared memory to UB/L1/L0 based on tensor lifetime and cube/vector access path.
+          - Encode buffer allocation through TPipe/TQue instead of ad hoc shared arrays.
+          - Recompute tile shape from UB capacity and data movement cost.
+
+  - id: migration-skeleton-wgmma-tcgen05-to-mfma-mmad
+    title: CUDA WGMMA/tcgen05 to ROCm MFMA/scaled-MFMA and Ascend Mmad
+    cuda_source_ids:
+      - doc-context-hub-wmma-patterns
+      - doc-context-hub-tensor-core-pipeline
+      - hw-tcgen05-mma
+      - migration-wgmma-to-tcgen05
+    reusable_for:
+      - gemm
+      - quant-matmul
+      - grouped-gemm
+      - moe
+    target_platforms:
+      rocm:
+        target_source_ids:
+          - hw-mfma-matrix-core
+          - hw-scaled-mfma
+          - doc-cdna4-isa
+          - kernel-fp8-blockscale-gemm-rocm
+        mapping_notes:
+          - Map tensor-core fragments to MFMA operand layout and wave tile shape.
+          - For FP8/FP4 paths, check whether scaled MFMA can absorb block-scale metadata.
+          - Rebuild accumulator promotion logic; SM90 WGMMA workarounds do not transfer directly.
+      ascend:
+        target_source_ids:
+          - hw-cube-unit
+          - doc-ascendc-load-data-apis
+          - doc-ascendc-matmul-end
+          - doc-ascendc-matmul-tiling-bias
+          - kernel-matmul-ascendc
+        mapping_notes:
+          - Map MMA/WGMMA to cube-unit Mmad with explicit LoadData and Fixpipe stages.
+          - Move shape decisions into tiling data where AscendC expects host-side tiling.
+          - Rebuild layout around NZ/fractal requirements rather than preserving CUDA row-major assumptions.
+
+  - id: migration-skeleton-cpasync-tma-to-target-datamove
+    title: CUDA cp.async/TMA pipelines to ROCm LDS pipelines and Ascend DataCopy/MTE
+    cuda_source_ids:
+      - doc-context-hub-async-copy
+      - hw-tma
+      - hw-mbarrier
+      - technique-pipeline-stages
+      - technique-double-buffering
+    reusable_for:
+      - pipelined-gemm
+      - flash-attention
+      - convolution
+      - memory-bound-kernel
+    target_platforms:
+      rocm:
+        target_source_ids:
+          - hw-lds
+          - technique-double-buffering
+          - technique-ck-tile-programming
+          - kernel-gemm-mfma-rocm
+        mapping_notes:
+          - Replace cp.async/TMA assumptions with explicit global-to-LDS staging.
+          - Use CK pipeline policy where possible instead of manually cloning CUDA barriers.
+          - Revalidate stage count against LDS capacity and VGPR pressure.
+      ascend:
+        target_source_ids:
+          - hw-mte
+          - doc-ascendc-datacopypad-api
+          - doc-ascendc-tpipe-initbuffer
+          - technique-pipeline-scheduling
+        mapping_notes:
+          - Map asynchronous copy stages to DataCopy/MTE and TPipe/TQue orchestration.
+          - Make event/queue dependencies explicit; do not rely on CUDA barrier semantics.
+          - Recompute double-buffering around UB allocation and MTE bandwidth.
+
+  - id: migration-skeleton-cutlass-cute-to-ck-catlass
+    title: CUTLASS/CuTe templates to ROCm CK Tile and Ascend CATLASS/AscendC
+    cuda_source_ids:
+      - doc-cutlass-blackwell
+      - doc-cutlass-changelog-sm100
+      - lang-cute-dsl
+      - blog-colfax-cutlass
+    reusable_for:
+      - gemm
+      - grouped-gemm
+      - fp8-gemm
+      - fused-epilogue
+    target_platforms:
+      rocm:
+        target_source_ids:
+          - doc-ck-readme
+          - doc-ck-structure
+          - technique-ck-tile-programming
+          - kernel-ck-tile-gemm-rocm
+        mapping_notes:
+          - Map CuTe tile algebra to CK tensor descriptors and tile distributions.
+          - Rebuild epilogue fusion using CK/hipBLASLt extension points, not CUTLASS epilogue APIs.
+          - Treat launch configuration and template knobs as platform-specific search spaces.
+      ascend:
+        target_source_ids:
+          - doc-catlass-framework
+          - migration-cutlass-to-catlass
+          - kernel-gemm-catlass-cpp
+          - doc-ascendc-api-overview
+        mapping_notes:
+          - Map CUTLASS-style GEMM templates to CATLASS/AscendC template layers.
+          - Re-express tiling and memory layout in AscendC/CANN terms.
+          - Keep CUDA template names only as provenance; generated Ascend code should use native abstractions.

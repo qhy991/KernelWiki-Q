@@ -175,6 +175,17 @@ def filter_pages(pages, args):
             if args.language not in langs and args.language not in tags:
                 continue
 
+        if args.operator:
+            operator_variants = {v.lower() for v in expand_keyword(args.operator)}
+            operators = set()
+            for field in ("kernel_types", "tags"):
+                operators.update(str(v).lower() for v in (fm.get(field) or []))
+            recipe = fm.get("operator_recipe")
+            if isinstance(recipe, dict) and recipe.get("operator"):
+                operators.add(str(recipe["operator"]).lower())
+            if not (operators & operator_variants):
+                continue
+
         if args.architecture:
             archs = {a.lower() for a in (fm.get("architectures") or [])}
             arch_variants = {v.lower() for v in expand_keyword(args.architecture)}
@@ -297,6 +308,7 @@ def main():
     parser.add_argument("--tag", help="Filter by tag (must appear in tags/techniques/hardware_features/kernel_types/languages)")
     parser.add_argument("--repo", help="Filter by source repo (partial match, e.g. 'cutlass')")
     parser.add_argument("--language", help="Filter by language/DSL (cute-dsl, cuda-cpp, ptx, triton, etc.)")
+    parser.add_argument("--operator", help="Common cross-KernelWiki operator filter (matches kernel_types/tags/operator_recipe.operator)")
     parser.add_argument("--architecture", help="Filter by architecture (sm100, sm100a, sm90, sm90a)")
     parser.add_argument("--symptom", help="Filter by pattern symptom (memory-bound, register-pressure, etc.)")
     parser.add_argument("--confidence", help="Filter by confidence (verified, source-reported, inferred, experimental)")
