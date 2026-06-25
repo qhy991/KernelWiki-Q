@@ -47,6 +47,9 @@ See [references/examples.md](references/examples.md) for 10 worked query pattern
 - [technique-software-exp](wiki/techniques/software-exp.md) — Software-emulated exponential
 - [technique-fine-grained-quant](wiki/techniques/fine-grained-quantization.md) — Fine-grained FP8/FP4 quantization
 - [technique-vectorized-loads](wiki/techniques/vectorized-loads.md) — Wide vectorized loads and cache policies
+- [technique-unrolled-memory-latency-hiding](wiki/techniques/unrolled-memory-latency-hiding.md) — Batched unrolled loads for scattered access (KerSor/SM89)
+- [technique-split-k-attention-decode](wiki/techniques/split-k-attention-decode.md) — Split-K decomposition for paged attention decode (KerSor/SM89)
+- [technique-lazy-expert-dequantization](wiki/techniques/lazy-expert-dequantization.md) — On-demand expert weight dequantization for MoE (KerSor/SM89)
 
 ## Kernel Case Studies
 
@@ -59,6 +62,15 @@ See [references/examples.md](references/examples.md) for 10 worked query pattern
 - [kernel-nvfp4-gemv](wiki/kernels/nvfp4-gemv.md) — NVFP4 batched GEMV optimization
 - [kernel-grouped-gemm](wiki/kernels/grouped-gemm.md) — Grouped GEMM for MoE
 - [kernel-fused-moe](wiki/kernels/fused-moe.md) — Fused MoE with FP8
+
+### KerSor SM89 (RTX 4090) Experiments
+
+- [kernel-kersor-mla-decode-sm89](wiki/kernels/kersor-mla-decode-sm89.md) — MLA decode 8-token unrolled split-K (0.11ms, KerSor)
+- [kernel-kersor-mla-prefill-sm89](wiki/kernels/kersor-mla-prefill-sm89.md) — MLA prefill FlashAttention-2 tiled (189.9ms, KerSor)
+- [kernel-kersor-gqa-decode-sm89](wiki/kernels/kersor-gqa-decode-sm89.md) — GQA decode with cache policy differentiation (0.11ms, KerSor)
+- [kernel-kersor-fused-rmsnorm-sm89](wiki/kernels/kersor-fused-rmsnorm-sm89.md) — Fused RMSNorm warp-per-row + Triton (9.3x, KerSor)
+- [kernel-kersor-moe-fp8-lazy-dequant-sm89](wiki/kernels/kersor-moe-fp8-lazy-dequant-sm89.md) — FP8 MoE with lazy expert dequant (1.9x, KerSor)
+- [kernel-kersor-gemm-hybrid-sm89](wiki/kernels/kersor-gemm-hybrid-sm89.md) — Hybrid ATen + cuBLAS GEMM dispatch (1.04x, KerSor)
 
 ## Problem → Solution Patterns
 
